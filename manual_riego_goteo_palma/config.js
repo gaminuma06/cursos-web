@@ -6,7 +6,7 @@ window.VENTA = {
   finLanzamiento: '2026-11-07T23:59:00-05:00',   // fecha real del fin del precio de lanzamiento
   garantiaDias: 0,               // 0 = no se muestra la garantía
   wompiLlavePublica: '',         // pub_prod_... (la pegas tú desde el panel de Wompi)
-  appsScriptUrl: '',             // https://script.google.com/macros/s/.../exec (firma y registro del pedido)
+  appsScriptUrl: 'https://script.google.com/macros/s/AKfycbzle4V1Ezuqbux6pXXmFYg4tRufVM-09Ygzz-vThqQO2lNn_jFjKye5b9svrXEr0RlN/exec',             // https://script.google.com/macros/s/.../exec (firma y registro del pedido)
   redireccion: 'https://cursos.adanarias.com/manual_riego_goteo_palma/gracias.html',
   correo: 'ingarias9006@gmail.com',
   whatsapp: '573012251358',      // con indicativo 57, solo números
