@@ -8,5 +8,7 @@ window.VENTA = {
   wompiLlavePublica: '',         // pub_prod_... (la pegas tú desde el panel de Wompi)
   appsScriptUrl: '',             // https://script.google.com/macros/s/.../exec (firma y registro del pedido)
   redireccion: 'https://cursos.adanarias.com/manual_riego_goteo_palma/gracias.html',
-  contacto: 'ingarias9006@gmail.com · WhatsApp 301 225 1358'
+  correo: 'ingarias9006@gmail.com',
+  whatsapp: '573012251358',      // con indicativo 57, solo números
+  whatsappTexto: 'Hola, tengo una pregunta sobre el Manual de Riego por Goteo en Palma'
 };

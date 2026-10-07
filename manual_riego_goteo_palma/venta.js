@@ -28,7 +28,10 @@
 
   pintarPrecio(); reloj(); espacio(); setInterval(reloj, 1000);
   $('anio').textContent = new Date().getFullYear();
-  if (V.contacto) $('contacto').textContent = '¿Preguntas sobre el manual? Escríbenos: ' + V.contacto;
+  // Contacto: el correo abre el programa de correo y el número abre WhatsApp con un mensaje listo
+  const wa = 'https://wa.me/' + V.whatsapp + '?text=' + encodeURIComponent(V.whatsappTexto);
+  const tel = V.whatsapp.replace(/^57/, '').replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3');
+  $('contacto').innerHTML = '¿Preguntas sobre el manual? Escríbenos al correo <a href="mailto:' + V.correo + '?subject=' + encodeURIComponent('Pregunta sobre el Manual de Riego en Palma') + '">' + V.correo + '</a> o por WhatsApp al <a href="' + wa + '" target="_blank" rel="noopener">' + tel + '</a>.';
 
   // Aparición suave de cada bloque al llegar a él con el scroll
   const bloques = document.querySelectorAll('main > section, main > .boton-borde, .dolores li, .logros li, .para div, .confianza div');

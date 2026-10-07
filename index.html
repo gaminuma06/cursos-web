@@ -19,7 +19,7 @@
   .catalogo .curso { flex:0 1 380px; }
   .curso { display:flex; flex-direction:column; background:#fff; border-radius:16px; overflow:hidden; text-decoration:none; color:inherit;
            box-shadow:0 8px 28px rgba(0,0,0,.10); transition:transform .3s ease, box-shadow .3s ease; max-width:420px; width:100%; justify-self:center; }
-  .curso:hover { transform:translateY(-6px); box-shadow:0 16px 36px rgba(0,0,0,.16); }
+  .curso:hover { transform:translateY(-8px) scale(1.035); box-shadow:0 22px 44px rgba(0,0,0,.18); }
   .curso img { width:100%; height:auto; display:block; }
   .info { padding:18px 20px 22px; display:flex; flex-direction:column; gap:8px; flex:1; }
   .tipo { font:700 13px 'Open Sans', sans-serif; letter-spacing:.08em; text-transform:uppercase; color:#16a34a; }
@@ -29,16 +29,18 @@
   .incluye li::before { content:'✓ '; color:#16a34a; font-weight:700; }
   .pie-card { margin-top:auto; padding-top:12px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
   .precio { font:700 22px 'Open Sans', sans-serif; } .precio s { color:#999; font-size:15px; font-weight:400; margin-right:6px; }
-  .ver { background:#16a34a; color:#fff; border-radius:8px; padding:10px 18px; font-weight:700; white-space:nowrap; }
-  .aparece { opacity:0; transform:translateY(22px); transition:opacity .7s ease, transform .7s ease; }
-  .aparece.visible { opacity:1; transform:none; }
+  .ver { background:#16a34a; color:#fff; border-radius:8px; padding:10px 22px; font-weight:700; white-space:nowrap; transition:transform .3s ease, background .3s ease, box-shadow .3s ease; }
+  .curso:hover .ver { background:#12863d; transform:scale(1.08); box-shadow:0 6px 16px rgba(22,163,74,.45); }
+  .curso img { transition:transform .5s ease; } .curso:hover img { transform:scale(1.04); }
+  .aparece { opacity:0; translate:0 22px; transition:opacity .7s ease, translate .7s ease, transform .3s ease, box-shadow .3s ease; }
+  .aparece.visible { opacity:1; translate:0 0; }
   @media (prefers-reduced-motion: reduce) { * { transition:none !important; } .aparece { opacity:1; transform:none; } }
 </style>
 </head>
 <body>
 <main>
   <h1 class="aparece">Aprende haciendo, <span>con tus propias manos</span></h1>
-  <p class="lema aparece">Manuales visuales para el campo: dibujos claros, casos reales y herramientas listas para usar en tu finca o en tu trabajo.</p>
+  <p class="lema aparece">Cursos y manuales digitales hechos por un ingeniero y explicados paso a paso, para que cualquiera los aplique en su trabajo, su empresa o su finca.</p>
 
   <div class="catalogo">
     <a class="curso aparece" href="manual_riego_goteo_palma/">
@@ -48,7 +50,7 @@
         <h2>Riego por goteo en palma de aceite</h2>
         <p>Diseña el riego de tu lote paso a paso, de la fuente de agua al último gotero, con un caso real de 10 ha.</p>
         <ul class="incluye"><li>126 páginas ilustradas</li><li>Calculadora de diseño en Excel</li><li>Formatos de registro y guía de campo</li></ul>
-        <div class="pie-card"><span class="precio"><s>$79.900</s>$39.900</span><span class="ver">Ver manual →</span></div>
+        <div class="pie-card"><span class="precio"><s>$79.900</s>$39.900</span><span class="ver">Comprar</span></div>
       </div>
     </a>
   </div>
