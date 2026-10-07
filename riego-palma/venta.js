@@ -20,11 +20,9 @@
     const d = Math.floor(r / 864e5), h = Math.floor(r / 36e5) % 24, m = Math.floor(r / 6e4) % 60, s = Math.floor(r / 1e3) % 60;
     const z = (x) => String(x).padStart(2, '0');
     $('reloj').textContent = (d ? d + 'd ' : '') + `${z(h)}:${z(m)}:${z(s)}`;
-    $('barra-txt').textContent = 'Termina el precio de lanzamiento';
   }
 
   pintarPrecio(); reloj(); setInterval(reloj, 1000);
-  if (V.garantiaDias > 0) $('gdias').textContent = V.garantiaDias; else { $('garantia').style.display = 'none'; document.querySelector('.sellos').style.gridTemplateColumns = '1fr'; }
   $('anio').textContent = new Date().getFullYear();
   if (V.contacto) $('contacto').textContent = '¿Preguntas sobre el manual? Escríbenos: ' + V.contacto;
 

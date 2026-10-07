@@ -7,113 +7,98 @@
 <meta name="description" content="Diseña el riego por goteo de tu lote de palma de forma visual: 126 páginas ilustradas, un caso real de 10 ha paso a paso y 3 bonos (calculadora Excel, formatos de registro y guía de campo).">
 <meta property="og:title" content="Manual Visual de Riego por Goteo en Palma de Aceite">
 <meta property="og:description" content="126 páginas ilustradas + calculadora Excel + formatos + guía de campo. Acceso digital inmediato.">
-<meta property="og:image" content="img/portada.webp">
+<meta property="og:image" content="img/heroe.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Open+Sans:wght@400;600;700&family=Source+Serif+4:wght@600&display=swap" rel="stylesheet">
 <style>
-  :root { --verde:#1F4D2B; --verde2:#2F6B3C; --naranja:#E0672B; --crema:#F7F2E7; --coral:#F26D6D; --tinta:#1d1d1d; --gris:#666; --borde:#d9d2c3; }
+  :root { --verde:#1F4D2B; --naranja:#E0672B; --tinta:#1d1d1d; --gris:#666; }
   * { box-sizing:border-box; }
-  body { margin:0; background:#fff; color:var(--tinta); font:17px/1.5 'Source Sans 3', system-ui, sans-serif; }
-  img { max-width:100%; display:block; }
+  html, body { background:#fff; }
+  body { margin:0; color:var(--tinta); font:17px/1.5 'Open Sans', system-ui, sans-serif; }
+  img { max-width:100%; height:auto; display:block; }
   .col { max-width:720px; margin:0 auto; padding:0 16px; }
-  h1, h2, h3, .osw { font-family:'Oswald', sans-serif; letter-spacing:.01em; }
 
-  /* Barra superior con la cuenta regresiva del lanzamiento */
-  .barra { position:sticky; top:0; z-index:10; background:var(--coral); color:#fff; }
-  .barra .col { display:flex; align-items:center; gap:14px; padding-top:10px; padding-bottom:10px; }
-  .reloj { font:700 30px/1 'Oswald', sans-serif; letter-spacing:.04em; white-space:nowrap; }
+  /* Contador: barra coral translúcida que flota sobre el contenido */
+  .barra { position:fixed; top:0; left:0; right:0; z-index:10; background:rgba(242, 92, 92, .78);
+           -webkit-backdrop-filter:blur(2px); backdrop-filter:blur(2px); color:#fff; }
+  .barra .col { display:flex; align-items:center; gap:14px; padding-top:12px; padding-bottom:12px; }
+  .reloj { font:700 clamp(24px, 6vw, 32px)/1 'Open Sans', sans-serif; letter-spacing:.03em; white-space:nowrap; }
   .barra svg { flex:none; }
   .barra p { margin:0; font-size:15px; line-height:1.25; }
+  main { padding-top:84px; }
 
-  /* Héroe */
-  .heroe { margin:24px 0; background:var(--crema); border-radius:10px; padding:26px 18px 0; overflow:hidden;
-           box-shadow:0 2px 14px rgba(0,0,0,.08); }
-  .heroe h1 { margin:0; text-align:center; font-size:clamp(30px, 7vw, 50px); line-height:1.02; text-transform:uppercase; color:#232323; }
-  .heroe h1 span { color:var(--naranja); }
-  .heroe .sub { text-align:center; margin:10px 0 20px; font-weight:600; }
-  /* Libro y tablet: tamaños proporcionales al ancho, sin deformar las imágenes */
-  .escena { position:relative; width:min(100%, 560px); margin:0 auto; aspect-ratio:560 / 470; }
-  .libro { position:absolute; left:3%; top:0; width:56%; }
-  .libro img { width:100%; height:auto; border-radius:1px 5px 5px 1px; box-shadow:10px 14px 26px rgba(0,0,0,.3), inset 0 0 0 1px rgba(0,0,0,.08); }
-  .libro::before { content:''; position:absolute; left:-4.5%; top:1.2%; bottom:1.2%; width:4.5%; background:linear-gradient(90deg,#123020,#2b5b37 70%,#1d4229);
-                   border-radius:3px 0 0 3px; box-shadow:-2px 4px 8px rgba(0,0,0,.25); }
-  .tablet { position:absolute; right:0; bottom:0; width:44%; background:#1e1e1e; border-radius:5% / 3.6%; padding:3%; box-shadow:0 12px 28px rgba(0,0,0,.35); }
-  .tablet img { width:100%; height:auto; border-radius:3px; }
-  .muestras { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:22px -4px 0; }
-  .muestras figure { margin:0; background:#fff; padding:5px; box-shadow:0 4px 14px rgba(0,0,0,.18); border-radius:3px; }
-  .muestras figure:nth-child(1) { transform:rotate(-3deg); } .muestras figure:nth-child(3) { transform:rotate(3deg); }
-  .muestras figcaption { font:600 12px/1.2 'Oswald', sans-serif; text-transform:uppercase; text-align:center; padding:5px 0 2px; color:var(--verde); }
-  .rasgos { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; background:#fff; border-radius:8px; margin:20px 0 0; padding:10px; }
-  .rasgos div { display:flex; gap:8px; align-items:center; font:600 13px/1.15 'Oswald', sans-serif; text-transform:uppercase; color:#333; }
+  /* Tarjetas de imagen (héroe y bonos), como las de la referencia */
+  .tarjeta { border-radius:10px; overflow:hidden; box-shadow:0 1px 10px rgba(0,0,0,.12); background:#fff; margin:16px 0 28px; }
+  .tarjeta .titulo { padding:22px 16px 6px; text-align:center; }
+  .tarjeta h1, .tarjeta h2 { margin:0; font-family:'Oswald', sans-serif; text-transform:uppercase; line-height:1.02; letter-spacing:.005em; }
+  .tarjeta h1 { font-size:clamp(30px, 8vw, 54px); color:#1b2a22; }
+  .tarjeta h1 span { display:block; color:var(--naranja); }
+  .tarjeta .regla { height:3px; width:82%; margin:10px auto 8px; background:#1b2a22; }
+  .tarjeta .sub { margin:0; font-weight:600; font-size:clamp(14px, 3.4vw, 17px); }
+  .rasgos { display:grid; grid-template-columns:repeat(3,1fr); margin:4px 14px 0; border:1px solid #e3e3e3; border-radius:8px; background:#fff; }
+  .rasgos div { display:flex; gap:8px; align-items:center; padding:10px 8px; font:600 clamp(11px, 2.8vw, 14px)/1.15 'Oswald', sans-serif; text-transform:uppercase; color:#222; }
+  .rasgos div + div { border-left:1px solid #e3e3e3; }
   .rasgos svg { flex:none; }
-  .acceso { margin:16px -18px 0; background:var(--verde); color:#fff; text-align:center; padding:14px; font:700 clamp(20px,5vw,30px)/1 'Oswald', sans-serif;
-            text-transform:uppercase; display:flex; align-items:center; justify-content:center; gap:12px; }
-  .acceso i { width:34px; height:34px; border-radius:50%; background:var(--naranja); display:grid; place-items:center; font-style:normal; font-size:20px; }
+  .banda { margin-top:14px; background:var(--verde); color:#fff; text-align:center; padding:14px 10px; font:700 clamp(20px, 5.6vw, 32px)/1 'Oswald', sans-serif;
+           text-transform:uppercase; display:block;
+           clip-path:polygon(1.5% 8%, 99% 0, 100% 90%, 0 100%); }
+  .banda i { width:1.25em; height:1.25em; border-radius:50%; background:var(--naranja); display:inline-grid; place-items:center; font-style:normal; font-size:.8em;
+             vertical-align:middle; margin:-.2em .5em 0 0; }
+  .banda b { color:#F6B26B; }
+  .bonos h2 { font-size:clamp(28px, 7.6vw, 48px); color:#1b2a22; }
+  .bonos h2 span { color:var(--naranja); }
+  .regla3 { height:4px; width:74%; margin:10px auto 0; background:linear-gradient(90deg, var(--verde) 0 33%, var(--naranja) 33% 66%, var(--verde) 66%); }
+  .etiquetas { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:0 14px; text-align:center; font-size:13.5px; line-height:1.25; }
+  .etiquetas b { display:block; font:700 17px 'Oswald', sans-serif; color:var(--verde); }
 
   /* Contenido */
-  .boton-borde { border:2px solid var(--tinta); border-radius:8px; text-align:center; padding:12px; font:700 24px 'Source Sans 3', sans-serif; margin:26px 0 22px; }
-  .contiene { border:2px solid var(--tinta); border-radius:8px; padding:20px 26px; }
-  .contiene h3 { margin:12px 0 4px; font:700 19px/1.25 'Source Sans 3', sans-serif; text-transform:uppercase; }
+  .boton-borde { border:2px solid var(--tinta); border-radius:8px; text-align:center; padding:12px; font:700 clamp(20px, 5vw, 26px) 'Open Sans', sans-serif; margin:0 0 22px; }
+  .contiene { border:2px solid var(--tinta); border-radius:8px; padding:22px 28px; }
+  .contiene h3 { margin:14px 0 4px; font:700 clamp(17px, 4.2vw, 20px)/1.3 'Open Sans', sans-serif; text-transform:uppercase; }
   .contiene h3:first-child { margin-top:0; }
-  .contiene ul { margin:0 0 0 22px; padding-left:18px; }
-  .contiene li { margin:2px 0; }
-  .especial { background:#EAF2FB; border-radius:6px; padding:8px 12px; margin:12px 0; font-size:15px; }
-
-  /* Bonos */
-  .bonos { margin:28px 0; background:linear-gradient(#fff, var(--crema)); border-radius:10px; padding:22px 16px 0; overflow:hidden; box-shadow:0 2px 14px rgba(0,0,0,.08); }
-  .bonos h2 { margin:0; text-align:center; font-size:clamp(28px,7vw,46px); line-height:1; text-transform:uppercase; color:var(--verde); }
-  .bonos h2 span { color:var(--naranja); }
-  .regla3 { height:4px; width:70%; margin:10px auto 18px; background:linear-gradient(90deg, var(--verde) 0 33%, var(--naranja) 33% 66%, var(--verde) 66%); }
-  .pila { display:grid; grid-template-columns:1fr 1fr; gap:14px; align-items:start; }
-  .tarjeta-bono { background:#fff; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,.16); overflow:hidden; }
-  .tarjeta-bono .eti { background:var(--verde); color:#fff; padding:8px 10px; font:700 20px/1 'Oswald', sans-serif; }
-  .tarjeta-bono .eti small { display:block; font:600 12px/1.2 'Source Sans 3', sans-serif; color:#cfe3d3; margin-top:4px; text-transform:none; }
-  .tarjeta-bono img { width:100%; }
-  .gratis { margin:18px -16px 0; background:var(--verde); color:#fff; text-align:center; padding:14px; font:700 clamp(20px,5.5vw,30px)/1 'Oswald', sans-serif; text-transform:uppercase; }
-  .gratis span { color:#F6B26B; }
+  .contiene ul { margin:0 0 0 30px; padding-left:18px; }
+  .contiene li { margin:3px 0; }
 
   /* Compra */
-  .compra { border:1.5px solid var(--borde); border-radius:14px; padding:22px; margin:28px 0; }
-  .prod { display:grid; grid-template-columns:110px 1fr; gap:16px; align-items:center; }
-  .prod h3 { margin:0; font:600 24px/1.2 Georgia, serif; }
-  .prod .autor { color:var(--gris); font-size:15px; }
-  .precio { font:700 28px 'Source Sans 3', sans-serif; margin-top:4px; }
-  .precio s { color:#999; font-size:18px; font-weight:400; margin-right:8px; }
+  .compra { border:1.5px solid #d6d6d6; border-radius:22px; padding:26px 26px 30px; margin:28px 0 0; }
+  .prod { display:grid; grid-template-columns:130px 1fr; gap:18px; align-items:center; }
+  .prod h3 { margin:0; font:600 clamp(20px, 5vw, 27px)/1.25 'Source Serif 4', Georgia, serif; }
+  .autor { color:var(--gris); }
+  .precio { font:700 26px 'Open Sans', sans-serif; margin-top:4px; }
+  .precio s { color:#999; font-size:17px; font-weight:400; margin-right:8px; }
   .desc { display:inline-block; background:#16a34a; color:#fff; border-radius:4px; padding:1px 7px; font-size:14px; vertical-align:middle; }
-  .compra h4 { font:700 22px Georgia, serif; margin:26px 0 10px; }
-  label { display:block; margin:14px 0 6px; }
-  input { width:100%; padding:13px 14px; font:inherit; border:1.5px solid #cfcfcf; border-radius:6px; }
-  input:focus { outline:2px solid var(--verde2); border-color:transparent; }
-  .ayuda { font-size:13.5px; color:var(--gris); margin-top:5px; }
-  .metodos { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
-  .metodos div { border:1.5px solid #ddd; border-radius:8px; padding:10px 4px; text-align:center; font-weight:600; font-size:14px; }
-  .pedido { border:1.5px solid #ddd; border-radius:8px; padding:14px; display:flex; justify-content:space-between; gap:10px; font-weight:700; }
+  .compra h4 { font:600 clamp(22px, 5vw, 27px) 'Source Serif 4', Georgia, serif; margin:30px 0 8px; }
+  label { display:block; margin:16px 0 8px; }
+  input[type=email], input[type=text], input[type=tel] { width:100%; padding:14px 16px; font:inherit; border:1.5px solid #c8c8c8; border-radius:6px; }
+  input:focus { outline:2px solid #16a34a; border-color:transparent; }
+  .ayuda { font-size:14px; color:var(--gris); margin-top:6px; }
+  .metodo { border:1.5px solid #c8c8c8; border-radius:10px; padding:16px 18px; display:flex; align-items:center; gap:14px; margin-top:12px; font-weight:600; }
+  .metodo.sel { border:2px solid #111; }
+  .metodo .radio { width:24px; height:24px; border-radius:50%; border:2px solid #999; flex:none; }
+  .metodo.sel .radio { border-color:#111; box-shadow:inset 0 0 0 5px #fff; background:#111; }
+  .metodo small { display:block; font-weight:400; color:var(--gris); }
+  .pedido { border:1.5px solid #c8c8c8; border-radius:8px; padding:14px 16px; display:flex; justify-content:space-between; gap:12px; font-weight:700; }
   .pedido .inc { display:block; font-weight:400; font-size:14px; color:var(--gris); }
-  .comprar { width:100%; margin-top:18px; background:#16a34a; color:#fff; border:0; border-radius:8px; padding:16px; font:700 24px 'Source Sans 3', sans-serif; cursor:pointer; }
+  .comprar { width:100%; margin-top:22px; background:#16a34a; color:#fff; border:0; border-radius:6px; padding:16px; font:700 clamp(22px, 5vw, 28px) 'Open Sans', sans-serif; cursor:pointer; }
   .comprar:disabled { opacity:.6; cursor:wait; }
-  .seguro { text-align:center; color:var(--gris); font-size:15px; margin-top:12px; }
-  .seguro b { color:#2c2a74; }
+  .seguro { text-align:center; color:var(--gris); margin-top:14px; }
+  .seguro b { color:#2c2a74; font-size:19px; }
   .error { color:#b42318; font-weight:600; margin-top:10px; display:none; }
 
-  /* Confianza */
-  .sellos { display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:center; background:#fafafa; border-radius:10px; padding:16px; }
-  .garantia { text-align:center; }
-  .escudo { width:130px; height:150px; margin:0 auto; background:linear-gradient(#1f2a44,#0f1626); clip-path:polygon(50% 0,100% 15%,100% 60%,50% 100%,0 60%,0 15%);
-            color:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; font-family:'Oswald', sans-serif; }
-  .escudo b { font-size:52px; line-height:.9; color:#F6D06B; } .escudo span { font-size:18px; }
-  .cinta { background:#2F7D32; color:#fff; font:700 16px 'Oswald', sans-serif; padding:4px 10px; margin:-24px auto 0; width:max-content; border-radius:3px; position:relative; }
-  .pago { border:1.5px solid #ddd; border-radius:10px; padding:12px; text-align:center; background:#fff; }
-  .pago b { display:block; font:700 18px 'Oswald', sans-serif; }
-  .confianza { display:grid; gap:14px; margin:22px 0 40px; }
-  .confianza div { border:2px solid #1d6fa5; border-radius:10px; padding:16px 18px; display:flex; gap:18px; align-items:center; color:#0f4c75; }
-  .confianza b { display:block; font-size:21px; font-style:italic; }
-  .confianza span { font-style:italic; }
-  footer { background:#111; color:#ccc; padding:26px 0; font-size:14.5px; }
-  footer a { color:#fff; }
+  /* Pie negro y confianza */
+  .legal { background:#000; color:#fff; padding:30px 26px 40px; border-radius:0 0 22px 22px; margin:0 0 0; font-size:16px; }
+  .legal a { color:#fff; }
+  .sello { border:1px solid #e5e5e5; border-radius:12px; margin:22px 0; padding:18px; display:grid; grid-template-columns:auto 1fr; gap:18px; align-items:center; }
+  .sello b { display:block; font:700 20px 'Oswald', sans-serif; }
+  .confianza { display:grid; gap:18px; margin:0 0 50px; }
+  .confianza div { border:2px solid #1d6fa5; border-radius:12px; padding:18px 22px; display:flex; gap:22px; align-items:center; color:#0f4c75; }
+  .confianza b { display:block; font-size:clamp(19px, 4.6vw, 23px); font-style:italic; }
+  .confianza span { font-style:italic; color:#1d6fa5; }
   @media (max-width:560px) {
-    .rasgos { grid-template-columns:1fr; } .metodos { grid-template-columns:1fr 1fr; }
-    .prod { grid-template-columns:80px 1fr; } .prod h3 { font-size:20px; } .sellos { grid-template-columns:1fr; }
-    .reloj { font-size:24px; } .contiene { padding:16px; } .contiene ul { margin-left:0; }
+    .rasgos { grid-template-columns:1fr; } .rasgos div + div { border-left:0; border-top:1px solid #e3e3e3; }
+    .prod { grid-template-columns:86px 1fr; gap:14px; } .compra { padding:20px 16px 24px; border-radius:16px; }
+    .legal { padding:24px 16px 32px; } .contiene { padding:18px 16px; } .contiene ul { margin-left:6px; }
+    .etiquetas { font-size:12px; } .etiquetas b { font-size:15px; }
   }
 </style>
 </head>
@@ -122,31 +107,26 @@
 <div class="barra" id="barra">
   <div class="col">
     <div class="reloj" id="reloj">--:--:--</div>
-    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#fff" stroke-width="2"><circle cx="22" cy="22" r="13"/><path d="M22 14v8l5 4M18 5h8M22 5v4M2 18h8M4 24h6M6 30h6"/></svg>
-    <p id="barra-txt">Precio de lanzamiento: termina en este tiempo</p>
+    <svg width="44" height="44" viewBox="0 0 44 44" fill="none" stroke="#fff" stroke-width="2"><circle cx="26" cy="25" r="14"/><path d="M26 16v9l6 4M21 6h10M26 6v5M33 9l3-3M3 20h9M5 26h7M7 32h7"/></svg>
+    <p id="barra-txt">Complete el formulario antes de la cuenta regresiva</p>
   </div>
 </div>
 
 <main class="col">
 
-  <section class="heroe">
-    <h1>Diseña el riego por goteo de tu palma <span>de forma visual</span></h1>
-    <p class="sub">Una guía práctica e ilustrada, de la fuente de agua al último gotero.</p>
-    <div class="escena">
-      <div class="libro"><img src="img/portada.webp" alt="Portada del Manual Visual de Riego por Goteo en Palma de Aceite" width="1000" height="1294"></div>
-      <div class="tablet"><img src="img/p-caso.webp" alt="Página del caso práctico: cálculo de la tubería principal" width="700" height="906"></div>
+  <section class="tarjeta">
+    <div class="titulo">
+      <h1>Diseña el riego por goteo de tu palma <span>de forma visual</span></h1>
+      <div class="regla"></div>
+      <p class="sub">Una guía práctica e ilustrada, de la fuente de agua al último gotero.</p>
     </div>
-    <div class="muestras">
-      <figure><img src="img/p-goteros.webp" alt="Página: puntos de goteo por palma" loading="lazy"><figcaption>Goteros y laterales</figcaption></figure>
-      <figure><img src="img/p-bomba.webp" alt="Página: cómo leer la curva de la bomba" loading="lazy"><figcaption>Curva de la bomba</figcaption></figure>
-      <figure><img src="img/p-resumen.webp" alt="Página: hoja resumen para aprobar el diseño" loading="lazy"><figcaption>Hoja resumen</figcaption></figure>
-    </div>
+    <img src="img/heroe.webp" width="1200" height="896" alt="Manual Visual de Riego por Goteo en Palma de Aceite, en libro y en tablet, con páginas de muestra">
     <div class="rasgos">
       <div><svg width="34" height="34" viewBox="0 0 34 34"><path d="M4 26h26" stroke="#8B6B43" stroke-width="3"/><path d="M10 26c0-6 3-9 7-9s7 3 7 9" fill="#5A8F2E"/><path d="M17 4c-3 4-5 6-5 9a5 5 0 0 0 10 0c0-3-2-5-5-9z" fill="#2E7FB8"/></svg>Datos de campo y demanda de agua</div>
       <div><svg width="34" height="34" viewBox="0 0 34 34"><rect x="3" y="14" width="18" height="7" rx="2" fill="#333"/><circle cx="25" cy="17" r="6" fill="#2E7FB8"/><path d="M8 21v6M16 21v6" stroke="#333" stroke-width="2"/></svg>Goteros, tuberías y bombeo</div>
       <div><svg width="34" height="34" viewBox="0 0 34 34"><rect x="4" y="4" width="20" height="24" rx="2" fill="none" stroke="#1F4D2B" stroke-width="2"/><circle cx="24" cy="24" r="7" fill="#16a34a"/><path d="M21 24l2 2 4-4" stroke="#fff" stroke-width="2" fill="none"/></svg>Planos y comprobación hidráulica</div>
     </div>
-    <div class="acceso"><i>⬇</i>Acceso digital inmediato</div>
+    <div class="banda"><i>⬇</i>Acceso digital inmediato</div>
   </section>
 
   <div class="boton-borde">Esto es lo que contiene</div>
@@ -162,8 +142,7 @@
     <h3>Módulo 5. Diseño de laterales</h3>
     <ul><li>Trazado y longitud de los laterales.</li><li>Pérdidas por fricción y factor de Christiansen.</li><li>Perfil de presión en subida y bajada; regla del 20 %.</li><li>Longitud máxima del lateral, palma por palma.</li></ul>
     <h3>Módulo 6. Sectores y red de distribución</h3>
-    <ul><li>¿Me alcanza el agua del pozo? Sectores y turnos.</li><li>Principal, secundaria, múltiple y lateral: dónde va cada una.</li><li>Elegir el diámetro con la tabla real de pérdidas.</li><li>Golpe de ariete, ventosas y plano hidráulico.</li><li>Plan de turnos.</li></ul>
-    <p class="especial"><b>Página especial:</b> lleva tu diseño a campo con <b>Lindero</b>, la app Android para ver el plano con GPS y sin señal. ¡Gratis!</p>
+    <ul><li>¿Me alcanza el agua del pozo? Sectores y turnos.</li><li>Principal, secundaria, múltiple y lateral: dónde va cada una.</li><li>Elegir el diámetro con la tabla real de pérdidas.</li><li>Golpe de ariete, ventosas y plano hidráulico.</li><li>Plan de turnos.</li><li>Página especial: lleva tu diseño a campo con la app Lindero (gratis).</li></ul>
     <h3>Módulo 7. Cabezal: filtrado y fertirriego</h3>
     <ul><li>Hidrociclón, arena, malla y anillas.</li><li>Dimensionamiento y retrolavado.</li><li>Inyección de fertilizantes, medidores y manómetros.</li></ul>
     <h3>Módulo 8. Selección del equipo de bombeo</h3>
@@ -178,26 +157,23 @@
     <ul><li>Fricción en manguera y PVC; laterales según la pendiente.</li><li>ETo por zona palmera, filtros, motores y válvulas.</li><li>Lotes irregulares y glosario.</li></ul>
   </section>
 
-  <section class="bonos">
-    <h2>Manual visual <span>+3</span> bonos exclusivos</h2>
-    <div class="regla3"></div>
-    <div class="pila">
-      <div class="tarjeta-bono"><div class="eti">MANUAL<small>126 páginas ilustradas · PDF</small></div><img src="img/portada.webp" alt="Portada del manual" loading="lazy"></div>
-      <div style="display:grid; gap:14px">
-        <div class="tarjeta-bono"><div class="eti">BONO 1<small>Calculadora de diseño en Excel</small></div><img src="img/bono1.webp" alt="Hoja resumen de la calculadora Excel" loading="lazy"></div>
-        <div class="tarjeta-bono"><div class="eti">BONO 2<small>Formatos de lluvia, evaporación y balance</small></div><img src="img/bono2.webp" alt="Formato de balance hídrico mensual" loading="lazy"></div>
-      </div>
+  <section class="tarjeta bonos" style="margin-top:28px">
+    <div class="titulo">
+      <div class="regla3" style="margin:0 auto 12px; width:60%"></div>
+      <h2>Manual visual <span>+3</span> bonos exclusivos</h2>
     </div>
-    <div class="pila" style="margin-top:14px">
-      <div class="tarjeta-bono"><div class="eti">BONO 3<small>Guía de campo: medir, probar y verificar</small></div><img src="img/bono3.webp" alt="Portada de la guía de campo" loading="lazy"></div>
-      <div class="tarjeta-bono"><div class="eti">POR DENTRO<small>Cada tarea con su imagen y su formato</small></div><img src="img/bono3-tacto.webp" alt="Página de la guía de campo: textura al tacto" loading="lazy"></div>
+    <img src="img/bonos.webp" width="1200" height="896" alt="El manual con sus 3 bonos: calculadora, formatos de registro y guía de campo" loading="lazy">
+    <div class="etiquetas">
+      <div><b>BONO 1</b>Calculadora de diseño en Excel</div>
+      <div><b>BONO 2</b>Formatos de lluvia, evaporación y balance</div>
+      <div><b>BONO 3</b>Guía de campo: medir, probar y verificar</div>
     </div>
-    <div class="gratis">¡Incluidos <span>gratis</span> con tu compra!</div>
+    <div class="banda">¡Incluidos <b>gratis</b> con tu compra!</div>
   </section>
 
   <section class="compra" id="compra">
     <div class="prod">
-      <img src="img/portada.webp" alt="" width="110">
+      <img src="img/portada.webp" alt="" width="130" height="168">
       <div>
         <h3>Manual Visual de Riego por Goteo en Palma de Aceite</h3>
         <div class="autor">Autor: Ing. Adán A. Arias</div>
@@ -213,52 +189,40 @@
       <label for="correo2">Confirma tu correo</label>
       <input id="correo2" type="email" autocomplete="off" placeholder="Escribe tu correo otra vez" required>
       <label for="nombre">Nombre completo</label>
-      <input id="nombre" autocomplete="name" placeholder="Como quieres que aparezca en tu manual" required>
+      <input id="nombre" type="text" autocomplete="name" placeholder="Como quieres que aparezca en tu manual" required>
       <label for="cedula">Cédula</label>
-      <input id="cedula" inputmode="numeric" autocomplete="off" placeholder="Solo números" required>
+      <input id="cedula" type="text" inputmode="numeric" autocomplete="off" placeholder="Solo números" required>
       <div class="ayuda">🔒 Tu cédula será la <b>contraseña para abrir tus PDF</b>. Cada copia va marcada con tu nombre.</div>
       <label for="celular">Celular / WhatsApp</label>
       <input id="celular" type="tel" inputmode="tel" autocomplete="tel" placeholder="Para ayudarte si el correo no llega" required>
 
-      <h4>Medios de pago</h4>
-      <div class="metodos"><div>💳 Tarjeta</div><div>🏦 PSE</div><div>📱 Nequi</div><div>🟡 Bancolombia</div></div>
-      <div class="ayuda">Al dar clic en comprar pasas a la página segura de Wompi para elegir cómo pagar.</div>
+      <h4>Método de pago</h4>
+      <div class="metodo sel"><span class="radio"></span><span>Wompi · Bancolombia<small>Tarjeta débito o crédito, PSE, Nequi, botón Bancolombia</small></span></div>
 
       <h4>Detalle del pedido</h4>
       <div class="pedido"><span>Manual Visual de Riego por Goteo en Palma de Aceite<span class="inc">+ Bono 1 calculadora · Bono 2 formatos · Bono 3 guía de campo</span></span><span id="precio2"></span></div>
       <button class="comprar" id="comprar" type="submit">Comprar ahora</button>
       <div class="error" id="error"></div>
-      <div class="seguro">Pago seguro procesado por <b>Wompi</b> · Bancolombia</div>
+      <div class="seguro">Pago seguro con <b>Wompi</b></div>
     </form>
   </section>
+  <section class="legal">
+    <p id="contacto" style="margin-top:0"></p>
+    <p>Al dar clic en "Comprar ahora" aceptas los <a href="terminos.html">términos y condiciones</a>. El manual es para uso personal: cada copia lleva el nombre y la cédula del comprador.</p>
+    <p style="margin-bottom:0">© <span id="anio"></span> Adán A. Arias · cursos.adanarias.com</p>
+  </section>
 
-  <section class="sellos">
-    <div class="garantia" id="garantia">
-      <div class="escudo"><b id="gdias">7</b><span>DÍAS DE</span></div>
-      <div class="cinta">GARANTÍA</div>
-      <div class="ayuda" style="margin-top:8px">Si el manual no te sirve, te devolvemos el dinero.</div>
-    </div>
-    <div class="pago">
-      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
-      <b>PAGO 100 % SEGURO</b>
-      <div class="ayuda">Procesado por Wompi, la pasarela de Bancolombia. Tus datos de pago nunca pasan por esta página.</div>
-    </div>
+  <section class="sello">
+    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="1.8"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><rect x="9" y="11" width="6" height="5" rx="1"/><path d="M10 11V9.5a2 2 0 0 1 4 0V11"/></svg>
+    <div><b>PAGO 100 % SEGURO</b>Procesado por Wompi, la pasarela de Bancolombia. Tus datos de pago nunca pasan por esta página.</div>
   </section>
 
   <section class="confianza">
-    <div><svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="#1d6fa5" stroke-width="1.6"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><p style="margin:0"><b>Privacidad</b><span>Tus datos solo se usan para entregarte el manual.</span></p></div>
-    <div><svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="#1d6fa5" stroke-width="1.6"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg><p style="margin:0"><b>Compra segura</b><span>Pago en la plataforma de Wompi.</span></p></div>
-    <div><svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="#1d6fa5" stroke-width="1.6"><path d="M4 12l5 5L20 6"/></svg><p style="margin:0"><b>Contenido verificado</b><span>Cálculos revisados con un caso real de 10 ha.</span></p></div>
+    <div><svg width="58" height="58" viewBox="0 0 24 24" fill="none" stroke="#1d6fa5" stroke-width="1.5"><path d="M12 4l1.8 3.7 4 .6-2.9 2.8.7 4L12 13.2 8.4 15.1l.7-4-2.9-2.8 4-.6z"/><path d="M5 9c-1 3 0 7 3 9M19 9c1 3 0 7-3 9"/></svg><p style="margin:0"><b>Privacidad</b><span>Tu información está 100 % protegida</span></p></div>
+    <div><svg width="58" height="58" viewBox="0 0 24 24" fill="none" stroke="#1d6fa5" stroke-width="1.5"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg><p style="margin:0"><b>Compra segura</b><span>Ambiente seguro y autenticado</span></p></div>
+    <div><svg width="58" height="58" viewBox="0 0 24 24" fill="none" stroke="#1d6fa5" stroke-width="2"><path d="M3 12l6 6L21 6"/></svg><p style="margin:0"><b>Contenido verificado</b><span>Cálculos revisados con un caso real de 10 ha</span></p></div>
   </section>
 </main>
-
-<footer>
-  <div class="col">
-    <p id="contacto"></p>
-    <p>Al comprar aceptas los <a href="terminos.html">términos y condiciones</a>. El manual es para uso personal: cada copia lleva el nombre del comprador.</p>
-    <p>© <span id="anio"></span> Adán A. Arias · cursos.adanarias.com</p>
-  </div>
-</footer>
 
 <script src="config.js"></script>
 <script src="venta.js"></script>
