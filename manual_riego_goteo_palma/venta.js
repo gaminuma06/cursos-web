@@ -55,7 +55,14 @@
   function error(t) { const e = $('error'); e.textContent = t; e.style.display = t ? 'block' : 'none'; }
 
   // Botón de pago: Apps Script firma el monto (el secreto de integridad nunca llega al navegador) y se abre el widget de Wompi
-  // Si el widget de Wompi no cargó (conexión lenta o un bloqueador del navegador), se usa la página de pago de Wompi
+  // Pago: página de Wompi a pantalla completa (rápida y con scroll normal en celular y PC).
+  // La firma se pide a Apps Script apenas abre la landing, para que el clic sea instantáneo.
+  let firma = null;
+  const pedirFirma = () => firma || (firma = fetch(V.appsScriptUrl + '?accion=firmar')
+    .then((x) => x.json()).then((r) => { if (!r.ok) throw new Error(r.error); return r; })
+    .catch((e) => { firma = null; throw e; }));
+  if (V.appsScriptUrl) setTimeout(() => pedirFirma().catch(() => {}), 800);
+
   function irAlCheckout(r) {
     const w = new URLSearchParams({
       'public-key': V.wompiLlavePublica, currency: 'COP', 'amount-in-cents': String(r.montoCentavos),
@@ -63,32 +70,18 @@
     });
     location.href = 'https://checkout.wompi.co/p/?' + w;
   }
-  const esperar = (ms) => new Promise((ok) => setTimeout(ok, ms));
-  async function widgetListo() {
-    for (let i = 0; i < 10 && typeof WidgetCheckout === 'undefined'; i++) await esperar(300);   // hasta 3 s
-    return typeof WidgetCheckout !== 'undefined';
-  }
 
   $('comprar').addEventListener('click', async () => {
     error('');
     if (!V.wompiLlavePublica || !V.appsScriptUrl) return error('Los pagos se están configurando. Vuelve en unas horas o escríbenos.');
-    const b = $('comprar'); b.disabled = true; b.textContent = 'Abriendo el pago…';
-    const listo = () => { b.disabled = false; b.innerHTML = '<span class="ico-w">🔒</span> Pagar con Wompi'; };
+    const b = $('comprar'); b.disabled = true; b.textContent = 'Abriendo el pago seguro…';
     try {
-      const r = await fetch(V.appsScriptUrl + '?accion=firmar').then((x) => x.json());
-      if (!r.ok) throw new Error(r.error || 'sin firma');
-      if (!(await widgetListo())) return irAlCheckout(r);
-      new WidgetCheckout({
-        currency: 'COP', amountInCents: r.montoCentavos, reference: r.referencia,
-        publicKey: V.wompiLlavePublica, signature: { integrity: r.firma }, redirectUrl: V.redireccion
-      }).open((res) => {
-        const t = res && res.transaction;
-        if (t && t.id) location.href = V.redireccion + '?id=' + encodeURIComponent(t.id);
-      });
-      listo();
+      irAlCheckout(await pedirFirma());
     } catch (e) {
       error('No pudimos abrir el pago. Revisa tu conexión e intenta de nuevo, o escríbenos.');
-      listo();
+      b.disabled = false; b.innerHTML = '<span class="ico-w">🔒</span> Pagar con Wompi';
     }
   });
+  // Si el cliente vuelve con el botón "atrás", el botón queda listo otra vez
+  addEventListener('pageshow', () => { const b = $('comprar'); b.disabled = false; b.innerHTML = '<span class="ico-w">🔒</span> Pagar con Wompi'; });
 })();
