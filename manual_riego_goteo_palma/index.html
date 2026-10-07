@@ -91,6 +91,11 @@
   input[type=email], input[type=text], input[type=tel] { width:100%; padding:14px 16px; font:inherit; border:1.5px solid #c8c8c8; border-radius:6px; }
   input:focus { outline:2px solid #16a34a; border-color:transparent; }
   .ayuda { font-size:14px; color:var(--gris); margin-top:6px; }
+  .pasos-compra { list-style:none; padding:0; margin:18px 0 0; display:grid; gap:6px; color:#333; }
+  .pasos-compra b { color:#16a34a; }
+  .medios { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; justify-content:center; }
+  .medios span { border:1.5px solid #ddd; border-radius:20px; padding:4px 12px; font-size:14px; font-weight:600; }
+  .comprar .ico-w { font-size:.8em; }
   .metodo { border:1.5px solid #c8c8c8; border-radius:10px; padding:16px 18px; display:flex; align-items:center; gap:14px; margin-top:12px; font-weight:600; }
   .metodo.sel { border:2px solid #111; }
   .metodo .radio { width:24px; height:24px; border-radius:50%; border:2px solid #999; flex:none; }
@@ -119,6 +124,22 @@
     .legal { padding:24px 16px 32px; } .contiene { padding:18px 16px; } .contiene ul { margin-left:6px; }
     .etiquetas { font-size:12px; } .etiquetas b { font-size:15px; }
   }
+
+  /* Animaciones sutiles (se apagan si el usuario pidió menos movimiento) */
+  .aparece { opacity:0; transform:translateY(22px); transition:opacity .7s ease, transform .7s ease; }
+  .aparece.visible { opacity:1; transform:none; }
+  @keyframes flotar { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-6px); } }
+  @keyframes latido { 0%,100% { transform:scale(1); box-shadow:0 0 0 0 rgba(22,163,74,.45); } 50% { transform:scale(1.02); box-shadow:0 0 0 10px rgba(22,163,74,0); } }
+  @keyframes brillo { from { background-position:-200% 0; } to { background-position:200% 0; } }
+  @keyframes tic { 0%,90%,100% { transform:rotate(0); } 93% { transform:rotate(-10deg); } 96% { transform:rotate(10deg); } }
+  .tarjeta > img { animation:flotar 6s ease-in-out infinite; }
+  .comprar, .cta { animation:latido 2.4s ease-in-out infinite; }
+  .banda { background-image:linear-gradient(100deg, transparent 30%, rgba(255,255,255,.18) 50%, transparent 70%); background-size:200% 100%; animation:brillo 4.5s linear infinite; }
+  .barra svg { animation:tic 1s linear infinite; transform-origin:60% 55%; }
+  .dolores li, .logros li, .para div, .confianza div { transition:transform .25s ease, box-shadow .25s ease; }
+  .dolores li:hover, .logros li:hover, .para div:hover, .confianza div:hover { transform:translateY(-3px); box-shadow:0 6px 16px rgba(0,0,0,.08); }
+  .comprar:hover, .cta:hover { filter:brightness(1.07); }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation:none !important; transition:none !important; } .aparece { opacity:1; transform:none; } }
 </style>
 </head>
 <body>
@@ -127,7 +148,7 @@
   <div class="col">
     <div class="reloj" id="reloj">--:--:--</div>
     <svg width="44" height="44" viewBox="0 0 44 44" fill="none" stroke="#fff" stroke-width="2"><circle cx="26" cy="25" r="14"/><path d="M26 16v9l6 4M21 6h10M26 6v5M33 9l3-3M3 20h9M5 26h7M7 32h7"/></svg>
-    <p id="barra-txt">Complete el formulario antes de la cuenta regresiva</p>
+    <p id="barra-txt">El precio de lanzamiento termina en</p>
   </div>
 </div>
 
@@ -162,6 +183,7 @@
     <ul class="logros">
       <li>Entregar a tu jefe, a tu cliente o a tu profesor un <b>diseño completo</b>: cálculos, plano, plan de turnos y cuadro de materiales.</li>
       <li>Calcular cuántos <b>litros por palma al día</b> y cuántas <b>horas de riego</b> necesita tu lote.</li>
+      <li>Hacer <b>todos los cálculos del diseño</b>: demanda, pérdidas de presión, diámetros, bomba, motor y uniformidad, con ejemplos resueltos.</li>
       <li>Elegir <b>goteros, mangueras, tuberías, filtros y bomba</b> con números, y saber <b>si te están vendiendo de más</b>.</li>
       <li>Comprobar que <b>todas las palmas reciban la misma agua</b> antes de comprar un solo tubo.</li>
       <li>Regar en el <b>mes más seco</b> con turnos que tu pozo sí alcanza, para que la sequía no te cobre la cosecha.</li>
@@ -229,33 +251,22 @@
       </div>
     </div>
 
-    <form id="form" novalidate>
-      <h4>Tus datos</h4>
-      <label for="correo">Tu correo</label>
-      <input id="correo" type="email" autocomplete="email" placeholder="Correo donde recibirás el manual" required>
-      <label for="correo2">Confirma tu correo</label>
-      <input id="correo2" type="email" autocomplete="off" placeholder="Escribe tu correo otra vez" required>
-      <label for="nombre">Nombre completo</label>
-      <input id="nombre" type="text" autocomplete="name" placeholder="Como quieres que aparezca en tu manual" required>
-      <label for="cedula">Cédula</label>
-      <input id="cedula" type="text" inputmode="numeric" autocomplete="off" placeholder="Solo números" required>
-      <div class="ayuda">🔒 Tu cédula será la <b>contraseña para abrir tus PDF</b>. Cada copia va marcada con tu nombre.</div>
-      <label for="celular">Celular / WhatsApp</label>
-      <input id="celular" type="tel" inputmode="tel" autocomplete="tel" placeholder="Para ayudarte si el correo no llega" required>
-
-      <h4>Método de pago</h4>
-      <div class="metodo sel"><span class="radio"></span><span>Wompi · Bancolombia<small>Tarjeta débito o crédito, PSE, Nequi, botón Bancolombia</small></span></div>
-
+    <div id="form">
       <h4>Detalle del pedido</h4>
       <div class="pedido"><span>Manual Visual de Riego por Goteo en Palma de Aceite<span class="inc">+ Bono 1 calculadora · Bono 2 formatos · Bono 3 guía de campo</span></span><span id="precio2"></span></div>
-      <button class="comprar" id="comprar" type="submit">Comprar ahora</button>
+      <button class="comprar" id="comprar" type="button"><span class="ico-w">🔒</span> Pagar con Wompi</button>
       <div class="error" id="error"></div>
-      <div class="seguro">Pago seguro con <b>Wompi</b></div>
-    </form>
+      <ul class="pasos-compra">
+        <li><b>1.</b> Wompi te pide tu correo, nombre y celular, y eliges cómo pagar.</li>
+        <li><b>2.</b> Pagas con tarjeta, PSE, Nequi o botón Bancolombia.</li>
+        <li><b>3.</b> En minutos te llegan a tu correo el manual y los 3 bonos.</li>
+      </ul>
+      <div class="medios"><span>💳 Tarjeta</span><span>🏦 PSE</span><span>📱 Nequi</span><span>🟡 Bancolombia</span></div>
+    </div>
   </section>
   <section class="legal">
     <p id="contacto" style="margin-top:0"></p>
-    <p>Al dar clic en "Comprar ahora" aceptas los <a href="terminos.html">términos y condiciones</a>. El manual es para uso personal: cada copia lleva el nombre y la cédula del comprador.</p>
+    <p>Al dar clic en "Comprar ahora" aceptas los <a href="terminos.html">términos y condiciones</a>. El manual es para uso personal: cada copia lleva el nombre del comprador.</p>
     <p style="margin-bottom:0">© <span id="anio"></span> Adán A. Arias · cursos.adanarias.com</p>
   </section>
 
@@ -271,6 +282,7 @@
   </section>
 </main>
 
+<script src="https://checkout.wompi.co/widget.js"></script>
 <script src="config.js"></script>
 <script src="venta.js"></script>
 </body>

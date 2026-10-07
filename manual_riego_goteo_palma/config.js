@@ -7,6 +7,6 @@ window.VENTA = {
   garantiaDias: 0,               // 0 = no se muestra la garantía
   wompiLlavePublica: '',         // pub_prod_... (la pegas tú desde el panel de Wompi)
   appsScriptUrl: '',             // https://script.google.com/macros/s/.../exec (firma y registro del pedido)
-  redireccion: 'https://cursos.adanarias.com/riego-palma/gracias.html',
+  redireccion: 'https://cursos.adanarias.com/manual_riego_goteo_palma/gracias.html',
   contacto: 'ingarias9006@gmail.com · WhatsApp 301 225 1358'
 };

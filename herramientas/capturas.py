@@ -5,7 +5,7 @@ from PIL import Image
 
 RAIZ = pathlib.Path(__file__).resolve().parents[2]
 MAN = RAIZ / 'manuales' / 'riego-palma'
-OUT = RAIZ / 'sitio' / 'riego-palma' / 'img'
+OUT = RAIZ / 'sitio' / 'manual_riego_goteo_palma' / 'img'
 OUT.mkdir(parents=True, exist_ok=True)
 
 

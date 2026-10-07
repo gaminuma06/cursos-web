@@ -3,25 +3,59 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Manuales visuales · Adán A. Arias</title>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600&family=Source+Sans+3:wght@400;700&display=swap" rel="stylesheet">
+<title>Aprende haciendo · Adán A. Arias</title>
+<meta name="description" content="Manuales visuales para el campo: aprende con dibujos, casos reales y herramientas listas para usar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-  body { margin:0; background:#F7F2E7; color:#1d1d1d; font:17px/1.5 'Source Sans 3', sans-serif; }
-  main { max-width:900px; margin:0 auto; padding:28px 16px; }
-  h1 { font-family:'Oswald', sans-serif; color:#1F4D2B; font-size:38px; margin:0; }
-  .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:18px; margin-top:22px; }
-  a.card { background:#fff; border-radius:10px; overflow:hidden; text-decoration:none; color:inherit; box-shadow:0 2px 12px rgba(0,0,0,.08); }
-  a.card img { width:100%; display:block; } a.card div { padding:12px 14px; } a.card b { display:block; font-size:18px; }
-  .pronto { opacity:.6; pointer-events:none; } .pronto div::after { content:'Próximamente'; color:#E0672B; font-weight:700; }
+  * { box-sizing:border-box; }
+  html, body { background:#fff; }
+  body { margin:0; color:#1d1d1d; font:17px/1.5 'Open Sans', system-ui, sans-serif; }
+  main { max-width:1080px; margin:0 auto; padding:48px 16px 64px; }
+  h1 { margin:0; text-align:center; font:700 clamp(32px, 7vw, 56px)/1.05 'Oswald', sans-serif; text-transform:uppercase; color:#1b2a22; }
+  h1 span { color:#E0672B; }
+  .lema { text-align:center; max-width:620px; margin:14px auto 40px; color:#555; font-size:clamp(16px, 3.6vw, 19px); }
+  .catalogo { display:flex; flex-wrap:wrap; gap:28px; justify-content:center; }
+  .catalogo .curso { flex:0 1 380px; }
+  .curso { display:flex; flex-direction:column; background:#fff; border-radius:16px; overflow:hidden; text-decoration:none; color:inherit;
+           box-shadow:0 8px 28px rgba(0,0,0,.10); transition:transform .3s ease, box-shadow .3s ease; max-width:420px; width:100%; justify-self:center; }
+  .curso:hover { transform:translateY(-6px); box-shadow:0 16px 36px rgba(0,0,0,.16); }
+  .curso img { width:100%; height:auto; display:block; }
+  .info { padding:18px 20px 22px; display:flex; flex-direction:column; gap:8px; flex:1; }
+  .tipo { font:700 13px 'Open Sans', sans-serif; letter-spacing:.08em; text-transform:uppercase; color:#16a34a; }
+  .curso h2 { margin:0; font:700 24px/1.15 'Oswald', sans-serif; color:#1b2a22; }
+  .curso p { margin:0; color:#555; font-size:15.5px; }
+  .incluye { margin:4px 0 0; padding:0; list-style:none; font-size:15px; display:grid; gap:3px; }
+  .incluye li::before { content:'✓ '; color:#16a34a; font-weight:700; }
+  .pie-card { margin-top:auto; padding-top:12px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .precio { font:700 22px 'Open Sans', sans-serif; } .precio s { color:#999; font-size:15px; font-weight:400; margin-right:6px; }
+  .ver { background:#16a34a; color:#fff; border-radius:8px; padding:10px 18px; font-weight:700; white-space:nowrap; }
+  .aparece { opacity:0; transform:translateY(22px); transition:opacity .7s ease, transform .7s ease; }
+  .aparece.visible { opacity:1; transform:none; }
+  @media (prefers-reduced-motion: reduce) { * { transition:none !important; } .aparece { opacity:1; transform:none; } }
 </style>
 </head>
 <body>
 <main>
-  <h1>Manuales visuales</h1>
-  <p>Guías ilustradas para el campo, por el Ing. Adán A. Arias.</p>
-  <div class="grid">
-    <a class="card" href="riego-palma/"><img src="riego-palma/img/portada.webp" alt="Manual Visual de Riego por Goteo en Palma de Aceite"><div><b>Riego por goteo en palma de aceite</b>126 páginas + 3 bonos</div></a>
+  <h1 class="aparece">Aprende haciendo, <span>con tus propias manos</span></h1>
+  <p class="lema aparece">Manuales visuales para el campo: dibujos claros, casos reales y herramientas listas para usar en tu finca o en tu trabajo.</p>
+
+  <div class="catalogo">
+    <a class="curso aparece" href="manual_riego_goteo_palma/">
+      <img src="manual_riego_goteo_palma/img/bonos.webp" width="1200" height="896" alt="Manual Visual de Riego por Goteo en Palma de Aceite con sus 3 bonos">
+      <div class="info">
+        <span class="tipo">Manual digital + 3 bonos</span>
+        <h2>Riego por goteo en palma de aceite</h2>
+        <p>Diseña el riego de tu lote paso a paso, de la fuente de agua al último gotero, con un caso real de 10 ha.</p>
+        <ul class="incluye"><li>126 páginas ilustradas</li><li>Calculadora de diseño en Excel</li><li>Formatos de registro y guía de campo</li></ul>
+        <div class="pie-card"><span class="precio"><s>$79.900</s>$39.900</span><span class="ver">Ver manual →</span></div>
+      </div>
+    </a>
   </div>
 </main>
+<script>
+  const io = 'IntersectionObserver' in window ? new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } }), { threshold: .1 }) : null;
+  document.querySelectorAll('.aparece').forEach((el, i) => { el.style.transitionDelay = i * 120 + 'ms'; io ? io.observe(el) : el.classList.add('visible'); });
+</script>
 </body>
 </html>
