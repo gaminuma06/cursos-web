@@ -25,6 +25,8 @@
   // El contenido empieza debajo del contador, mida lo que mida la barra en cada pantalla
   function espacio() { document.querySelector('main').style.paddingTop = ($('barra').offsetHeight + 18) + 'px'; }
   addEventListener('resize', espacio);
+  if ('ResizeObserver' in window) new ResizeObserver(espacio).observe($('barra'));   // si la barra cambia de alto (fuentes, giro del celular)
+  if (document.fonts) document.fonts.ready.then(espacio);
 
   pintarPrecio(); reloj(); espacio(); setInterval(reloj, 1000);
   $('anio').textContent = new Date().getFullYear();
@@ -35,9 +37,17 @@
 
   // Aparición suave de cada bloque al llegar a él con el scroll
   const bloques = document.querySelectorAll('main > section, main > .boton-borde, .dolores li, .logros li, .para div, .confianza div');
-  if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } }), { threshold: 0.12 });
-    bloques.forEach((b, i) => { b.classList.add('aparece'); b.style.transitionDelay = (b.tagName === 'LI' || b.tagName === 'DIV' ? (i % 6) * 70 : 0) + 'ms'; io.observe(b); });
+  const ver = (b) => b.classList.add('visible');
+  if (!document.documentElement.classList.contains('anim') || !('IntersectionObserver' in window)) bloques.forEach(ver);
+  else {
+    const io = new IntersectionObserver((es) => es.forEach((e) => {
+      if (!e.isIntersecting) return;
+      const b = e.target, i = [...b.parentNode.children].indexOf(b);
+      if (b.tagName !== 'SECTION') b.style.transitionDelay = (i % 6) * 70 + 'ms';
+      ver(b); io.unobserve(b);
+      setTimeout(() => { b.style.transitionDelay = ''; }, 1200);   // el retraso solo aplica a la entrada, no al pasar el mouse
+    }), { threshold: 0.12 });
+    bloques.forEach((b) => io.observe(b));
   }
 
   function error(t) { const e = $('error'); e.textContent = t; e.style.display = t ? 'block' : 'none'; }

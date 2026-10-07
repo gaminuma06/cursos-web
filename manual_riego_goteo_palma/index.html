@@ -8,7 +8,9 @@
 <meta property="og:title" content="Manual Visual de Riego por Goteo en Palma de Aceite">
 <meta property="og:description" content="126 páginas ilustradas + calculadora Excel + formatos + guía de campo. Acceso digital inmediato.">
 <meta property="og:image" content="img/heroe.webp">
+<script>if (!matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("anim");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Open+Sans:wght@400;600;700&family=Source+Serif+4:wght@600&display=swap" rel="stylesheet">
 <style>
   :root { --verde:#1F4D2B; --naranja:#E0672B; --tinta:#1d1d1d; --gris:#666; }
@@ -24,8 +26,9 @@
   .barra .col { display:flex; align-items:center; gap:14px; padding-top:12px; padding-bottom:12px; }
   .reloj { font:700 clamp(24px, 6vw, 32px)/1 'Open Sans', sans-serif; letter-spacing:.03em; white-space:nowrap; }
   .barra svg { flex:none; }
-  .barra p { margin:0; font-size:15px; line-height:1.25; }
-  main { padding-top:100px; }
+  .barra p { margin:0; font-size:15px; line-height:1.25; min-width:0; }
+  main { padding-top:92px; }
+  @media (max-width:560px) { .barra .col { gap:10px; } .barra p { font-size:13px; } main { padding-top:104px; } }
   html { scroll-behavior:smooth; } #compra { scroll-margin-top:110px; }
 
   /* Tarjetas de imagen (héroe y bonos), como las de la referencia */
@@ -126,8 +129,9 @@
   }
 
   /* Animaciones sutiles (se apagan si el usuario pidió menos movimiento) */
-  .aparece { opacity:0; transform:translateY(22px); transition:opacity .7s ease, transform .7s ease; }
-  .aparece.visible { opacity:1; transform:none; }
+  .anim main > section:not(.visible), .anim main > .boton-borde:not(.visible), .anim .dolores li:not(.visible), .anim .logros li:not(.visible),
+  .anim .para div:not(.visible), .anim .confianza div:not(.visible) { opacity:0; translate:0 22px; }
+  main > section, main > .boton-borde, .dolores li, .logros li, .para div, .confianza div { transition:opacity .7s ease, translate .7s ease, transform .25s ease, box-shadow .25s ease; }
   @keyframes flotar { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-6px); } }
   @keyframes latido { 0%,100% { transform:scale(1); box-shadow:0 0 0 0 rgba(22,163,74,.45); } 50% { transform:scale(1.02); box-shadow:0 0 0 10px rgba(22,163,74,0); } }
   @keyframes brillo { from { background-position:-200% 0; } to { background-position:200% 0; } }
@@ -136,10 +140,9 @@
   .comprar, .cta { animation:latido 2.4s ease-in-out infinite; }
   .banda { background-image:linear-gradient(100deg, transparent 30%, rgba(255,255,255,.18) 50%, transparent 70%); background-size:200% 100%; animation:brillo 4.5s linear infinite; }
   .barra svg { animation:tic 1s linear infinite; transform-origin:60% 55%; }
-  .dolores li, .logros li, .para div, .confianza div { transition:transform .25s ease, box-shadow .25s ease; }
   .dolores li:hover, .logros li:hover, .para div:hover, .confianza div:hover { transform:translateY(-3px); box-shadow:0 6px 16px rgba(0,0,0,.08); }
   .comprar:hover, .cta:hover { filter:brightness(1.07); }
-  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation:none !important; transition:none !important; } .aparece { opacity:1; transform:none; } }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation:none !important; transition:none !important; } } }
 </style>
 </head>
 <body>
@@ -282,7 +285,7 @@
   </section>
 </main>
 
-<script src="https://checkout.wompi.co/widget.js"></script>
+<script src="https://checkout.wompi.co/widget.js" async></script>
 <script src="config.js"></script>
 <script src="venta.js"></script>
 </body>
