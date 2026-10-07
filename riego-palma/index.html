@@ -31,13 +31,14 @@
   .heroe h1 { margin:0; text-align:center; font-size:clamp(30px, 7vw, 50px); line-height:1.02; text-transform:uppercase; color:#232323; }
   .heroe h1 span { color:var(--naranja); }
   .heroe .sub { text-align:center; margin:10px 0 20px; font-weight:600; }
-  .escena { display:grid; grid-template-columns:1fr .78fr; gap:22px; align-items:center; padding:0 6px 0 18px; }
-  .libro { position:relative; transform:perspective(1200px) rotateY(10deg); transform-origin:left center; }
-  .libro img { border-radius:2px 6px 6px 2px; box-shadow:18px 18px 30px rgba(0,0,0,.28), inset 0 0 0 1px rgba(0,0,0,.08); }
-  .libro::before { content:''; position:absolute; left:-12px; top:3px; bottom:3px; width:12px; background:linear-gradient(90deg,#16351f,#2b5b37);
-                   transform:skewY(-40deg); transform-origin:right; border-radius:2px 0 0 2px; }
-  .tablet { background:#222; border-radius:16px; padding:10px; box-shadow:0 10px 26px rgba(0,0,0,.3); transform:rotate(2deg); }
-  .tablet img { border-radius:6px; }
+  /* Libro y tablet: tamaños proporcionales al ancho, sin deformar las imágenes */
+  .escena { position:relative; width:min(100%, 560px); margin:0 auto; aspect-ratio:560 / 470; }
+  .libro { position:absolute; left:3%; top:0; width:56%; }
+  .libro img { width:100%; height:auto; border-radius:1px 5px 5px 1px; box-shadow:10px 14px 26px rgba(0,0,0,.3), inset 0 0 0 1px rgba(0,0,0,.08); }
+  .libro::before { content:''; position:absolute; left:-4.5%; top:1.2%; bottom:1.2%; width:4.5%; background:linear-gradient(90deg,#123020,#2b5b37 70%,#1d4229);
+                   border-radius:3px 0 0 3px; box-shadow:-2px 4px 8px rgba(0,0,0,.25); }
+  .tablet { position:absolute; right:0; bottom:0; width:44%; background:#1e1e1e; border-radius:5% / 3.6%; padding:3%; box-shadow:0 12px 28px rgba(0,0,0,.35); }
+  .tablet img { width:100%; height:auto; border-radius:3px; }
   .muestras { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:22px -4px 0; }
   .muestras figure { margin:0; background:#fff; padding:5px; box-shadow:0 4px 14px rgba(0,0,0,.18); border-radius:3px; }
   .muestras figure:nth-child(1) { transform:rotate(-3deg); } .muestras figure:nth-child(3) { transform:rotate(3deg); }
@@ -110,7 +111,6 @@
   footer { background:#111; color:#ccc; padding:26px 0; font-size:14.5px; }
   footer a { color:#fff; }
   @media (max-width:560px) {
-    .escena { grid-template-columns:1fr; padding:0; } .tablet { display:none; } .libro { width:72%; margin:0 auto; transform:perspective(1200px) rotateY(8deg); }
     .rasgos { grid-template-columns:1fr; } .metodos { grid-template-columns:1fr 1fr; }
     .prod { grid-template-columns:80px 1fr; } .prod h3 { font-size:20px; } .sellos { grid-template-columns:1fr; }
     .reloj { font-size:24px; } .contiene { padding:16px; } .contiene ul { margin-left:0; }
