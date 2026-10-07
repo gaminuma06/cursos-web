@@ -11,6 +11,7 @@
     const dto = Math.round((1 - V.precio / V.precioNormal) * 100);
     $('precio').innerHTML = enLanzamiento() ? `<s>${cop(V.precioNormal)}</s>${cop(p)} <span class="desc">↓ ${dto}%</span>` : cop(p);
     $('precio2').textContent = cop(p);
+    $('precio-cta').innerHTML = enLanzamiento() ? `<s>${cop(V.precioNormal)}</s><b>${cop(p)}</b>` : `<b>${cop(p)}</b>`;
   }
 
   // Cuenta regresiva hasta la fecha de config.js
@@ -36,7 +37,7 @@
   $('contacto').innerHTML = '¿Preguntas sobre el manual? Escríbenos al correo <a href="mailto:' + V.correo + '?subject=' + encodeURIComponent('Pregunta sobre el Manual de Riego en Palma') + '">' + V.correo + '</a> o por WhatsApp al <a href="' + wa + '" target="_blank" rel="noopener">' + tel + '</a>.';
 
   // Aparición suave de cada bloque al llegar a él con el scroll
-  const bloques = document.querySelectorAll('main > section, main > .boton-borde, .dolores li, .logros li, .para div, .confianza div');
+  const bloques = document.querySelectorAll('main > section, main > .boton-borde, main > .cta-portada, .dolores li, .logros li, .para div, .confianza div');
   const ver = (b) => b.classList.add('visible');
   if (!document.documentElement.classList.contains('anim') || !('IntersectionObserver' in window)) bloques.forEach(ver);
   else {
