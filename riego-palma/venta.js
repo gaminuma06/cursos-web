@@ -22,7 +22,11 @@
     $('reloj').textContent = (d ? d + 'd ' : '') + `${z(h)}:${z(m)}:${z(s)}`;
   }
 
-  pintarPrecio(); reloj(); setInterval(reloj, 1000);
+  // El contenido empieza debajo del contador, mida lo que mida la barra en cada pantalla
+  function espacio() { document.querySelector('main').style.paddingTop = ($('barra').offsetHeight + 18) + 'px'; }
+  addEventListener('resize', espacio);
+
+  pintarPrecio(); reloj(); espacio(); setInterval(reloj, 1000);
   $('anio').textContent = new Date().getFullYear();
   if (V.contacto) $('contacto').textContent = '¿Preguntas sobre el manual? Escríbenos: ' + V.contacto;
 

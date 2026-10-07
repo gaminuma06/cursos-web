@@ -25,7 +25,8 @@
   .reloj { font:700 clamp(24px, 6vw, 32px)/1 'Open Sans', sans-serif; letter-spacing:.03em; white-space:nowrap; }
   .barra svg { flex:none; }
   .barra p { margin:0; font-size:15px; line-height:1.25; }
-  main { padding-top:84px; }
+  main { padding-top:100px; }
+  html { scroll-behavior:smooth; } #compra { scroll-margin-top:110px; }
 
   /* Tarjetas de imagen (héroe y bonos), como las de la referencia */
   .tarjeta { border-radius:10px; overflow:hidden; box-shadow:0 1px 10px rgba(0,0,0,.12); background:#fff; margin:16px 0 28px; }
@@ -50,6 +51,24 @@
   .regla3 { height:4px; width:74%; margin:10px auto 0; background:linear-gradient(90deg, var(--verde) 0 33%, var(--naranja) 33% 66%, var(--verde) 66%); }
   .etiquetas { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:0 14px; text-align:center; font-size:13.5px; line-height:1.25; }
   .etiquetas b { display:block; font:700 17px 'Oswald', sans-serif; color:var(--verde); }
+
+  /* Dolores, logros y para quién */
+  .dolor { margin:0 0 28px; }
+  .dolor h2 { font:700 clamp(24px, 6vw, 34px)/1.1 'Oswald', sans-serif; text-transform:uppercase; text-align:center; margin:0 0 16px; color:#1b2a22; }
+  .dolor h2.solucion { color:var(--verde); margin-top:30px; }
+  .dolores, .logros { list-style:none; margin:0; padding:0; display:grid; gap:12px; }
+  .dolores li { background:#FDF1EF; border-left:5px solid #E0533D; border-radius:8px; padding:12px 14px 12px 46px; position:relative; }
+  .dolores li::before { content:'✗'; position:absolute; left:14px; top:10px; color:#E0533D; font-weight:700; font-size:20px; }
+  .dolores b, .logros b { color:#1b2a22; }
+  .logros li { background:#EEF6EF; border-left:5px solid #16a34a; border-radius:8px; padding:12px 14px 12px 46px; position:relative; }
+  .logros li::before { content:'✓'; position:absolute; left:14px; top:10px; color:#16a34a; font-weight:700; font-size:20px; }
+  .para { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:22px; }
+  .para div { border:1.5px solid #e3e3e3; border-radius:10px; padding:12px; font-size:15px; text-align:center; }
+  .para b { display:block; font:700 18px 'Oswald', sans-serif; color:var(--naranja); text-transform:uppercase; }
+  .cta-wrap { text-align:center; margin:24px 0 0; }
+  .cta { display:inline-block; background:#16a34a; color:#fff; text-decoration:none; border-radius:8px; padding:15px 26px; font:700 clamp(18px, 4.6vw, 22px) 'Open Sans', sans-serif;
+         box-shadow:0 4px 0 #0f7a36; }
+  @media (max-width:560px) { .para { grid-template-columns:1fr; } }
 
   /* Contenido */
   .boton-borde { border:2px solid var(--tinta); border-radius:8px; text-align:center; padding:12px; font:700 clamp(20px, 5vw, 26px) 'Open Sans', sans-serif; margin:0 0 22px; }
@@ -127,6 +146,32 @@
       <div><svg width="34" height="34" viewBox="0 0 34 34"><rect x="4" y="4" width="20" height="24" rx="2" fill="none" stroke="#1F4D2B" stroke-width="2"/><circle cx="24" cy="24" r="7" fill="#16a34a"/><path d="M21 24l2 2 4-4" stroke="#fff" stroke-width="2" fill="none"/></svg>Planos y comprobación hidráulica</div>
     </div>
     <div class="banda"><i>⬇</i>Acceso digital inmediato</div>
+  </section>
+
+  <section class="dolor">
+    <h2>¿Te suena alguno de estos problemas?</h2>
+    <ul class="dolores">
+      <li><b>La sequía te cobra la cosecha dos años después.</b> El estrés del verano se convierte en menos racimos casi dos años más tarde, cuando ya no hay nada que hacer.</li>
+      <li><b>Las palmas del final del lote reciben menos agua.</b> Con presión dispareja unas palmas se ahogan y otras pasan sed, y nadie sabe por qué.</li>
+      <li><b>Te venden la bomba y los tubos "por si acaso".</b> Sin saber calcular, terminas pagando equipos más grandes y caros de lo que tu lote necesita.</li>
+      <li><b>No sabes cuántos litros ni cuántas horas regar.</b> Riegas a ojo, gastas agua y energía, y aun así la palma no recibe lo que pide.</li>
+      <li><b>Los libros de riego son de hortalizas y están llenos de fórmulas.</b> Nada te explica, paso a paso y con dibujos, cómo se diseña para palma.</li>
+    </ul>
+    <h2 class="solucion">Con este manual vas a poder</h2>
+    <ul class="logros">
+      <li>Calcular cuántos <b>litros por palma al día</b> necesita tu lote en el mes más seco.</li>
+      <li>Elegir <b>goteros, mangueras, tuberías, filtros y bomba</b> con números, no "a ojo".</li>
+      <li>Dividir el lote en <b>turnos</b> que tu pozo sí alcanza a regar.</li>
+      <li>Comprobar que <b>todas las palmas reciban la misma agua</b> antes de comprar un solo tubo.</li>
+      <li>Revisar la cotización del proveedor y saber <b>si te están vendiendo de más</b>.</li>
+      <li>Instalar, lavar y aforar el sistema con <b>listas de verificación</b>.</li>
+    </ul>
+    <div class="para">
+      <div><b>Palmicultores</b>que quieren regar su lote sin depender de nadie.</div>
+      <div><b>Ingenieros y técnicos</b>que diseñan o revisan proyectos de riego.</div>
+      <div><b>Administradores</b>que deben aprobar cotizaciones y presupuestos.</div>
+    </div>
+    <p class="cta-wrap"><a class="cta" href="#compra">Quiero el manual con sus 3 bonos</a></p>
   </section>
 
   <div class="boton-borde">Esto es lo que contiene</div>
