@@ -4,9 +4,9 @@ window.VENTA = {
   precio: 39900,                 // COP, precio de lanzamiento
   precioNormal: 79900,           // COP, se cobra cuando termina el lanzamiento
   finLanzamiento: '2026-11-07T23:59:00-05:00',   // fecha real del fin del precio de lanzamiento
-  garantiaDias: 7,               // 0 = no se muestra la garantía
+  garantiaDias: 0,               // 0 = no se muestra la garantía
   wompiLlavePublica: '',         // pub_prod_... (la pegas tú desde el panel de Wompi)
   appsScriptUrl: '',             // https://script.google.com/macros/s/.../exec (firma y registro del pedido)
   redireccion: 'https://cursos.adanarias.com/riego-palma/gracias.html',
-  contacto: ''                   // correo o WhatsApp de soporte que se muestra en la página (lo defines tú)
+  contacto: 'ingarias9006@gmail.com · WhatsApp 301 225 1358'
 };

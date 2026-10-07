@@ -24,7 +24,7 @@
   }
 
   pintarPrecio(); reloj(); setInterval(reloj, 1000);
-  if (V.garantiaDias > 0) $('gdias').textContent = V.garantiaDias; else $('garantia').style.display = 'none';
+  if (V.garantiaDias > 0) $('gdias').textContent = V.garantiaDias; else { $('garantia').style.display = 'none'; document.querySelector('.sellos').style.gridTemplateColumns = '1fr'; }
   $('anio').textContent = new Date().getFullYear();
   if (V.contacto) $('contacto').textContent = '¿Preguntas sobre el manual? Escríbenos: ' + V.contacto;
 
