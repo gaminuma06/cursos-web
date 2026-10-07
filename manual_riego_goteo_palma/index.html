@@ -8,7 +8,13 @@
 <meta property="og:title" content="Manual Visual de Riego por Goteo en Palma de Aceite">
 <meta property="og:description" content="126 páginas ilustradas + calculadora Excel + formatos + guía de campo. Acceso digital inmediato.">
 <meta property="og:image" content="img/heroe.webp">
-<script>if (!matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("anim");</script>
+<script>
+  // Animaciones: se preparan antes de pintar. Si venta.js no llega en 3 s, se muestra todo igual.
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.documentElement.classList.add("anim");
+    setTimeout(function () { if (!window.ventaLista) document.documentElement.classList.remove("anim"); }, 3000);
+  }
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Open+Sans:wght@400;600;700&family=Source+Serif+4:wght@600&display=swap" rel="stylesheet">
@@ -297,7 +303,7 @@
 </main>
 
 <script src="https://checkout.wompi.co/widget.js" async></script>
-<script src="config.js"></script>
-<script src="venta.js"></script>
+<script src="config.js?v=1"></script>
+<script src="venta.js?v=1"></script>
 </body>
 </html>

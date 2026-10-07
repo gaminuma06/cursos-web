@@ -1,4 +1,5 @@
 (function () {
+  window.ventaLista = true;
   const V = window.VENTA;
   const $ = (id) => document.getElementById(id);
   const cop = (n) => '$' + n.toLocaleString('es-CO') + ' COP';
