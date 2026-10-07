@@ -27,20 +27,25 @@
   </ol>
   <p class="gris" id="ref"></p>
 </div>
+<script src="config.js?v=1"></script>
 <script>
+  const V = window.VENTA;
   const id = new URLSearchParams(location.search).get('id');
+  const api = V.wompiLlavePublica.indexOf('pub_test_') === 0 ? 'https://sandbox.wompi.co/v1' : 'https://production.wompi.co/v1';
   const $ = (x) => document.getElementById(x);
   function fijar(ic, t, x, pasos) { $('icono').textContent = ic; $('titulo').textContent = t; $('texto').textContent = x; $('pasos').style.display = pasos ? 'block' : 'none'; }
+  // Pide al servidor de los cursos que confirme el pago con Wompi y envíe el manual
+  function confirmar() { if (V.appsScriptUrl && id) fetch(V.appsScriptUrl + '?accion=confirmar&id=' + encodeURIComponent(id)).catch(() => {}); }
   async function revisar(intento) {
     if (!id) return fijar('📩', '¡Gracias!', 'Si completaste el pago, en unos minutos te llega el manual a tu correo.', true);
     try {
-      const r = await fetch('https://production.wompi.co/v1/transactions/' + encodeURIComponent(id)).then((x) => x.json());
+      const r = await fetch(api + '/transactions/' + encodeURIComponent(id)).then((x) => x.json());
       const t = r.data; $('ref').textContent = 'Referencia: ' + t.reference;
-      if (t.status === 'APPROVED') fijar('✅', '¡Pago aprobado!', 'Gracias por tu compra, ' + (t.customer_data && t.customer_data.full_name ? t.customer_data.full_name.split(' ')[0] : '') + '.', true);
-      else if (t.status === 'PENDING' && intento < 20) setTimeout(() => revisar(intento + 1), 3000);
+      if (t.status === 'APPROVED') { confirmar(); fijar('✅', '¡Pago aprobado!', 'Gracias por tu compra, ' + (t.customer_data && t.customer_data.full_name ? t.customer_data.full_name.split(' ')[0] : '') + '.', true); }
+      else if (t.status === 'PENDING' && intento < 40) { if (intento === 0) fijar('⏳', 'Confirmando tu pago…', 'Tu banco está aprobando el pago. No cierres esta página.', false); setTimeout(() => revisar(intento + 1), 3000); }
       else if (t.status === 'PENDING') fijar('⏳', 'Pago en proceso', 'Tu banco aún no confirma el pago. Cuando lo apruebe te llega el manual a tu correo.', false);
       else fijar('⚠️', 'El pago no se completó', 'Estado: ' + t.status + '. No se hizo ningún cobro. Puedes intentarlo de nuevo.', false);
-    } catch (e) { fijar('📩', '¡Gracias!', 'Si tu pago fue aprobado, en unos minutos te llega el manual a tu correo.', true); }
+    } catch (e) { confirmar(); fijar('📩', '¡Gracias!', 'Si tu pago fue aprobado, en unos minutos te llega el manual a tu correo.', true); }
   }
   revisar(0);
 </script>
