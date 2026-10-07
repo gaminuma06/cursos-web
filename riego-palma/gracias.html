@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gracias por tu compra</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600&family=Source+Sans+3:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#F7F2E7; color:#1d1d1d; font:17px/1.55 'Source Sans 3', sans-serif; }
+  .caja { max-width:560px; margin:40px auto; background:#fff; border-radius:12px; padding:28px 22px; box-shadow:0 2px 14px rgba(0,0,0,.08); text-align:center; }
+  h1 { font-family:'Oswald', sans-serif; color:#1F4D2B; font-size:32px; margin:10px 0; }
+  .icono { font-size:54px; }
+  ol { text-align:left; } .gris { color:#666; font-size:15px; }
+  @media (max-width:600px) { .caja { margin:16px; } }
+</style>
+</head>
+<body>
+<div class="caja">
+  <div class="icono" id="icono">⏳</div>
+  <h1 id="titulo">Revisando tu pago…</h1>
+  <p id="texto">Un momento, estamos consultando el estado de tu pago con Wompi.</p>
+  <ol id="pasos" style="display:none">
+    <li>En unos minutos te llegan <b>2 correos</b>: el manual y los 3 bonos.</li>
+    <li>Revisa también la carpeta de <b>spam</b> o <b>promociones</b>.</li>
+    <li>La contraseña para abrir los archivos es <b>tu cédula</b> (solo números).</li>
+  </ol>
+  <p class="gris" id="ref"></p>
+</div>
+<script>
+  const id = new URLSearchParams(location.search).get('id');
+  const $ = (x) => document.getElementById(x);
+  function fijar(ic, t, x, pasos) { $('icono').textContent = ic; $('titulo').textContent = t; $('texto').textContent = x; $('pasos').style.display = pasos ? 'block' : 'none'; }
+  async function revisar(intento) {
+    if (!id) return fijar('📩', '¡Gracias!', 'Si completaste el pago, en unos minutos te llega el manual a tu correo.', true);
+    try {
+      const r = await fetch('https://production.wompi.co/v1/transactions/' + encodeURIComponent(id)).then((x) => x.json());
+      const t = r.data; $('ref').textContent = 'Referencia: ' + t.reference;
+      if (t.status === 'APPROVED') fijar('✅', '¡Pago aprobado!', 'Gracias por tu compra, ' + (t.customer_data && t.customer_data.full_name ? t.customer_data.full_name.split(' ')[0] : '') + '.', true);
+      else if (t.status === 'PENDING' && intento < 20) setTimeout(() => revisar(intento + 1), 3000);
+      else if (t.status === 'PENDING') fijar('⏳', 'Pago en proceso', 'Tu banco aún no confirma el pago. Cuando lo apruebe te llega el manual a tu correo.', false);
+      else fijar('⚠️', 'El pago no se completó', 'Estado: ' + t.status + '. No se hizo ningún cobro. Puedes intentarlo de nuevo.', false);
+    } catch (e) { fijar('📩', '¡Gracias!', 'Si tu pago fue aprobado, en unos minutos te llega el manual a tu correo.', true); }
+  }
+  revisar(0);
+</script>
+</body>
+</html>
