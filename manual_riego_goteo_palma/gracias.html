@@ -14,6 +14,15 @@
   ol { text-align:left; } .gris { color:#666; font-size:15px; }
   @media (max-width:600px) { .caja { margin:16px; } }
 </style>
+<!-- Píxel de Meta (Surco Curso – Web) -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '3604674439689537');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=3604674439689537&ev=PageView&noscript=1"></noscript>
 </head>
 <body>
 <div class="caja">
@@ -35,13 +44,19 @@
   const $ = (x) => document.getElementById(x);
   function fijar(ic, t, x, pasos) { $('icono').textContent = ic; $('titulo').textContent = t; $('texto').textContent = x; $('pasos').style.display = pasos ? 'block' : 'none'; }
   // Pide al servidor de los cursos que confirme el pago con Wompi y envíe el manual
+  function compraMeta(t) {
+    let marcadas = []; try { marcadas = JSON.parse(localStorage.getItem('compras_meta') || '[]'); } catch (e) {}
+    if (!window.fbq || marcadas.indexOf(t.id) >= 0) return;
+    fbq('track', 'Purchase', { value: t.amount_in_cents / 100, currency: 'COP', content_name: 'Manual Visual de Riego por Goteo en Palma', content_type: 'product' }, { eventID: t.id });
+    try { marcadas.push(t.id); localStorage.setItem('compras_meta', JSON.stringify(marcadas)); } catch (e) {}
+  }
   function confirmar() { if (V.appsScriptUrl && id) fetch(V.appsScriptUrl + '?accion=confirmar&id=' + encodeURIComponent(id)).catch(() => {}); }
   async function revisar(intento) {
     if (!id) return fijar('📩', '¡Gracias!', 'Si completaste el pago, en unos minutos te llega el manual a tu correo.', true);
     try {
       const r = await fetch(api + '/transactions/' + encodeURIComponent(id)).then((x) => x.json());
       const t = r.data; $('ref').textContent = 'Referencia: ' + t.reference;
-      if (t.status === 'APPROVED') { confirmar(); fijar('✅', '¡Pago aprobado!', 'Gracias por tu compra, ' + (t.customer_data && t.customer_data.full_name ? t.customer_data.full_name.split(' ')[0] : '') + '.', true); }
+      if (t.status === 'APPROVED') { compraMeta(t); confirmar(); fijar('✅', '¡Pago aprobado!', 'Gracias por tu compra, ' + (t.customer_data && t.customer_data.full_name ? t.customer_data.full_name.split(' ')[0] : '') + '.', true); }
       else if (t.status === 'PENDING' && intento < 40) { if (intento === 0) fijar('⏳', 'Confirmando tu pago…', 'Tu banco está aprobando el pago. No cierres esta página.', false); setTimeout(() => revisar(intento + 1), 3000); }
       else if (t.status === 'PENDING') fijar('⏳', 'Pago en proceso', 'Tu banco aún no confirma el pago. Cuando lo apruebe te llega el manual a tu correo.', false);
       else fijar('⚠️', 'El pago no se completó', 'Estado: ' + t.status + '. No se hizo ningún cobro. Puedes intentarlo de nuevo.', false);
