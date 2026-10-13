@@ -47,7 +47,7 @@ fbq('track', 'PageView');
   function compraMeta(t) {
     let marcadas = []; try { marcadas = JSON.parse(localStorage.getItem('compras_meta') || '[]'); } catch (e) {}
     if (!window.fbq || marcadas.indexOf(t.id) >= 0) return;
-    fbq('track', 'Purchase', { value: t.amount_in_cents / 100, currency: 'COP', content_name: 'Manual Visual de Riego por Goteo en Palma', content_type: 'product' }, { eventID: t.id });
+    fbq('track', 'Purchase', { value: t.amount_in_cents / 100, currency: 'COP', content_name: 'Manual Visual de Riego por Goteo en Palma', content_type: 'product' }, { eventID: t.reference });
     try { marcadas.push(t.id); localStorage.setItem('compras_meta', JSON.stringify(marcadas)); } catch (e) {}
   }
   function confirmar() { if (V.appsScriptUrl && id) fetch(V.appsScriptUrl + '?accion=confirmar&id=' + encodeURIComponent(id)).catch(() => {}); }
