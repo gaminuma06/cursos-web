@@ -63,7 +63,26 @@
     .catch((e) => { firma = null; throw e; }));
   if (V.appsScriptUrl) setTimeout(() => pedirFirma().catch(() => {}), 800);
 
+  // Marcas de Meta del navegador: _fbc (clic en un anuncio) y _fbp (este navegador). Viajan con el pedido
+  // para que la compra reportada desde el servidor quede ligada al anuncio, aunque el cliente no vuelva a "gracias".
+  function marcas() {
+    const galleta = (n) => decodeURIComponent((document.cookie.match('(?:^|; )' + n + '=([^;]*)') || [])[1] || '');
+    let fbc = galleta('_fbc');
+    const fbclid = new URLSearchParams(location.search).get('fbclid');
+    if (!fbc && fbclid) fbc = 'fb.1.' + Date.now() + '.' + fbclid;
+    return { fbc: fbc, fbp: galleta('_fbp'), navegador: navigator.userAgent };
+  }
+  function guardarMarcas(ref) {
+    try {
+      const m = marcas();
+      if (!m.fbc && !m.fbp) return;
+      const q = new URLSearchParams({ accion: 'marcar', ref: ref, fbc: m.fbc, fbp: m.fbp, navegador: m.navegador });
+      fetch(V.appsScriptUrl + '?' + q, { keepalive: true, mode: 'no-cors' }).catch(() => {});
+    } catch (e) { /* nunca debe impedir el pago */ }
+  }
+
   function irAlCheckout(r) {
+    guardarMarcas(r.referencia);
     const w = new URLSearchParams({
       'public-key': V.wompiLlavePublica, currency: 'COP', 'amount-in-cents': String(r.montoCentavos),
       reference: r.referencia, 'signature:integrity': r.firma, 'redirect-url': V.redireccion
