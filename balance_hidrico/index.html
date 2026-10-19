@@ -3,21 +3,196 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Balance hídrico y riego · muy pronto</title>
-<meta name="description" content="Excel de balance hídrico y riego para cualquier cultivo: agua disponible en el suelo y qué lotes regar hoy. Muy pronto.">
+<title>Balance Hídrico y Riego en Excel · para cualquier cultivo</title>
+<meta name="description" content="Excel de balance hídrico y riego para cualquier cultivo: escribes cuánto llovió y te dice qué tan húmeda está la tierra, cuánta agua le faltó al cultivo en el año y qué lotes regar hoy.">
+<meta property="og:title" content="Balance Hídrico y Riego en Excel · para cualquier cultivo">
+<meta property="og:description" content="Lluvia, agua en el suelo y lotes a regar hoy, con un semáforo de colores. Descarga inmediata.">
+<meta property="og:image" content="img/tarjeta.webp">
+<script>
+  // Animaciones: se preparan antes de pintar. Si venta.js no llega en 3 s, se muestra todo igual.
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.documentElement.classList.add("anim");
+    setTimeout(function () { if (!window.ventaLista) document.documentElement.classList.remove("anim"); }, 3000);
+  }
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://script.google.com">
+<link rel="preconnect" href="https://checkout.wompi.co">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Open+Sans:wght@400;600;700&family=Source+Serif+4:wght@600&display=swap" rel="stylesheet">
 <style>
+  :root { --verde:#1F4D2B; --naranja:#E0672B; --tinta:#1d1d1d; --gris:#666; }
   * { box-sizing:border-box; }
   html, body { background:#fff; }
-  body { margin:0; color:#1d1d1d; font:17px/1.5 'Open Sans', system-ui, sans-serif; }
-  main { max-width:760px; margin:0 auto; padding:40px 16px 64px; text-align:center; }
-  img { width:100%; height:auto; border-radius:16px; box-shadow:0 8px 28px rgba(0,0,0,.12); }
-  .tipo { display:block; margin-top:28px; font:700 13px 'Open Sans', sans-serif; letter-spacing:.08em; text-transform:uppercase; color:#16a34a; }
-  h1 { margin:6px 0 0; font:700 clamp(30px, 6vw, 46px)/1.1 'Oswald', sans-serif; text-transform:uppercase; color:#1b2a22; }
-  p { color:#555; max-width:600px; margin:14px auto 0; }
-  .pronto { display:inline-block; margin-top:26px; background:#E0672B; color:#fff; border-radius:8px; padding:10px 24px; font-weight:700; }
-  a.volver { display:inline-block; margin-top:22px; color:#16a34a; font-weight:700; text-decoration:none; }
+  body { margin:0; color:var(--tinta); font:17px/1.5 'Open Sans', system-ui, sans-serif; }
+  img { max-width:100%; height:auto; display:block; }
+  .col { max-width:720px; margin:0 auto; padding:0 16px; }
+
+  /* Contador: barra coral translúcida que flota sobre el contenido */
+  .barra { position:fixed; top:0; left:0; right:0; z-index:10; background:rgba(242, 92, 92, .78);
+           -webkit-backdrop-filter:blur(2px); backdrop-filter:blur(2px); color:#fff; }
+  .barra .col { display:flex; align-items:center; gap:14px; padding-top:12px; padding-bottom:12px; }
+  .reloj { font:700 clamp(24px, 6vw, 32px)/1 'Open Sans', sans-serif; letter-spacing:.03em; white-space:nowrap; }
+  .barra svg { flex:none; }
+  .barra p { margin:0; font-size:15px; line-height:1.25; min-width:0; }
+  main { padding-top:92px; }
+  @media (max-width:560px) { .barra .col { gap:10px; } .barra p { font-size:13px; } main { padding-top:104px; } }
+  html { scroll-behavior:smooth; } #compra { scroll-margin-top:110px; }
+
+  /* Tarjetas de imagen (héroe y bonos), como las de la referencia */
+  .tarjeta { border-radius:10px; overflow:hidden; box-shadow:0 1px 10px rgba(0,0,0,.12); background:#fff; margin:16px 0 28px; }
+  .tarjeta .titulo { padding:22px 16px 6px; text-align:center; }
+  .tarjeta h1, .tarjeta h2 { margin:0; font-family:'Oswald', sans-serif; text-transform:uppercase; line-height:1.02; letter-spacing:.005em; }
+  .tarjeta h1 { font-size:clamp(30px, 8vw, 54px); color:#1b2a22; }
+  .tarjeta h1 span { display:block; color:var(--naranja); }
+  .tarjeta .regla { height:3px; width:82%; margin:10px auto 8px; background:#1b2a22; }
+  .tarjeta .sub { margin:0; font-weight:600; font-size:clamp(14px, 3.4vw, 17px); }
+  .rasgos { display:grid; grid-template-columns:repeat(3,1fr); margin:4px 14px 0; border:1px solid #e3e3e3; border-radius:8px; background:#fff; }
+  .rasgos div { display:flex; gap:8px; align-items:center; padding:10px 8px; font:600 clamp(11px, 2.8vw, 14px)/1.15 'Oswald', sans-serif; text-transform:uppercase; color:#222; }
+  .rasgos div + div { border-left:1px solid #e3e3e3; }
+  .rasgos svg { flex:none; }
+  .banda { margin-top:14px; background:var(--verde); color:#fff; text-align:center; padding:14px 10px; font:700 clamp(20px, 5.6vw, 32px)/1 'Oswald', sans-serif;
+           text-transform:uppercase; display:block;
+           clip-path:polygon(1.5% 8%, 99% 0, 100% 90%, 0 100%); }
+  a.banda { color:#fff; text-decoration:none; cursor:pointer; transition:filter .2s ease; } a.banda:hover { filter:brightness(1.15); }
+  .cta-portada { text-align:center; margin:-6px 0 34px; }
+  .cta-precio { margin:0 0 12px; font-size:clamp(17px, 4.4vw, 20px); }
+  .cta-precio s { color:#999; margin-right:6px; } .cta-precio b { color:#16a34a; font-size:1.2em; } .cta-inc { color:#555; }
+  .cta-nota { margin:12px 0 0; font-size:14px; color:#666; }
+  .banda i { width:1.25em; height:1.25em; border-radius:50%; background:var(--naranja); display:inline-grid; place-items:center; font-style:normal; font-size:.8em;
+             vertical-align:middle; margin:-.2em .5em 0 0; }
+  .banda b { color:#F6B26B; }
+  .bonos h2 { font-size:clamp(28px, 7.6vw, 48px); color:#1b2a22; }
+  .bonos h2 span { color:var(--naranja); }
+  .regla3 { height:4px; width:74%; margin:10px auto 0; background:linear-gradient(90deg, var(--verde) 0 33%, var(--naranja) 33% 66%, var(--verde) 66%); }
+  .etiquetas { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:0 14px; text-align:center; font-size:13.5px; line-height:1.25; }
+  .etiquetas b { display:block; font:700 17px 'Oswald', sans-serif; color:var(--verde); }
+
+  /* Dolores, logros y para quién */
+  .dolor { margin:0 0 28px; }
+  .dolor h2 { font:700 clamp(24px, 6vw, 34px)/1.1 'Oswald', sans-serif; text-transform:uppercase; text-align:center; margin:0 0 16px; color:#1b2a22; }
+  .dolor h2.solucion { color:var(--verde); margin-top:30px; }
+  .dolores, .logros { list-style:none; margin:0; padding:0; display:grid; gap:12px; }
+  .dolores li { background:#FDF1EF; border-left:5px solid #E0533D; border-radius:8px; padding:12px 14px 12px 46px; position:relative; }
+  .dolores li::before { content:'✗'; position:absolute; left:14px; top:10px; color:#E0533D; font-weight:700; font-size:20px; }
+  .dolores b, .logros b { color:#1b2a22; }
+  .logros li { background:#EEF6EF; border-left:5px solid #16a34a; border-radius:8px; padding:12px 14px 12px 46px; position:relative; }
+  .logros li::before { content:'✓'; position:absolute; left:14px; top:10px; color:#16a34a; font-weight:700; font-size:20px; }
+  .para { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:22px; }
+  .para div { border:1.5px solid #e3e3e3; border-radius:10px; padding:12px; font-size:15px; text-align:center; }
+  .para b { display:block; font:700 18px 'Oswald', sans-serif; color:var(--naranja); text-transform:uppercase; }
+  .cta-wrap { text-align:center; margin:24px 0 0; }
+  .cta { display:inline-block; background:#16a34a; color:#fff; text-decoration:none; border-radius:8px; padding:15px 26px; font:700 clamp(18px, 4.6vw, 22px) 'Open Sans', sans-serif;
+         box-shadow:0 4px 0 #0f7a36; }
+  @media (max-width:560px) { .para { grid-template-columns:1fr; } }
+
+  /* Contenido */
+  .boton-borde { border:2px solid var(--tinta); border-radius:8px; text-align:center; padding:12px; font:700 clamp(20px, 5vw, 26px) 'Open Sans', sans-serif; margin:0 0 22px; }
+  .contiene { border:2px solid var(--tinta); border-radius:8px; padding:22px 28px; }
+  .contiene h3 { margin:14px 0 4px; font:700 clamp(17px, 4.2vw, 20px)/1.3 'Open Sans', sans-serif; text-transform:uppercase; }
+  .contiene h3:first-child { margin-top:0; }
+  .contiene ul { margin:0 0 0 30px; padding-left:18px; }
+  .contiene li { margin:3px 0; }
+
+  /* Compra */
+  .compra { border:1.5px solid #d6d6d6; border-radius:22px; padding:26px 26px 30px; margin:28px 0 0; }
+  .prod { display:grid; grid-template-columns:130px 1fr; gap:18px; align-items:center; }
+  .prod h3 { margin:0; font:600 clamp(20px, 5vw, 27px)/1.25 'Source Serif 4', Georgia, serif; }
+  .autor { color:var(--gris); }
+  .precio { font:700 26px 'Open Sans', sans-serif; margin-top:4px; }
+  .precio s { color:#999; font-size:17px; font-weight:400; margin-right:8px; }
+  .desc { display:inline-block; background:#16a34a; color:#fff; border-radius:4px; padding:1px 7px; font-size:14px; vertical-align:middle; }
+  .compra h4 { font:600 clamp(22px, 5vw, 27px) 'Source Serif 4', Georgia, serif; margin:30px 0 8px; }
+  label { display:block; margin:16px 0 8px; }
+  input[type=email], input[type=text], input[type=tel] { width:100%; padding:14px 16px; font:inherit; border:1.5px solid #c8c8c8; border-radius:6px; }
+  input:focus { outline:2px solid #16a34a; border-color:transparent; }
+  .ayuda { font-size:14px; color:var(--gris); margin-top:6px; }
+  .pasos-compra { list-style:none; padding:0; margin:18px 0 0; display:grid; gap:6px; color:#333; }
+  .pasos-compra b { color:#16a34a; }
+  .medios { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; justify-content:center; }
+  .medios span { border:1.5px solid #ddd; border-radius:20px; padding:4px 12px; font-size:14px; font-weight:600; }
+  .comprar .ico-w { font-size:.8em; }
+  .metodo { border:1.5px solid #c8c8c8; border-radius:10px; padding:16px 18px; display:flex; align-items:center; gap:14px; margin-top:12px; font-weight:600; }
+  .metodo.sel { border:2px solid #111; }
+  .metodo .radio { width:24px; height:24px; border-radius:50%; border:2px solid #999; flex:none; }
+  .metodo.sel .radio { border-color:#111; box-shadow:inset 0 0 0 5px #fff; background:#111; }
+  .metodo small { display:block; font-weight:400; color:var(--gris); }
+  .pedido { border:1.5px solid #c8c8c8; border-radius:8px; padding:14px 16px; display:flex; justify-content:space-between; gap:12px; font-weight:700; }
+  .pedido .inc { display:block; font-weight:400; font-size:14px; color:var(--gris); }
+  .comprar { width:100%; margin-top:22px; background:#16a34a; color:#fff; border:0; border-radius:6px; padding:16px; font:700 clamp(22px, 5vw, 28px) 'Open Sans', sans-serif; cursor:pointer; }
+  .comprar:disabled { opacity:.6; cursor:wait; }
+  .seguro { text-align:center; color:var(--gris); margin-top:14px; }
+  .seguro b { color:#2c2a74; font-size:19px; }
+  .error { color:#b42318; font-weight:600; margin-top:10px; display:none; }
+
+  /* Pie negro y confianza */
+  .legal { background:#000; color:#fff; padding:30px 26px 40px; border-radius:0 0 22px 22px; margin:0 0 0; font-size:16px; }
+  .legal a { color:#fff; }
+  .sello { border:1px solid #e5e5e5; border-radius:12px; margin:22px 0; padding:18px; display:grid; grid-template-columns:auto 1fr; gap:18px; align-items:center; }
+  .sello b { display:block; font:700 20px 'Oswald', sans-serif; }
+  .confianza { display:grid; gap:18px; margin:0 0 50px; }
+  .confianza div { border:2px solid #1d6fa5; border-radius:12px; padding:18px 22px; display:flex; gap:22px; align-items:center; color:#0f4c75; }
+  .confianza b { display:block; font-size:clamp(19px, 4.6vw, 23px); font-style:italic; }
+  .confianza span { font-style:italic; color:#1d6fa5; }
+  @media (max-width:560px) {
+    .rasgos { grid-template-columns:1fr; } .rasgos div + div { border-left:0; border-top:1px solid #e3e3e3; }
+    .prod { grid-template-columns:86px 1fr; gap:14px; } .compra { padding:20px 16px 24px; border-radius:16px; }
+    .legal { padding:24px 16px 32px; } .contiene { padding:18px 16px; } .contiene ul { margin-left:6px; }
+    .etiquetas { font-size:12px; } .etiquetas b { font-size:15px; }
+  }
+
+  /* Animaciones sutiles (se apagan si el usuario pidió menos movimiento) */
+  .anim main > section:not(.visible), .anim main > .boton-borde:not(.visible), .anim main > .cta-portada:not(.visible), .anim .dolores li:not(.visible), .anim .logros li:not(.visible),
+  .anim .para div:not(.visible), .anim .confianza div:not(.visible) { opacity:0; translate:0 22px; }
+  main > section, main > .boton-borde, main > .cta-portada, .dolores li, .logros li, .para div, .confianza div { transition:opacity .7s ease, translate .7s ease, transform .25s ease, box-shadow .25s ease; }
+  @keyframes flotar { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-6px); } }
+  @keyframes latido { 0%,100% { transform:scale(1); box-shadow:0 0 0 0 rgba(22,163,74,.45); } 50% { transform:scale(1.02); box-shadow:0 0 0 10px rgba(22,163,74,0); } }
+  @keyframes brillo { from { background-position:-200% 0; } to { background-position:200% 0; } }
+  @keyframes tic { 0%,90%,100% { transform:rotate(0); } 93% { transform:rotate(-10deg); } 96% { transform:rotate(10deg); } }
+  .tarjeta > img { animation:flotar 6s ease-in-out infinite; }
+  .comprar, .cta { animation:latido 2.4s ease-in-out infinite; }
+  .banda { background-image:linear-gradient(100deg, transparent 30%, rgba(255,255,255,.18) 50%, transparent 70%); background-size:200% 100%; animation:brillo 4.5s linear infinite; }
+  .barra svg { animation:tic 1s linear infinite; transform-origin:60% 55%; }
+  .dolores li:hover, .logros li:hover, .para div:hover, .confianza div:hover { transform:translateY(-3px); box-shadow:0 6px 16px rgba(0,0,0,.08); }
+  .comprar:hover, .cta:hover { filter:brightness(1.07); }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation:none !important; transition:none !important; } } }
+  .galeria { display:grid; gap:18px; margin:0 0 28px; }
+  .galeria figure { margin:0; border-radius:10px; overflow:hidden; box-shadow:0 1px 10px rgba(0,0,0,.12); background:#fff; }
+  .galeria figcaption { padding:10px 14px 12px; font-size:15px; color:#333; }
+  .galeria figcaption b { color:var(--verde); }
+  .cultivos-chips { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin:18px 0 0; }
+  .cultivos-chips span { background:#EEF6EF; border:1px solid #cfe5d3; color:#1F4D2B; border-radius:20px; padding:4px 12px; font-size:14px; font-weight:600; }
+  .requisitos { background:#F4F6F8; border-radius:10px; padding:14px 18px; margin:22px 0 0; font-size:15px; color:#333; }
+  .anim .galeria figure:not(.visible) { opacity:0; translate:0 22px; }
+  .galeria figure { transition:opacity .7s ease, translate .7s ease; }
+  .antetitulo { margin:0 0 10px; font:700 13px 'Open Sans', sans-serif; letter-spacing:.06em; text-transform:uppercase; color:#16a34a; }
+  .tarjeta h1 span { font-size:.62em; line-height:1.1; margin-top:6px; }
+  .solucion-t h2 { font-size:clamp(26px, 7vw, 42px); color:#1b2a22; } .solucion-t h2 span { color:var(--naranja); display:block; }
+  .leyenda { list-style:none; margin:14px 16px 20px; padding:0; display:grid; gap:10px; font-size:15.5px; }
+  .leyenda li { display:flex; gap:10px; align-items:flex-start; } .pt { flex:none; width:14px; height:14px; border-radius:50%; margin-top:5px; }
+  .costo { margin:0 0 30px; }
+  .costo h2, .pasos3 h2, .oferta h2, .faq h2 { font:700 clamp(24px, 6vw, 34px)/1.1 'Oswald', sans-serif; text-transform:uppercase; text-align:center; margin:0 0 16px; color:#1b2a22; }
+  .dos { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .dos .mal { background:#FFF6E5; border-top:5px solid #E0672B; border-radius:8px; padding:14px; font-size:15.5px; }
+  .dos b { display:block; font:700 19px 'Oswald', sans-serif; text-transform:uppercase; color:#B4541E; margin-bottom:4px; }
+  .clave { background:#EEF3F8; border-radius:10px; padding:16px 18px; margin:16px 0 0; font-size:17px; text-align:center; }
+  .pasos3 { margin:0 0 30px; } .pasos3 ol { list-style:none; counter-reset:p; margin:0; padding:0; display:grid; gap:12px; }
+  .pasos3 li { counter-increment:p; position:relative; padding:14px 16px 14px 66px; border:1.5px solid #e3e3e3; border-radius:10px; }
+  .pasos3 li::before { content:counter(p); position:absolute; left:14px; top:50%; translate:0 -50%; width:38px; height:38px; border-radius:50%; background:var(--verde); color:#fff;
+                       display:grid; place-items:center; font:700 20px 'Oswald', sans-serif; }
+  .pasos3 b { display:block; color:#1b2a22; }
+  .sub-cult { font:700 20px 'Oswald', sans-serif; text-transform:uppercase; text-align:center; margin:26px 0 0; color:var(--verde); }
+  .nota-cult { text-align:center; color:#555; font-size:15px; margin:10px 0 0; }
+  .no-es { background:#F4F6F8; border-radius:10px; padding:12px 16px; margin:14px 0 0; font-size:15px; }
+  .oferta { border:3px dashed var(--verde); border-radius:16px; padding:22px 20px 24px; margin:0 0 30px; background:#FBFDF9; }
+  .pila { list-style:none; margin:0; padding:0; display:grid; gap:8px; }
+  .pila li { display:flex; gap:10px; align-items:flex-start; font-size:16px; } .pila li::before { content:'✅'; flex:none; }
+  .precio-oferta { text-align:center; font-size:clamp(20px, 5vw, 26px); margin:20px 0 0; } .precio-oferta s { color:#999; margin-right:8px; font-size:.75em; } .precio-oferta b { color:#16a34a; font-size:1.25em; }
+  .pago-unico { text-align:center; color:#555; margin:4px 0 0; font-size:15px; }
+  .oferta .cta-nota { text-align:center; }
+  .faq { margin:0 0 10px; } .faq details { border:1.5px solid #e3e3e3; border-radius:10px; padding:12px 16px; margin:0 0 10px; }
+  .faq summary { font-weight:700; cursor:pointer; } .faq details p { margin:10px 0 0; color:#333; }
+  @media (max-width:560px) { .dos { grid-template-columns:1fr; } }
 </style>
 <!-- Píxel de Meta (Surco Curso – Web) -->
 <script>
@@ -26,16 +201,209 @@ if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createEl
 t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', '3604674439689537');
 fbq('track', 'PageView');
+fbq('track', 'ViewContent', { content_name: 'Balance Hídrico y Riego en Excel', content_type: 'product', value: 19900, currency: 'COP' });
 </script>
+<noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=3604674439689537&ev=PageView&noscript=1"></noscript>
 </head>
 <body>
-<main>
-  <img src="img/tarjeta.webp?v=2" width="1200" height="670" alt="Pluviómetro en una finca con cacao, café, plátano, maíz y pasto bajo lluvia y sol">
-  <span class="tipo">Herramienta en Excel</span>
-  <h1>Balance hídrico y riego para cualquier cultivo</h1>
-  <p>Anota la lluvia de tus pluviómetros y el Excel te dice el agua disponible en el suelo, el déficit hídrico del año y qué lotes regar hoy, con un semáforo de colores.</p>
-  <span class="pronto">Muy pronto a la venta</span><br>
-  <a class="volver" href="../">← Ver los demás cursos</a>
+
+<div class="barra" id="barra">
+  <div class="col">
+    <div class="reloj" id="reloj">--:--:--</div>
+    <svg width="44" height="44" viewBox="0 0 44 44" fill="none" stroke="#fff" stroke-width="2"><circle cx="26" cy="25" r="14"/><path d="M26 16v9l6 4M21 6h10M26 6v5M33 9l3-3M3 20h9M5 26h7M7 32h7"/></svg>
+    <p id="barra-txt">El precio de lanzamiento termina en</p>
+  </div>
+</div>
+
+<main class="col">
+
+  <!-- 1. GANCHO: la promesa, en el idioma del agricultor -->
+  <section class="tarjeta">
+    <div class="titulo">
+      <p class="antetitulo">Para agricultores, administradores y técnicos de cualquier cultivo</p>
+      <h1>Deja de regar a ojo <span>y riega solo cuando la tierra lo necesita</span></h1>
+      <div class="regla"></div>
+      <p class="sub">Escribes cuánto llovió en tu finca y el Excel te dice qué tan húmeda está la tierra y qué lote necesita riego primero. No necesitas saber de Excel.</p>
+    </div>
+    <img src="img/tarjeta.webp?v=2" width="1200" height="670" alt="Pluviómetro en una finca con cacao, café, plátano, maíz y pasto bajo lluvia y sol">
+    <div class="rasgos">
+      <div><svg width="34" height="34" viewBox="0 0 34 34"><path d="M17 4c-4 6-7 9-7 13a7 7 0 0 0 14 0c0-4-3-7-7-13z" fill="#2E7FB8"/></svg>Ahorra agua y energía</div>
+      <div><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="9" cy="17" r="6" fill="#B3261E"/><circle cx="20" cy="17" r="6" fill="#F2B705"/><circle cx="29" cy="17" r="4" fill="#2E7D32"/></svg>Qué lote regar hoy</div>
+      <div><svg width="34" height="34" viewBox="0 0 34 34"><path d="M6 26l7-8 6 5 9-12" stroke="#16a34a" stroke-width="3" fill="none"/><path d="M4 30h26" stroke="#555" stroke-width="2"/></svg>Protege tu cosecha</div>
+    </div>
+  </section>
+
+  <!-- 2. DOLOR -->
+  <section class="dolor">
+    <h2>¿Te pasa alguna de estas?</h2>
+    <ul class="dolores">
+      <li><b>Riegas por calendario o "a ojo".</b> No sabes si el suelo todavía tiene agua o si el cultivo ya está sufriendo.</li>
+      <li><b>El agua o la motobomba no alcanzan para todos los lotes.</b> Eliges cuál regar primero sin un criterio claro.</li>
+      <li><b>El verano te toma por sorpresa.</b> Cuando ves las hojas marchitas, la sequía ya le costó producción al cultivo.</li>
+      <li><b>Anotas la lluvia en un cuaderno y ahí se queda.</b> Tienes meses o años de registros que nunca se convierten en una decisión.</li>
+      <li><b>Te piden un informe de lluvias y balance hídrico.</b> El dueño, tu jefe o la certificadora quieren datos y gráficas, y armarlos te toma días.</li>
+    </ul>
+  </section>
+
+  <!-- 3. EL COSTO DE NO HACER NADA -->
+  <section class="costo">
+    <h2>Regar a ojo sale caro, por los dos lados</h2>
+    <div class="dos">
+      <div class="mal"><b>Si riegas de más</b>pagas agua, combustible o energía que el suelo no podía guardar, lavas los fertilizantes y encharcas las raíces.</div>
+      <div class="mal"><b>Si riegas tarde</b>el cultivo ya entró en estrés: flores que se caen, frutos más pequeños y menos cosecha, a veces hasta el año siguiente.</div>
+    </div>
+    <p class="clave">La única forma de acertar es saber <b>cuánta agua entra</b> (lluvia y riego), <b>cuánta gasta el cultivo</b> y <b>cuánta guarda tu suelo</b>. Eso se llama <b>balance hídrico</b>… y ya está hecho para ti.</p>
+  </section>
+
+  <!-- 4. SOLUCIÓN -->
+  <section class="tarjeta solucion-t">
+    <div class="titulo">
+      <h2>Te presento el <span>Excel de Balance Hídrico y Riego</span></h2>
+      <div class="regla"></div>
+      <p class="sub">Toda tu finca en una sola pantalla: lluvia, agua en el suelo y los lotes que hay que regar hoy.</p>
+    </div>
+    <img src="img/dash-arriba.webp" width="1400" height="698" alt="Dashboard del Excel: lluvia, déficit, agua en la tierra día a día y lotes por condición" loading="lazy">
+    <ul class="leyenda">
+      <li><span class="pt" style="background:#1D5C78"></span><b>Arriba:</b> cuánto llovió en el año, cuánta agua le faltó al cultivo y cuántos días hubo que regar.</li>
+      <li><span class="pt" style="background:#E9C46A"></span><b>La línea azul</b> es el agua que tiene la tierra cada día. Si está en verde, todo bien; si baja al amarillo, toca regar; en rojo, el cultivo ya sufre.</li>
+      <li><span class="pt" style="background:#B3261E"></span><b>La rueda</b> te dice cuántos lotes hay que regar hoy y cuántos no.</li>
+    </ul>
+    <img src="img/dash-graficas.webp" width="1400" height="402" alt="Gráficas del balance mensual y de la lluvia de la finca" loading="lazy">
+    <ul class="leyenda">
+      <li><span class="pt" style="background:#B3261E"></span><b>Mes a mes:</b> en rojo los meses en que llovió menos de lo que el cultivo gastó; en azul, los que sobró agua.</li>
+      <li><span class="pt" style="background:#3A8AC0"></span><b>La lluvia de la finca</b> de cada mes y cuántos días llovió.</li>
+    </ul>
+  </section>
+
+  <!-- 5. CÓMO FUNCIONA -->
+  <section class="pasos3">
+    <h2>Funciona en 3 pasos</h2>
+    <ol>
+      <li><b>Configura tu finca una sola vez.</b> Tus pluviómetros, tus lotes, el cultivo y el tipo de tierra, eligiendo de listas.</li>
+      <li><b>Anota la lluvia de cada día.</b> Fecha, pluviómetro y milímetros. Un minuto al día.</li>
+      <li><b>Mira el semáforo.</b> El Excel calcula solo el agua del suelo y te dice qué lote regar 🔴, cuál pronto 🟡 y cuál no 🟢.</li>
+    </ol>
+  </section>
+
+  <!-- 6. BENEFICIOS -->
+  <section class="dolor">
+    <h2 class="solucion">Con este Excel vas a poder</h2>
+    <ul class="logros">
+      <li><b>Regar solo cuando hace falta</b> y en el lote que más lo necesita, ahorrando agua, combustible y jornales.</li>
+      <li>Ver <b>día a día cuánta agua le queda al suelo</b> y adelantarte al verano antes de que el cultivo sufra.</li>
+      <li>Saber <b>cada cuántos días y cuántas horas regar</b> según tu suelo y tu cultivo.</li>
+      <li>Unir la lluvia de <b>hasta 12 pluviómetros</b> en un promedio de toda la finca, ponderado por área.</li>
+      <li>Conocer el <b>déficit hídrico del año</b> y <b>compararlo con años anteriores</b>.</li>
+      <li>Entregar un <b>informe profesional</b> listo para imprimir o enviar en PDF.</li>
+    </ul>
+    <h3 class="sub-cult">Sirve para cualquier cultivo</h3>
+    <div class="cultivos-chips"><span>Cacao</span><span>Café</span><span>Plátano y banano</span><span>Aguacate</span><span>Cítricos</span><span>Caña de azúcar</span><span>Pasto</span><span>Piña</span><span>Maíz</span><span>Fríjol</span><span>Tomate</span><span>Papa</span><span>Palma de aceite</span><span>+ los tuyos</span></div>
+    <p class="nota-cult">Trae los valores de referencia de la FAO (método FAO-56) para 14 cultivos, y puedes agregar los tuyos.</p>
+    <p class="cta-wrap"><a class="cta" href="#oferta">Quiero dejar de regar a ojo</a></p>
+  </section>
+
+  <!-- 7. PRUEBA: así se ve por dentro -->
+  <div class="boton-borde">Así se ve por dentro</div>
+  <section class="galeria">
+    <figure><img src="img/dash-lotes.webp" width="1400" height="297" alt="Lista de lotes por condición y resumen por finca" loading="lazy"><figcaption><b>Qué lote regar primero:</b> todos tus lotes ordenados, primero los que necesitan agua, y un resumen por finca.</figcaption></figure>
+    <figure><img src="img/lotes.webp" width="1400" height="388" alt="Hoja de lotes" loading="lazy"><figcaption><b>Tus lotes:</b> escribes la finca, el área, el cultivo, el tipo de tierra y el pluviómetro más cercano. El Excel hace el resto.</figcaption></figure>
+    <figure><img src="img/registro.webp" width="1400" height="454" alt="Hoja de registro de lluvias" loading="lazy"><figcaption><b>Anotar la lluvia:</b> fecha, pluviómetro y milímetros. Te avisa si repetiste un dato o escribiste algo mal.</figcaption></figure>
+    <figure><img src="img/pluviometros.webp" width="1400" height="369" alt="Formulario de pluviómetros" loading="lazy"><figcaption><b>Tus pluviómetros:</b> hasta 12, cada uno con el área que cubre, para sacar el promedio real de la finca.</figcaption></figure>
+    <figure><img src="img/ponderado.webp" width="1400" height="641" alt="Lluvia diaria promedio de la finca con gráfica" loading="lazy"><figcaption><b>La lluvia de cada día:</b> el promedio de toda la finca, día por día, con el total de cada mes y su gráfica.</figcaption></figure>
+    <figure><img src="img/balance-anio.webp" width="1400" height="1166" alt="Balance hídrico del año" loading="lazy"><figcaption><b>El balance del año:</b> cuánta lluvia aprovechó el cultivo, cuánta agua gastó y cuánta faltó cada mes, con los litros de riego por planta.</figcaption></figure>
+    <figure><img src="img/diario.webp" width="1400" height="903" alt="Balance diario del agua en la tierra" loading="lazy"><figcaption><b>Día por día:</b> el agua que entra, la que gasta el cultivo y la que queda en la tierra, con su semáforo.</figcaption></figure>
+    <figure><img src="img/bh-anios.webp" width="1400" height="353" alt="Histórico de varios años" loading="lazy"><figcaption><b>Año contra año:</b> compara cómo llovió y cuánta agua faltó en cada año que tengas registrado.</figcaption></figure>
+    <figure><img src="img/frecuencia.webp" width="1400" height="497" alt="Frecuencia de riego por tipo de tierra" loading="lazy"><figcaption><b>Cuánto y cada cuánto regar:</b> cuántos milímetros, cada cuántos días y cuántas horas regar según el tipo de tierra.</figcaption></figure>
+    <figure><img src="img/cultivos.webp" width="1400" height="495" alt="Tabla de cultivos" loading="lazy"><figcaption><b>Tus cultivos:</b> 14 cultivos listos con valores de la FAO, y puedes agregar el tuyo.</figcaption></figure>
+    <figure><img src="img/inicio.webp" width="1400" height="826" alt="Guía de uso dentro del archivo" loading="lazy"><figcaption><b>Guía incluida:</b> el paso a paso para empezar está dentro del mismo archivo.</figcaption></figure>
+  </section>
+
+  <!-- 8. PARA QUIÉN ES -->
+  <section class="dolor">
+    <h2>¿Es para ti?</h2>
+    <div class="para">
+      <div><b>Agricultores</b>que quieren decidir el riego con datos y no a ojo.</div>
+      <div><b>Administradores de finca</b>que deben repartir el agua entre lotes.</div>
+      <div><b>Agrónomos y técnicos</b>que llevan los registros de lluvia y riego.</div>
+      <div><b>Estudiantes</b>que necesitan un balance hídrico para su trabajo o tesis.</div>
+    </div>
+    <p class="no-es"><b>No es para ti</b> si no tienes cómo medir la lluvia (un pluviómetro cuesta menos de $30.000) o si no usas Microsoft Excel.</p>
+  </section>
+
+  <!-- 9. OFERTA -->
+  <section class="oferta" id="oferta">
+    <h2>Todo lo que recibes hoy</h2>
+    <ul class="pila">
+      <li><span>Excel de Balance Hídrico y Riego con dashboard</span></li>
+      <li><span>Balance diario del suelo con semáforo de riego</span></li>
+      <li><span>Hoja de lotes: qué regar hoy, hasta 1.000 lotes</span></li>
+      <li><span>Pluviometría de hasta 12 pluviómetros con promedio ponderado</span></li>
+      <li><span>Frecuencia y tiempo de riego por suelo y cultivo</span></li>
+      <li><span>14 cultivos con valores FAO-56 y espacio para los tuyos</span></li>
+      <li><span>ETo calculada con tus temperaturas (Hargreaves)</span></li>
+      <li><span>Guía de uso paso a paso dentro del archivo</span></li>
+    </ul>
+    <p class="precio-oferta">Hoy <span id="precio-cta"></span></p>
+    <p class="pago-unico">Pago único · sin mensualidades · tuyo para siempre</p>
+    <p class="cta-wrap" style="margin-top:12px"><a class="cta" href="#compra">Quiero mi Excel ahora</a></p>
+    <p class="cta-nota">🔒 Pago seguro con Wompi · Te llega al correo en minutos</p>
+  </section>
+
+  <!-- 10. OBJECIONES -->
+  <section class="faq">
+    <h2>Preguntas frecuentes</h2>
+    <details><summary>¿Necesito saber mucho de Excel?</summary><p>No. Solo escribes en las celdas amarillas y eliges de listas. Cada celda te explica qué escribir al hacer clic, y las fórmulas están protegidas para que no se dañen.</p></details>
+    <details><summary>¿Sirve para mi cultivo?</summary><p>Sí. Trae 14 cultivos con valores de la FAO (cacao, café, plátano, aguacate, cítricos, caña, pasto, piña, maíz, fríjol, tomate, papa y palma) y puedes agregar el tuyo escribiendo su coeficiente de cultivo.</p></details>
+    <details><summary>¿Necesito una estación meteorológica?</summary><p>No. Basta con un pluviómetro. Si además anotas la temperatura máxima y mínima, el cálculo es más preciso; si no, usa la evaporación promedio de tu zona.</p></details>
+    <details><summary>¿Funciona en el celular o en Google Sheets?</summary><p>Está hecho para Microsoft Excel 2013 o posterior en computador (Windows o Mac). En Google Sheets o LibreOffice no funciona bien.</p></details>
+    <details><summary>¿Tiene macros?</summary><p>No. No usa macros, así que abre sin avisos de seguridad.</p></details>
+    <details><summary>¿Cómo lo recibo?</summary><p>Apenas Wompi confirma el pago, te llega el archivo a tu correo en minutos. Si no lo ves, revisa spam o escríbenos.</p></details>
+  </section>
+
+  <!-- 11. COMPRA -->
+  <section class="compra" id="compra">
+    <div class="prod">
+      <img src="img/tarjeta.webp?v=2" alt="" width="130" height="73" style="border-radius:8px">
+      <div>
+        <h3>Balance Hídrico y Riego en Excel</h3>
+        <div class="autor">Autor: Ing. Adán A. Arias</div>
+        <div class="precio" id="precio"></div>
+        <div class="ayuda">Pago único en pesos colombianos. Para cualquier cultivo.</div>
+      </div>
+    </div>
+
+    <div id="form">
+      <h4>Detalle del pedido</h4>
+      <div class="pedido"><span>Balance Hídrico y Riego en Excel<span class="inc">Archivo .xlsx con guía de uso incluida</span></span><span id="precio2"></span></div>
+      <button class="comprar" id="comprar" type="button"><span class="ico-w">🔒</span> Pagar con Wompi</button>
+      <div class="error" id="error"></div>
+      <ul class="pasos-compra">
+        <li><b>1.</b> Wompi te pide tu correo, nombre y celular, y eliges cómo pagar.</li>
+        <li><b>2.</b> Pagas con tarjeta, PSE, Nequi o botón Bancolombia.</li>
+        <li><b>3.</b> En minutos te llega el Excel a tu correo.</li>
+      </ul>
+      <div class="medios"><span>💳 Tarjeta</span><span>🏦 PSE</span><span>📱 Nequi</span><span>🟡 Bancolombia</span></div>
+    </div>
+  </section>
+  <section class="legal">
+    <p id="contacto" style="margin-top:0"></p>
+    <p>Al dar clic en "Pagar con Wompi" aceptas los <a href="terminos.html">términos y condiciones</a>. El archivo es para uso personal del comprador.</p>
+    <p style="margin-bottom:0">© <span id="anio"></span> Adán A. Arias · cursos.adanarias.com</p>
+  </section>
+
+  <section class="sello">
+    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="1.8"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><rect x="9" y="11" width="6" height="5" rx="1"/><path d="M10 11V9.5a2 2 0 0 1 4 0V11"/></svg>
+    <div><b>PAGO 100 % SEGURO</b>Procesado por Wompi, la pasarela de Bancolombia. Tus datos de pago nunca pasan por esta página.</div>
+  </section>
+
+  <section class="confianza">
+    <div><svg width="58" height="58" viewBox="0 0 24 24" fill="none" stroke="#1d6fa5" stroke-width="1.5"><path d="M12 4l1.8 3.7 4 .6-2.9 2.8.7 4L12 13.2 8.4 15.1l.7-4-2.9-2.8 4-.6z"/><path d="M5 9c-1 3 0 7 3 9M19 9c1 3 0 7-3 9"/></svg><p style="margin:0"><b>Privacidad</b><span>Tu información está 100 % protegida</span></p></div>
+    <div><svg width="58" height="58" viewBox="0 0 24 24" fill="none" stroke="#1d6fa5" stroke-width="1.5"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg><p style="margin:0"><b>Compra segura</b><span>Ambiente seguro y autenticado</span></p></div>
+    <div><svg width="58" height="58" viewBox="0 0 24 24" fill="none" stroke="#1d6fa5" stroke-width="2"><path d="M3 12l6 6L21 6"/></svg><p style="margin:0"><b>Método FAO-56</b><span>Cálculos revisados y probados en varios escenarios</span></p></div>
+  </section>
 </main>
+
+<script src="config.js?v=1"></script>
+<script src="venta.js?v=1"></script>
 </body>
 </html>
