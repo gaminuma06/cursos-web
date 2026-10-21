@@ -11,8 +11,10 @@
     const p = precioActual();
     const dto = Math.round((1 - V.precio / V.precioNormal) * 100);
     $('precio').innerHTML = enLanzamiento() ? `<s>${cop(V.precioNormal)}</s>${cop(p)} <span class="desc">↓ ${dto}%</span>` : cop(p);
-    $('precio2').textContent = cop(p);
-    $('precio-cta').innerHTML = enLanzamiento() ? `<s>${cop(V.precioNormal)}</s><b>${cop(p)}</b>` : `<b>${cop(p)}</b>`;
+    const poner = (id, html) => { if ($(id)) $(id).innerHTML = html; };
+    if (!enLanzamiento()) document.querySelectorAll('.solo-lanz').forEach((e) => { e.hidden = true; e.style.display = 'none'; });   // pasado el 7 de nov se ocultan los textos del lanzamiento
+    poner('precio2', cop(p)); poner('precio-cta', `<b>${cop(p)}</b>`);
+    poner('precio-linea', '$' + p.toLocaleString('es-CO')); poner('precio-barra', '$' + p.toLocaleString('es-CO')); poner('precio-port', '$' + p.toLocaleString('es-CO'));
   }
 
   // Cuenta regresiva hasta la fecha de config.js
@@ -22,6 +24,7 @@
     const d = Math.floor(r / 864e5), h = Math.floor(r / 36e5) % 24, m = Math.floor(r / 6e4) % 60, s = Math.floor(r / 1e3) % 60;
     const z = (x) => String(x).padStart(2, '0');
     $('reloj').textContent = (d ? d + 'd ' : '') + `${z(h)}:${z(m)}:${z(s)}`;
+    if ($('reloj2')) $('reloj2').textContent = $('reloj').textContent;
   }
 
   // El contenido empieza debajo del contador, mida lo que mida la barra en cada pantalla
@@ -36,6 +39,43 @@
   const wa = 'https://wa.me/' + V.whatsapp + '?text=' + encodeURIComponent(V.whatsappTexto);
   const tel = V.whatsapp.replace(/^57/, '').replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3');
   $('contacto').innerHTML = '¿Preguntas sobre el manual? Escríbenos al correo <a href="mailto:' + V.correo + '?subject=' + encodeURIComponent('Pregunta sobre el Manual de Riego en Palma') + '">' + V.correo + '</a> o por WhatsApp al <a href="' + wa + '" target="_blank" rel="noopener">' + tel + '</a>.';
+  if ($('wa')) $('wa').href = wa;   // botón flotante de WhatsApp
+
+  // Carrusel de una sola pieza a la vez: la nueva entra por la derecha y la que estaba sale por la izquierda
+  function carrusel(piezas, cada, puntos) {
+    if (piezas.length < 2) return;
+    let i = 0;
+    const marcas = puntos ? piezas.map(() => puntos.appendChild(document.createElement('i'))) : [];
+    const pintar = () => marcas.forEach((m, k) => m.classList.toggle('on', k === i));
+    pintar();
+    setInterval(() => {
+      if (document.hidden) return;
+      const viejo = piezas[i];
+      i = (i + 1) % piezas.length;
+      const nuevo = piezas[i];
+      nuevo.classList.remove('sale');
+      void nuevo.offsetWidth;            // reinicia la posición de entrada (a la derecha)
+      viejo.classList.remove('ver'); viejo.classList.add('sale');
+      nuevo.classList.add('ver');
+      setTimeout(() => viejo.classList.remove('sale'), 950);
+      pintar();
+    }, cada);
+  }
+  carrusel([...document.querySelectorAll('#visor img')], 3200, $('puntos-hojas'));
+
+  // Testimonios reales (testimonios.js). Sin testimonios, la sección no se muestra.
+  const T = (window.TESTIMONIOS || []).filter((t) => t && t.nombre && t.texto);
+  if (T.length) {
+    const c = $('carrusel');
+    T.forEach((t, k) => {
+      const f = document.createElement('figure');
+      const q = document.createElement('blockquote'); q.textContent = t.texto;
+      const n = document.createElement('figcaption'); n.textContent = '— ' + t.nombre + ', comprador del manual';
+      f.append(q, n); if (k === 0) f.classList.add('ver'); c.appendChild(f);
+    });
+    $('testimonios').hidden = false;
+    carrusel([...c.children], 5500);
+  }
 
   // Aparición suave de cada bloque al llegar a él con el scroll
   const bloques = document.querySelectorAll('main > section, main > .boton-borde, main > .cta-portada, .dolores li, .logros li, .para div, .confianza div');
@@ -99,9 +139,9 @@
       irAlCheckout(await pedirFirma());
     } catch (e) {
       error('No pudimos abrir el pago. Revisa tu conexión e intenta de nuevo, o escríbenos.');
-      b.disabled = false; b.innerHTML = '<span class="ico-w">🔒</span> Pagar con Wompi';
+      b.disabled = false; b.innerHTML = '<span class="ico-w">🔒</span> Comprar ahora · ' + '$' + precioActual().toLocaleString('es-CO');
     }
   });
   // Si el cliente vuelve con el botón "atrás", el botón queda listo otra vez
-  addEventListener('pageshow', () => { const b = $('comprar'); b.disabled = false; b.innerHTML = '<span class="ico-w">🔒</span> Pagar con Wompi'; });
+  addEventListener('pageshow', () => { const b = $('comprar'); b.disabled = false; b.innerHTML = '<span class="ico-w">🔒</span> Comprar ahora · ' + '$' + precioActual().toLocaleString('es-CO'); });
 })();

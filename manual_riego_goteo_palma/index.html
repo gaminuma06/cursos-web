@@ -37,7 +37,7 @@
   .barra p { margin:0; font-size:15px; line-height:1.25; min-width:0; }
   main { padding-top:92px; }
   @media (max-width:560px) { .barra .col { gap:10px; } .barra p { font-size:13px; } main { padding-top:104px; } }
-  html { scroll-behavior:smooth; } #compra { scroll-margin-top:110px; }
+  html { scroll-behavior:smooth; } #compra, #oferta { scroll-margin-top:110px; }
 
   /* Tarjetas de imagen (héroe y bonos), como las de la referencia */
   .tarjeta { border-radius:10px; overflow:hidden; box-shadow:0 1px 10px rgba(0,0,0,.12); background:#fff; margin:16px 0 28px; }
@@ -56,8 +56,6 @@
            clip-path:polygon(1.5% 8%, 99% 0, 100% 90%, 0 100%); }
   a.banda { color:#fff; text-decoration:none; cursor:pointer; transition:filter .2s ease; } a.banda:hover { filter:brightness(1.15); }
   .cta-portada { text-align:center; margin:-6px 0 34px; }
-  .cta-precio { margin:0 0 12px; font-size:clamp(17px, 4.4vw, 20px); }
-  .cta-precio s { color:#999; margin-right:6px; } .cta-precio b { color:#16a34a; font-size:1.2em; } .cta-inc { color:#555; }
   .cta-nota { margin:12px 0 0; font-size:14px; color:#666; }
   .banda i { width:1.25em; height:1.25em; border-radius:50%; background:var(--naranja); display:inline-grid; place-items:center; font-style:normal; font-size:.8em;
              vertical-align:middle; margin:-.2em .5em 0 0; }
@@ -125,17 +123,12 @@
   .seguro b { color:#2c2a74; font-size:19px; }
   .error { color:#b42318; font-weight:600; margin-top:10px; display:none; }
 
-  /* Pie negro y confianza */
   .legal { background:#000; color:#fff; padding:30px 26px 40px; border-radius:0 0 22px 22px; margin:0 0 0; font-size:16px; }
   .legal a { color:#fff; }
   .sello { border:1px solid #e5e5e5; border-radius:12px; margin:22px 0; padding:18px; display:grid; grid-template-columns:auto 1fr; gap:18px; align-items:center; }
   .sello b { display:block; font:700 20px 'Oswald', sans-serif; }
-  .confianza { display:grid; gap:18px; margin:0 0 50px; }
-  .confianza div { border:2px solid #1d6fa5; border-radius:12px; padding:18px 22px; display:flex; gap:22px; align-items:center; color:#0f4c75; }
-  .confianza b { display:block; font-size:clamp(19px, 4.6vw, 23px); font-style:italic; }
-  .confianza span { font-style:italic; color:#1d6fa5; }
   @media (max-width:560px) {
-    .rasgos { grid-template-columns:1fr; } .rasgos div + div { border-left:0; border-top:1px solid #e3e3e3; }
+    .rasgos div { font-size:10.5px; padding:8px 4px; flex-direction:column; text-align:center; gap:4px; } .rasgos svg { width:26px; height:26px; }
     .prod { grid-template-columns:86px 1fr; gap:14px; } .compra { padding:20px 16px 24px; border-radius:16px; }
     .legal { padding:24px 16px 32px; } .contiene { padding:18px 16px; } .contiene ul { margin-left:6px; }
     .etiquetas { font-size:12px; } .etiquetas b { font-size:15px; }
@@ -143,19 +136,92 @@
 
   /* Animaciones sutiles (se apagan si el usuario pidió menos movimiento) */
   .anim main > section:not(.visible), .anim main > .boton-borde:not(.visible), .anim main > .cta-portada:not(.visible), .anim .dolores li:not(.visible), .anim .logros li:not(.visible),
-  .anim .para div:not(.visible), .anim .confianza div:not(.visible) { opacity:0; translate:0 22px; }
-  main > section, main > .boton-borde, main > .cta-portada, .dolores li, .logros li, .para div, .confianza div { transition:opacity .7s ease, translate .7s ease, transform .25s ease, box-shadow .25s ease; }
-  @keyframes flotar { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-6px); } }
-  @keyframes latido { 0%,100% { transform:scale(1); box-shadow:0 0 0 0 rgba(22,163,74,.45); } 50% { transform:scale(1.02); box-shadow:0 0 0 10px rgba(22,163,74,0); } }
-  @keyframes brillo { from { background-position:-200% 0; } to { background-position:200% 0; } }
-  @keyframes tic { 0%,90%,100% { transform:rotate(0); } 93% { transform:rotate(-10deg); } 96% { transform:rotate(10deg); } }
-  .tarjeta > img { animation:flotar 6s ease-in-out infinite; }
-  .comprar, .cta { animation:latido 2.4s ease-in-out infinite; }
-  .banda { background-image:linear-gradient(100deg, transparent 30%, rgba(255,255,255,.18) 50%, transparent 70%); background-size:200% 100%; animation:brillo 4.5s linear infinite; }
-  .barra svg { animation:tic 1s linear infinite; transform-origin:60% 55%; }
-  .dolores li:hover, .logros li:hover, .para div:hover, .confianza div:hover { transform:translateY(-3px); box-shadow:0 6px 16px rgba(0,0,0,.08); }
+  .anim .para div:not(.visible) { opacity:0; translate:0 22px; }
+  main > section, main > .boton-borde, main > .cta-portada, .dolores li, .logros li, .para div { transition:opacity .7s ease, translate .7s ease, transform .25s ease, box-shadow .25s ease; }
+  .dolores li:hover, .logros li:hover, .para div:hover { transform:translateY(-3px); box-shadow:0 6px 16px rgba(0,0,0,.08); }
   .comprar:hover, .cta:hover { filter:brightness(1.07); }
-  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation:none !important; transition:none !important; } } }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation:none !important; transition:none !important; } }
+
+  /* Páginas por dentro: una sola página a la vez; entra por la derecha y la anterior se va a la izquierda girando y encogiéndose */
+  .hojas h2, .faq h2, .testi h2 { font:700 clamp(24px, 6vw, 34px)/1.1 'Oswald', sans-serif; text-transform:uppercase; text-align:center; margin:34px 0 6px; color:#1b2a22; }
+  .hojas p.sub2, .testi p.sub2 { text-align:center; color:#555; margin:0 0 18px; }
+  .visor { position:relative; aspect-ratio:820/1061; max-width:520px; margin:0 auto; perspective:1400px; overflow:hidden; }
+  .visor img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; border-radius:6px; box-shadow:0 10px 30px rgba(0,0,0,.18);
+               transform:translateX(110%) rotateY(-35deg) scale(.85); opacity:0; transition:transform .9s cubic-bezier(.2,.7,.2,1), opacity .9s ease; }
+  .visor img.ver { transform:none; opacity:1; }
+  .visor img.sale { transform:translateX(-110%) rotateY(35deg) scale(.6); opacity:0; }
+  .puntos { display:flex; gap:7px; justify-content:center; margin:14px 0 0; }
+  .puntos i { width:8px; height:8px; border-radius:50%; background:#cfd8cf; transition:background .3s; } .puntos i.on { background:var(--verde); }
+
+  /* Testimonios: entra por la derecha, el que estaba se va a la izquierda */
+  .carrusel { position:relative; overflow:hidden; min-height:190px; max-width:620px; margin:0 auto; }
+  .carrusel figure { position:absolute; inset:0; margin:0; background:#F7F3EA; border-radius:14px; padding:22px 24px; display:flex; flex-direction:column; justify-content:center;
+                     transform:translateX(105%); opacity:0; transition:transform .8s cubic-bezier(.2,.7,.2,1), opacity .8s ease; }
+  .carrusel figure.ver { transform:none; opacity:1; } .carrusel figure.sale { transform:translateX(-105%); opacity:0; }
+  .carrusel blockquote { margin:0 0 12px; font-size:clamp(16px, 4vw, 19px); line-height:1.45; } .carrusel blockquote::before { content:'“'; color:var(--naranja); font:700 40px/0 Georgia, serif; vertical-align:-14px; margin-right:4px; }
+  .carrusel figcaption { font-weight:700; color:var(--verde); } .carrusel figcaption span { color:#e3a008; letter-spacing:2px; margin-left:6px; }
+
+  /* Garantía */
+  .garantia { display:grid; grid-template-columns:auto 1fr; gap:18px; align-items:center; border:2px solid var(--verde); border-radius:16px; padding:20px 22px; margin:30px 0 0; background:#EEF6EF; }
+  .garantia .sello7 { width:96px; height:96px; border-radius:50%; background:var(--verde); color:#fff; display:grid; place-items:center; text-align:center; font:700 15px/1.05 'Oswald', sans-serif; text-transform:uppercase; }
+  .garantia .sello7 b { display:block; font-size:38px; }
+  .garantia h3 { margin:0 0 6px; font:700 clamp(20px, 5vw, 24px) 'Oswald', sans-serif; text-transform:uppercase; color:var(--verde); }
+  .garantia p { margin:0; }
+  .garantia-mini { text-align:center; margin:12px 0 0; font-weight:600; color:var(--verde); }
+
+  /* Preguntas frecuentes */
+  .faq details { border:1.5px solid #e3e3e3; border-radius:10px; margin:10px 0; background:#fff; }
+  .faq summary { cursor:pointer; padding:14px 44px 14px 16px; font-weight:700; list-style:none; position:relative; }
+  .faq summary::-webkit-details-marker { display:none; }
+  .faq summary::after { content:'+'; position:absolute; right:16px; top:9px; font-size:26px; color:var(--naranja); transition:transform .25s; }
+  .faq details[open] summary::after { transform:rotate(45deg); }
+  .faq details p { margin:0; padding:0 16px 16px; color:#333; }
+  .faq details.clave { border-color:var(--naranja); } .faq details.clave summary { color:#b4471a; }
+
+  /* Botón flotante de WhatsApp */
+  .wa { position:fixed; right:16px; bottom:18px; z-index:20; display:flex; align-items:center; gap:8px; background:#25D366; color:#fff; text-decoration:none;
+        border-radius:30px; padding:12px 16px; font-weight:700; box-shadow:0 6px 18px rgba(0,0,0,.25); }
+  .wa svg { flex:none; } .wa:hover { filter:brightness(1.05); }
+  @media (max-width:560px) { .wa span { display:none; } .wa { padding:14px; border-radius:50%; } .garantia { grid-template-columns:1fr; text-align:center; } .garantia .sello7 { margin:0 auto; } }
+  /* Revisión de la landing: portada sin precio, autor, módulos desplegables, oferta unificada y pie */
+  .usuarios { margin:10px 0 0; font-size:14px; font-weight:600; color:var(--verde); }
+  .autor-b { display:grid; grid-template-columns:180px 1fr; gap:22px; align-items:center; background:#F7F3EA; border-radius:16px; padding:22px; margin:34px 0 28px; }
+  .autor-b img { border-radius:50%; border:4px solid #fff; box-shadow:0 4px 14px rgba(0,0,0,.12); }
+  .autor-b h2 { margin:0 0 8px; font:700 clamp(22px, 5.4vw, 30px)/1.1 'Oswald', sans-serif; text-transform:uppercase; color:#1b2a22; }
+  .autor-b p { margin:0 0 8px; } .autor-b ul { margin:0 0 8px; padding-left:20px; } .autor-b li { margin:3px 0; } .autor-b b { color:var(--verde); }
+  .contiene details { border-bottom:1px solid #e6e6e6; } .contiene details:last-child { border-bottom:0; }
+  .contiene summary { cursor:pointer; list-style:none; padding:12px 34px 12px 0; position:relative; font:700 clamp(16px, 4vw, 19px)/1.3 'Open Sans', sans-serif; text-transform:uppercase; }
+  .contiene summary::-webkit-details-marker { display:none; }
+  .contiene summary::after { content:'+'; position:absolute; right:4px; top:6px; font-size:24px; color:var(--naranja); transition:transform .25s; }
+  .contiene details[open] summary::after { transform:rotate(45deg); }
+  .contiene details ul { margin:0 0 12px; }
+  .oferta { border:2px solid var(--verde); border-radius:18px; padding:24px 22px; margin:30px 0 0; text-align:center; background:#fff; }
+  .oferta h2 { margin:0 0 14px; font:700 clamp(24px, 6vw, 32px)/1.1 'Oswald', sans-serif; text-transform:uppercase; color:#1b2a22; }
+  .valor { list-style:none; margin:0 auto 16px; padding:0; display:grid; gap:8px; text-align:left; max-width:460px; }
+  .valor li { background:#EEF6EF; border-radius:8px; padding:10px 14px; font-weight:600; } .valor small { display:block; font-weight:400; color:#555; }
+  .oferta-precio { margin:6px 0; font-size:18px; color:#555; } .oferta-precio s { color:#999; } .oferta-precio b { color:#16a34a; font-size:36px; font-family:'Open Sans', sans-serif; }
+  .oferta-tiempo { margin:0 0 16px; font-size:15px; color:#b42318; } .oferta-tiempo b { font-variant-numeric:tabular-nums; }
+  .pie { text-align:center; font-size:12px; color:#888; margin:6px 0 80px; } .pie a { color:#888; }
+  @media (max-width:560px) { .autor-b { grid-template-columns:1fr; text-align:center; } .autor-b img { margin:0 auto; width:140px; } .autor-b ul { text-align:left; } }
+  .precio-suave { text-align:center; margin:16px 0 0; font-size:16px; } .precio-suave b { color:#16a34a; } .precio-suave a { color:var(--verde); font-weight:700; }
+  .calc h2 { font:700 clamp(24px, 6vw, 32px)/1.1 'Oswald', sans-serif; text-transform:uppercase; text-align:center; margin:30px 0 6px; color:#1b2a22; }
+  .calc .sub2 { text-align:center; color:#555; margin:0 0 14px; } .calc img { border:1px solid #e3e3e3; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,.08); }
+  .atajo { margin:14px 0 0; text-align:center; font-size:15px; color:#444; background:#FFF6E5; border-radius:10px; padding:10px 14px; }
+  .compra-tit { margin:0 0 14px; font:700 clamp(24px, 6vw, 32px)/1.1 'Oswald', sans-serif; text-transform:uppercase; text-align:center; color:#1b2a22; }
+  .compra .precio, .compra .oferta-tiempo { text-align:center; }
+  .barra p b { font-size:1.1em; }
+  .cta-nota .p-port { color:#16a34a; font-size:1.15em; } .cta-nota s { color:#999; }
+  .entrega h2 { font:700 clamp(24px, 6vw, 32px)/1.1 'Oswald', sans-serif; text-transform:uppercase; text-align:center; margin:30px 0 6px; color:#1b2a22; }
+  .entrega .sub2 { text-align:center; color:#555; margin:0 0 14px; }
+  .dos { display:grid; grid-template-columns:1fr 1fr; gap:12px; } .dos img { border-radius:6px; box-shadow:0 6px 18px rgba(0,0,0,.12); }
+  .pie-calc { font-size:14px; color:#555; text-align:center; margin:10px 0 0; }
+  .ir-pago { display:inline-block; margin-top:8px; color:var(--verde); font-weight:700; font-size:15px; }
+  .como-gar { margin-top:8px !important; font-size:15px; color:#333; }
+  #oferta { display:block; position:relative; top:-10px; }
+  .autor-b .enlaces { margin:8px 0 0; display:flex; flex-wrap:wrap; gap:8px; }
+  .autor-b .enlaces a { font-size:12.5px; color:#6b6b6b; text-decoration:none; border:1px solid #dcd6c9; border-radius:20px; padding:3px 10px; background:#fff; }
+  .autor-b .enlaces a:hover { color:#1b2a22; border-color:#b9b1a2; }
+  @media (max-width:560px) { .autor-b .enlaces { justify-content:center; } }
 </style>
 <!-- Píxel de Meta (Surco Curso – Web) -->
 <script>
@@ -172,9 +238,9 @@ fbq('track', 'ViewContent', { content_name: 'Manual Visual de Riego por Goteo en
 
 <div class="barra" id="barra">
   <div class="col">
-    <div class="reloj" id="reloj">--:--:--</div>
+    <div class="reloj" id="reloj" hidden>--:--:--</div>
     <svg width="44" height="44" viewBox="0 0 44 44" fill="none" stroke="#fff" stroke-width="2"><circle cx="26" cy="25" r="14"/><path d="M26 16v9l6 4M21 6h10M26 6v5M33 9l3-3M3 20h9M5 26h7M7 32h7"/></svg>
-    <p id="barra-txt">El precio de lanzamiento termina en</p>
+    <p id="barra-txt"><b id="precio-barra">$39.900</b> hasta el 7 de nov · precio de lanzamiento</p>
   </div>
 </div>
 
@@ -182,9 +248,9 @@ fbq('track', 'ViewContent', { content_name: 'Manual Visual de Riego por Goteo en
 
   <section class="tarjeta">
     <div class="titulo">
-      <h1>Diseña el riego por goteo de tu palma <span>de forma visual</span></h1>
+      <h1>¿Te pidieron el diseño de riego por goteo para palma <span>y no sabes por dónde empezar?</span></h1>
       <div class="regla"></div>
-      <p class="sub">Una guía práctica e ilustrada, de la fuente de agua al último gotero.</p>
+      <p class="sub">Este manual visual te lleva paso a paso, de la fuente de agua al último gotero, con un caso real de 10 ha resuelto en 13 pasos.</p>
     </div>
     <img src="img/heroe.webp" width="1200" height="896" alt="Manual Visual de Riego por Goteo en Palma de Aceite, en libro y en tablet, con páginas de muestra">
     <div class="rasgos">
@@ -196,12 +262,11 @@ fbq('track', 'ViewContent', { content_name: 'Manual Visual de Riego por Goteo en
   </section>
 
   <div class="cta-portada">
-    <p class="cta-precio">Hoy <span id="precio-cta"></span> <span class="cta-inc">· incluye los 3 bonos</span></p>
-    <a class="cta" href="#compra">Quiero mi manual ahora</a>
-    <p class="cta-nota">🔒 Pago seguro con Wompi · Te llega al correo en minutos</p>
+    <a class="cta" href="#dolor">Quiero ver cómo se hace ↓</a>
+    <p class="cta-nota"><b class="p-port" id="precio-port">$39.900</b> <s class="solo-lanz">$79.900</s> · pago único · manual + 3 bonos<br>🔒 Pago seguro · ✅ Garantía de 7 días · 📩 Llega a tu correo en minutos<br><a class="ir-pago" href="#compra">¿Ya lo decidiste? Comprar ahora ↓</a></p>
   </div>
 
-  <section class="dolor">
+  <section class="dolor" id="dolor">
     <h2>¿Te suena alguno de estos problemas?</h2>
     <ul class="dolores">
       <li><b>Te pidieron el diseño del riego y no sabes por dónde empezar.</b> Tu jefe, tu cliente o tu profesor necesita el proyecto con cálculos, plano y materiales, y el plazo corre.</li>
@@ -211,6 +276,28 @@ fbq('track', 'ViewContent', { content_name: 'Manual Visual de Riego por Goteo en
       <li><b>La sequía te cobra la cosecha dos años después.</b> El estrés del verano se convierte en menos racimos casi dos años más tarde, cuando ya no hay nada que hacer.</li>
       <li><b>Los libros de riego son de hortalizas y están llenos de fórmulas.</b> Nada te explica, paso a paso y con dibujos, cómo se diseña para palma.</li>
     </ul>
+  </section>
+
+  <section class="hojas">
+    <h2>Míralo por dentro</h2>
+    <p class="sub2">Páginas reales del manual: dibujos, cálculos y el caso de 10 ha.</p>
+    <div class="visor" id="visor">
+      <img src="img/paginas/p001.webp" alt="Portada del manual" class="ver">
+      <img src="img/paginas/p003.webp" alt="Mapa visual del sistema de riego" decoding="async">
+      <img src="img/paginas/p005.webp" alt="Un lote real de 10 hectáreas" decoding="async">
+      <img src="img/paginas/p028.webp" alt="Lámina neta y lámina bruta" decoding="async">
+      <img src="img/paginas/p033.webp" alt="Tipos de goteros: cuál va en palma" decoding="async">
+      <img src="img/paginas/p040.webp" alt="Trazado y longitud de los laterales" decoding="async">
+      <img src="img/paginas/p056.webp" alt="Plano hidráulico del lote de 10 ha" decoding="async">
+      <img src="img/paginas/p070.webp" alt="Cómo leer la curva de una bomba" decoding="async">
+      <img src="img/paginas/p054.webp" alt="Elegir el diámetro con la tabla de pérdidas" decoding="async">
+      <img src="img/paginas/p093.webp" alt="Lavado, purga y prueba de presión" decoding="async">
+    </div>
+    <div class="puntos" id="puntos-hojas"></div>
+    <p class="precio-suave">Todo esto + 3 bonos por <b id="precio-linea">$39.900</b>, pago único · <a href="#oferta">Ver qué incluye ↓</a></p>
+  </section>
+
+  <section class="dolor">
     <h2 class="solucion">Con este manual vas a poder</h2>
     <ul class="logros">
       <li>Entregar a tu jefe, a tu cliente o a tu profesor un <b>diseño completo</b>: cálculos, plano, plan de turnos y cuadro de materiales.</li>
@@ -227,36 +314,51 @@ fbq('track', 'ViewContent', { content_name: 'Manual Visual de Riego por Goteo en
       <div><b>Administradores</b>que deben aprobar cotizaciones y presupuestos.</div>
       <div><b>Estudiantes</b>de agronomía e ingeniería con un proyecto o trabajo de riego.</div>
     </div>
-    <p class="cta-wrap"><a class="cta" href="#compra">Quiero el manual con sus 3 bonos</a></p>
+    <p class="cta-wrap"><a class="cta" href="#compra">Comprar el manual + 3 bonos · $39.900</a></p>
   </section>
 
-  <div class="boton-borde">Esto es lo que contiene</div>
-  <section class="contiene">
-    <h3>Módulo 1. La palma de aceite y el agua</h3>
-    <ul><li>La sequía de hoy se cosecha en dos años: efecto del déficit hídrico.</li><li>Zonas palmeras de Colombia y su régimen de lluvias.</li><li>Sistema radical: dónde hay que mojar.</li><li>Demanda de agua según la etapa de la palma.</li><li>Goteo, microaspersión o gravedad.</li><li>El suelo, el tanque de agua de la palma.</li></ul>
-    <h3>Módulo 2. Datos de campo y bases del proyecto</h3>
-    <ul><li>Topografía y marco de plantación en tresbolillo.</li><li>Suelo: textura, infiltración y calicata.</li><li>Fuente de agua: caudal, niveles y calidad.</li><li>Datos de clima: dónde conseguirlos.</li><li>Permisos, energía y plano base.</li></ul>
-    <h3>Módulo 3. Demanda de agua y programación del riego</h3>
-    <ul><li>ETo, coeficiente de cultivo y balance hídrico mes a mes.</li><li>Lámina neta y bruta: de milímetros a litros por palma.</li><li>Frecuencia, tiempo de riego y número de turnos.</li></ul>
-    <h3>Módulo 4. Selección de goteros y caudales</h3>
-    <ul><li>La presión se mide en metros.</li><li>Tipos de goteros y cómo leer su ficha técnica real.</li><li>Bulbo húmedo y puntos de goteo por palma.</li></ul>
-    <h3>Módulo 5. Diseño de laterales</h3>
-    <ul><li>Trazado y longitud de los laterales.</li><li>Pérdidas por fricción y factor de Christiansen.</li><li>Perfil de presión en subida y bajada; regla del 20 %.</li><li>Longitud máxima del lateral, palma por palma.</li></ul>
-    <h3>Módulo 6. Sectores y red de distribución</h3>
-    <ul><li>¿Me alcanza el agua del pozo? Sectores y turnos.</li><li>Principal, secundaria, múltiple y lateral: dónde va cada una.</li><li>Elegir el diámetro con la tabla real de pérdidas.</li><li>Golpe de ariete, ventosas y plano hidráulico.</li><li>Plan de turnos.</li><li>Página especial: lleva tu diseño a campo con la app Lindero (gratis).</li></ul>
-    <h3>Módulo 7. Cabezal: filtrado y fertirriego</h3>
-    <ul><li>Hidrociclón, arena, malla y anillas.</li><li>Dimensionamiento y retrolavado.</li><li>Inyección de fertilizantes, medidores y manómetros.</li></ul>
-    <h3>Módulo 8. Selección del equipo de bombeo</h3>
-    <ul><li>Altura dinámica total y presupuesto de presión.</li><li>Cómo leer la curva de una bomba y elegirla.</li><li>NPSH y cavitación; potencia, motor y variador.</li></ul>
-    <h3>Módulo 9. Comprobación hidráulica y uniformidad</h3>
-    <ul><li>Balance de presiones bloque por bloque.</li><li>Caudal esperado en los goteros y uniformidad.</li><li>¿Y si no cumple? Qué cambiar. Hoja resumen para aprobar.</li></ul>
-    <h3>Módulo 10. Instalación y puesta en marcha</h3>
-    <ul><li>Secuencia de obra: bomba, cabezal, tuberías y válvulas.</li><li>Mangueras enterradas, microtubos y goteros.</li><li>Lavado, prueba de presión, aforo y lista final.</li></ul>
-    <h3>Módulo 11. Caso práctico en acción</h3>
-    <ul><li>El diseño completo de un lote de 10 ha en 13 pasos.</li><li>Plano final, plan de riego y cuadro de materiales.</li><li>Hoja de trabajo "Mi diseño" para tu propio lote.</li></ul>
-    <h3>Módulo 12. Tablas de referencia</h3>
-    <ul><li>Fricción en manguera y PVC; laterales según la pendiente.</li><li>ETo por zona palmera, filtros, motores y válvulas.</li><li>Lotes irregulares y glosario.</li></ul>
+  <section class="entrega">
+    <h2>Esto es lo que le entregas a tu jefe</h2>
+    <p class="sub2">Así termina el caso de 10 ha del manual: plano final y cuadro de materiales con presupuesto.</p>
+    <div class="dos">
+      <img src="img/paginas/p110.webp" alt="Plano final del caso de 10 ha con simbología y componentes" loading="lazy">
+      <img src="img/paginas/p112.webp" alt="Cuadro de materiales y presupuesto del caso de 10 ha" loading="lazy">
+    </div>
   </section>
+
+  <section class="autor-b">
+    <img src="img/autor.webp" width="180" height="180" alt="Ing. Adán Arias Angulo en un cultivo de palma">
+    <div>
+      <h2>Quién escribió este manual</h2>
+      <p>Soy Adán Arias Angulo, ingeniero agrícola. Llevo 10 años en campo diseñando e instalando riego para empresas de la zona norte de Colombia; he diseñado e instalado más de 1.000 ha y he acompañado el manejo de riego y drenaje en unas 20.000 ha, en distintos cultivos. En este manual reuní, paso a paso y con dibujos, lo que he aprendido para que tú también puedas diseñar el riego de tu lote.</p>
+      <p class="enlaces"><a href="https://www.linkedin.com/in/adan-arias/" target="_blank" rel="noopener">LinkedIn · adan-arias</a><a href="https://adanarias.com" target="_blank" rel="noopener">adanarias.com</a></p>
+    </div>
+  </section>
+
+
+  <!-- Testimonios: solo comentarios reales de compradores (nombre de pila, con su permiso). Si la lista está vacía, la sección no se muestra. -->
+  <section class="testi" id="testimonios" hidden>
+    <h2>Lo que dicen quienes ya lo tienen</h2>
+    <p class="sub2">Compradores reales del manual</p>
+    <div class="carrusel" id="carrusel"></div>
+  </section>
+
+  <div class="boton-borde">Esto es lo que contiene: 12 módulos</div>
+  <section class="contiene">
+    <details><summary>Módulo 1. La palma de aceite y el agua</summary><ul><li>La sequía de hoy se cosecha en dos años: efecto del déficit hídrico.</li><li>Zonas palmeras de Colombia y su régimen de lluvias.</li><li>Sistema radical: dónde hay que mojar.</li><li>Demanda de agua según la etapa de la palma.</li><li>Goteo, microaspersión o gravedad.</li><li>El suelo, el tanque de agua de la palma.</li></ul></details>
+    <details><summary>Módulo 2. Datos de campo y bases del proyecto</summary><ul><li>Topografía y marco de plantación en tresbolillo.</li><li>Suelo: textura, infiltración y calicata.</li><li>Fuente de agua: caudal, niveles y calidad.</li><li>Datos de clima: dónde conseguirlos.</li><li>Permisos, energía y plano base.</li></ul></details>
+    <details><summary>Módulo 3. Demanda de agua y programación del riego</summary><ul><li>ETo, coeficiente de cultivo y balance hídrico mes a mes.</li><li>Lámina neta y bruta: de milímetros a litros por palma.</li><li>Frecuencia, tiempo de riego y número de turnos.</li></ul></details>
+    <details><summary>Módulo 4. Selección de goteros y caudales</summary><ul><li>La presión se mide en metros.</li><li>Tipos de goteros y cómo leer su ficha técnica real.</li><li>Bulbo húmedo y puntos de goteo por palma.</li></ul></details>
+    <details><summary>Módulo 5. Diseño de laterales</summary><ul><li>Trazado y longitud de los laterales.</li><li>Pérdidas por fricción y factor de Christiansen.</li><li>Perfil de presión en subida y bajada; regla del 20 %.</li><li>Longitud máxima del lateral, palma por palma.</li></ul></details>
+    <details><summary>Módulo 6. Sectores y red de distribución</summary><ul><li>¿Me alcanza el agua del pozo? Sectores y turnos.</li><li>Principal, secundaria, múltiple y lateral: dónde va cada una.</li><li>Elegir el diámetro con la tabla real de pérdidas.</li><li>Golpe de ariete, ventosas y plano hidráulico.</li><li>Plan de turnos.</li><li>Página especial: lleva tu diseño a campo con la app Lindero (gratis).</li></ul></details>
+    <details><summary>Módulo 7. Cabezal: filtrado y fertirriego</summary><ul><li>Hidrociclón, arena, malla y anillas.</li><li>Dimensionamiento y retrolavado.</li><li>Inyección de fertilizantes, medidores y manómetros.</li></ul></details>
+    <details><summary>Módulo 8. Selección del equipo de bombeo</summary><ul><li>Altura dinámica total y presupuesto de presión.</li><li>Cómo leer la curva de una bomba y elegirla.</li><li>NPSH y cavitación; potencia, motor y variador.</li></ul></details>
+    <details><summary>Módulo 9. Comprobación hidráulica y uniformidad</summary><ul><li>Balance de presiones bloque por bloque.</li><li>Caudal esperado en los goteros y uniformidad.</li><li>¿Y si no cumple? Qué cambiar. Hoja resumen para aprobar.</li></ul></details>
+    <details><summary>Módulo 10. Instalación y puesta en marcha</summary><ul><li>Secuencia de obra: bomba, cabezal, tuberías y válvulas.</li><li>Mangueras enterradas, microtubos y goteros.</li><li>Lavado, prueba de presión, aforo y lista final.</li></ul></details>
+    <details><summary>Módulo 11. Caso práctico en acción</summary><ul><li>El diseño completo de un lote de 10 ha en 13 pasos.</li><li>Plano final, plan de riego y cuadro de materiales.</li><li>Hoja de trabajo "Mi diseño" para tu propio lote.</li></ul></details>
+    <details><summary>Módulo 12. Tablas de referencia</summary><ul><li>Fricción en manguera y PVC; laterales según la pendiente.</li><li>ETo por zona palmera, filtros, motores y válvulas.</li><li>Lotes irregulares y glosario.</li></ul></details>
+  </section>
+  <p class="atajo">¿Tienes afán? No tienes que leerlo todo: ve directo al <b>Módulo 11</b> y sigue el caso de 10 ha paso a paso con tus datos.</p>
 
   <section class="tarjeta bonos" style="margin-top:28px">
     <div class="titulo">
@@ -272,21 +374,76 @@ fbq('track', 'ViewContent', { content_name: 'Manual Visual de Riego por Goteo en
     <div class="banda">¡Incluidos <b>gratis</b> con tu compra!</div>
   </section>
 
-  <section class="compra" id="compra">
-    <div class="prod">
-      <img src="img/portada.webp" alt="" width="130" height="168">
-      <div>
-        <h3>Manual Visual de Riego por Goteo en Palma de Aceite</h3>
-        <div class="autor">Autor: Ing. Adán A. Arias</div>
-        <div class="precio" id="precio"></div>
-        <div class="ayuda">Pago único en pesos colombianos. Incluye los 3 bonos.</div>
-      </div>
-    </div>
+  <section class="calc">
+    <h2>La calculadora hace las cuentas contigo</h2>
+    <p class="sub2">Escribes los datos de tu lote y la hoja resumen te dice si tu diseño cumple, y dónde corregir si algo falla. Así se ve con el caso de 10 ha:</p>
+    <img src="img/calculadora-resumen.webp" width="1500" height="690" alt="Hoja resumen de la calculadora en Excel con el caso de 10 ha" loading="lazy">
+    <p class="pie-calc">Caso de 10 ha: 10 de 11 comprobaciones cumplen y la velocidad queda en el límite tolerado (1,58 m/s ≤ 1,6). Funciona en Microsoft Excel en el computador.</p>
+  </section>
 
+
+
+
+  <section class="faq">
+    <h2>Preguntas frecuentes</h2>
+    <details class="clave" open>
+      <summary>¿De verdad voy a aprender a diseñar un sistema de riego?</summary>
+      <p>Sí. El manual no se queda en teoría: te lleva por todo el diseño en el mismo orden en que se hace en la vida real, desde la fuente de agua hasta el último gotero. Cada cálculo viene explicado con su fórmula, el significado de cada dato y un ejemplo resuelto. Y todo se aplica a un caso real de 10 hectáreas, resuelto en 13 pasos, hasta llegar al plano final, el plan de turnos y el cuadro de materiales. Al final tienes una hoja de trabajo para repetirlo con los datos de tu propio lote, y la calculadora en Excel te ayuda con las cuentas.</p>
+    </details>
+    <details>
+      <summary>¿Cuánto me demoro en tener el diseño?</summary>
+      <p>Depende de tu experiencia y de que tengas a la mano los datos de tu lote (área, fuente de agua, distancias). No tienes que leer todo antes de empezar: en el Módulo 11 está el caso de 10 ha resuelto en 13 pasos, en orden. Lo sigues paso a paso cambiando los datos por los tuyos, y la calculadora en Excel hace las cuentas mientras avanzas. Si te atascas en un paso, me escribes por WhatsApp.</p>
+    </details>
+    <details>
+      <summary>¿Necesito saber de riego o de hidráulica para entenderlo?</summary>
+      <p>No. Está pensado para quien nunca ha diseñado un riego: cada tema empieza con un dibujo que explica la idea, y luego viene el cálculo paso a paso. Si eres ingeniero o técnico, te sirve como guía rápida y para revisar proyectos.</p>
+    </details>
+    <details>
+      <summary>Mi lote no es de 10 hectáreas, ¿me sirve?</summary>
+      <p>Sí. El caso de 10 ha es el ejemplo para que veas cómo se hace todo de principio a fin. El método es el mismo para un lote más pequeño o más grande: cambias los datos (área, fuente de agua, distancias) y repites los pasos. También hay una página para lotes de forma irregular.</p>
+    </details>
+    <details>
+      <summary>¿De dónde salen los cálculos? ¿Mi jefe los va a aceptar?</summary>
+      <p>Cada página cita sus fuentes técnicas: la guía FAO-56 de la FAO para la demanda de agua, Keller y Bliesner (el libro de referencia del diseño de riego localizado), boletines técnicos de palma y catálogos de fabricantes. Los cálculos del caso de 10 ha se presentan completos, con fórmulas y datos, para que puedas sustentarlos.</p>
+    </details>
+    <details>
+      <summary>Mi lote tiene pendiente o el agua sale de un reservorio, ¿me sirve?</summary>
+      <p>Sí. El manual explica cómo medir la topografía, cómo cambia la presión cuando la manguera sube o baja (con tablas de laterales según la pendiente) y cómo evaluar la fuente de agua: pozo, reservorio, río o canal.</p>
+    </details>
+    <details>
+      <summary>¿Necesito saber usar Excel?</summary>
+      <p>Solo lo básico: escribir números en las casillas. La calculadora ya trae las fórmulas; tú pones los datos de tu lote y ella hace las cuentas. Se usa en Microsoft Excel en el computador (Google Sheets no abre archivos protegidos con contraseña).</p>
+    </details>
+    <details>
+      <summary>¿Cómo y cuándo me llega?</summary>
+      <p>Apenas se aprueba tu pago, te llegan dos correos en pocos minutos: uno con el manual en PDF y otro con los 3 bonos. Si no los ves, revisa la carpeta de correo no deseado o escríbeme por WhatsApp.</p>
+    </details>
+    <details>
+      <summary>¿Cómo abro los archivos?</summary>
+      <p>Para que tu copia sea solo tuya, los archivos vienen protegidos con una contraseña: tu número de celular, el mismo que escribes al pagar (sin +57). El correo te lo recuerda. Se abren en el computador, la tablet o el celular.</p>
+    </details>
+    <details class="solo-lanz">
+      <summary>¿Qué pasa el 7 de noviembre?</summary>
+      <p>Termina el precio de lanzamiento: después el manual con sus 3 bonos vale $79.900.</p>
+    </details>
+    <details>
+      <summary>¿Cómo puedo pagar?</summary>
+      <p>Con tarjeta de crédito o débito, PSE, Nequi o botón Bancolombia, a través de Wompi, la pasarela de pagos de Bancolombia. Es un pago único, sin suscripciones.</p>
+    </details>
+  </section>
+
+  <section class="compra" id="compra"><span id="oferta"></span>
+    <h2 class="compra-tit">Todo lo que recibes hoy</h2>
+    <ul class="valor">
+      <li>📘 Manual Visual de Riego por Goteo en Palma <small>126 páginas ilustradas, PDF</small></li>
+      <li>🧮 Bono 1: Calculadora de diseño en Excel</li>
+      <li>📋 Bono 2: Formatos de lluvia, evaporación y balance</li>
+      <li>🧭 Bono 3: Guía de campo para medir, probar y verificar</li>
+    </ul>
+    <div class="precio" id="precio"><s>$79.900 COP</s>$39.900 COP</div>
+    <p class="oferta-tiempo solo-lanz">Precio de lanzamiento hasta el <b>7 de noviembre</b>; después vale $79.900.</p>
     <div id="form">
-      <h4>Detalle del pedido</h4>
-      <div class="pedido"><span>Manual Visual de Riego por Goteo en Palma de Aceite<span class="inc">+ Bono 1 calculadora · Bono 2 formatos · Bono 3 guía de campo</span></span><span id="precio2"></span></div>
-      <button class="comprar" id="comprar" type="button"><span class="ico-w">🔒</span> Pagar con Wompi</button>
+      <button class="comprar" id="comprar" type="button"><span class="ico-w">🔒</span> Comprar ahora · $39.900</button>
       <div class="error" id="error"></div>
       <ul class="pasos-compra">
         <li><b>1.</b> Wompi te pide tu correo, nombre y celular, y eliges cómo pagar.</li>
@@ -296,10 +453,17 @@ fbq('track', 'ViewContent', { content_name: 'Manual Visual de Riego por Goteo en
       <div class="medios"><span>💳 Tarjeta</span><span>🏦 PSE</span><span>📱 Nequi</span><span>🟡 Bancolombia</span></div>
     </div>
   </section>
+  <section class="garantia">
+    <div class="sello7"><div><b>7</b>días de<br>garantía</div></div>
+    <div>
+      <h3>Garantía de 7 días</h3>
+      <p>Compra tranquilo. Si en los primeros 7 días sientes que el manual no te sirve, te devuelvo tu dinero completo. Sin preguntas difíciles.</p>
+      <p class="como-gar"><b>Cómo pedirla:</b> escríbeme por WhatsApp o al correo con la referencia de tu pago (llega en el correo de Wompi) y te devuelvo el valor completo.</p>
+    </div>
+  </section>
   <section class="legal">
     <p id="contacto" style="margin-top:0"></p>
     <p>Al dar clic en "Comprar ahora" aceptas los <a href="terminos.html">términos y condiciones</a>. El manual es para uso personal: cada copia lleva el nombre del comprador.</p>
-    <p style="margin-bottom:0">© <span id="anio"></span> Adán A. Arias · cursos.adanarias.com</p>
   </section>
 
   <section class="sello">
@@ -307,14 +471,16 @@ fbq('track', 'ViewContent', { content_name: 'Manual Visual de Riego por Goteo en
     <div><b>PAGO 100 % SEGURO</b>Procesado por Wompi, la pasarela de Bancolombia. Tus datos de pago nunca pasan por esta página.</div>
   </section>
 
-  <section class="confianza">
-    <div><svg width="58" height="58" viewBox="0 0 24 24" fill="none" stroke="#1d6fa5" stroke-width="1.5"><path d="M12 4l1.8 3.7 4 .6-2.9 2.8.7 4L12 13.2 8.4 15.1l.7-4-2.9-2.8 4-.6z"/><path d="M5 9c-1 3 0 7 3 9M19 9c1 3 0 7-3 9"/></svg><p style="margin:0"><b>Privacidad</b><span>Tu información está 100 % protegida</span></p></div>
-    <div><svg width="58" height="58" viewBox="0 0 24 24" fill="none" stroke="#1d6fa5" stroke-width="1.5"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg><p style="margin:0"><b>Compra segura</b><span>Ambiente seguro y autenticado</span></p></div>
-    <div><svg width="58" height="58" viewBox="0 0 24 24" fill="none" stroke="#1d6fa5" stroke-width="2"><path d="M3 12l6 6L21 6"/></svg><p style="margin:0"><b>Contenido verificado</b><span>Cálculos revisados con un caso real de 10 ha</span></p></div>
-  </section>
+  <footer class="pie">Más información en <a href="https://cursos.adanarias.com">cursos.adanarias.com</a> · © <span id="anio"></span> Adán Arias. Todos los derechos reservados.</footer>
 </main>
 
-<script src="config.js?v=2610182242"></script>
-<script src="venta.js?v=2610182242"></script>
+<a class="wa" id="wa" href="#" target="_blank" rel="noopener" aria-label="Escríbeme por WhatsApp">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="#fff"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.2-.2-.4-.3z"/></svg>
+  <span>¿Dudas? Escríbeme</span>
+</a>
+
+<script src="testimonios.js"></script>
+<script src="config.js?v=2610202127"></script>
+<script src="venta.js?v=2610202127"></script>
 </body>
 </html>
