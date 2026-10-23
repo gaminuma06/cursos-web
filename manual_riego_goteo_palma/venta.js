@@ -3,7 +3,7 @@
   const V = window.VENTA;
   const $ = (id) => document.getElementById(id);
   const cop = (n) => '$' + n.toLocaleString('es-CO') + ' COP';
-  const fin = new Date(V.finLanzamiento).getTime();
+  let fin = new Date(V.finLanzamiento).getTime();   // se actualiza con el precio del servidor
   const enLanzamiento = () => Date.now() < fin;
   const precioActual = () => (enLanzamiento() ? V.precio : V.precioNormal);
 
@@ -34,6 +34,15 @@
   if (document.fonts) document.fonts.ready.then(espacio);
 
   pintarPrecio(); reloj(); espacio(); setInterval(reloj, 1000);
+  // El precio de verdad vive en el servidor (el mismo con el que se cobra): se lee y se vuelve a pintar.
+  // Lo de config.js queda solo de respaldo si el servidor no responde.
+  if (V.pagosUrl) fetch(V.pagosUrl + '/precios?producto=' + (V.codigo || 'RP'))
+    .then((x) => x.json()).then((r) => {
+      if (!r.ok) return;
+      V.precio = r.precio; V.precioNormal = r.precioNormal; V.finLanzamiento = r.finLanzamiento;
+      fin = new Date(r.finLanzamiento).getTime();
+      pintarPrecio(); reloj(); espacio();
+    }).catch(() => {});
   $('anio').textContent = new Date().getFullYear();
   // Contacto: el correo abre el programa de correo y el número abre WhatsApp con un mensaje listo
   const wa = 'https://wa.me/' + V.whatsapp + '?text=' + encodeURIComponent(V.whatsappTexto);
