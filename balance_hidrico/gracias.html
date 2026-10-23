@@ -35,7 +35,7 @@ fbq('track', 'PageView');
       </ol>
   <p class="gris" id="ref"></p>
 </div>
-<script src="config.js?v=2610211012"></script>
+<script src="config.js?v=2610222030"></script>
 <script>
   const V = window.VENTA;
   const id = new URLSearchParams(location.search).get('id');
@@ -49,7 +49,8 @@ fbq('track', 'PageView');
     fbq('track', 'Purchase', { value: t.amount_in_cents / 100, currency: 'COP', content_name: 'Balance Hídrico y Riego en Excel', content_type: 'product' }, { eventID: t.reference });
     try { marcadas.push(t.id); localStorage.setItem('compras_meta', JSON.stringify(marcadas)); } catch (e) {}
   }
-  function confirmar() { if (V.appsScriptUrl && id) fetch(V.appsScriptUrl + '?accion=confirmar&id=' + encodeURIComponent(id)).catch(() => {}); }
+  // El cliente volvió del pago: el servidor propio verifica la transacción con Wompi y entrega (antes lo hacía el Apps Script)
+  function confirmar() { if (id) fetch('https://pagos.adanarias.com/confirmar?id=' + encodeURIComponent(id), { mode: 'no-cors' }).catch(() => {}); }
   async function revisar(intento) {
     if (!id) return fijar('📩', '¡Gracias!', 'Si completaste el pago, en unos minutos te llega el Excel a tu correo.', true);
     try {
