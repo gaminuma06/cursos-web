@@ -5,14 +5,68 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Gracias por tu compra</title>
 <meta name="robots" content="noindex">
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600&family=Source+Sans+3:wght@400;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-  body { margin:0; background:#F7F2E7; color:#1d1d1d; font:17px/1.55 'Source Sans 3', sans-serif; }
-  .caja { max-width:560px; margin:40px auto; background:#fff; border-radius:12px; padding:28px 22px; box-shadow:0 2px 14px rgba(0,0,0,.08); text-align:center; }
-  h1 { font-family:'Oswald', sans-serif; color:#1F4D2B; font-size:32px; margin:10px 0; }
-  .icono { font-size:54px; }
-  ol { text-align:left; } .gris { color:#666; font-size:15px; }
-  @media (max-width:600px) { .caja { margin:16px; } }
+  :root { --verde:#1F4D2B; --verde2:#2E6B3E; --naranja:#E0672B; --crema:#F7F2E7; --tinta:#1d1d1d; --gris:#5f6368; --linea:#e6dfcf; }
+  * { box-sizing:border-box; }
+  html, body { margin:0; background:var(--crema); color:var(--tinta); font:17px/1.55 'Open Sans', system-ui, sans-serif; }
+  .franja { height:6px; background:linear-gradient(90deg, #3E6B35 0 20%, #1D5C78 20% 40%, #7A4A2A 40% 60%, #B95A1E 60% 80%, #C08A1E 80%); }
+  main { max-width:760px; margin:0 auto; padding:28px 16px 48px; }
+  .tarjeta { background:#fff; border-radius:16px; box-shadow:0 2px 16px rgba(0,0,0,.07); padding:28px 24px; margin-bottom:18px; }
+
+  /* estado del pago */
+  .estado { text-align:center; padding-top:34px; }
+  .icono { width:84px; height:84px; border-radius:50%; display:grid; place-items:center; margin:0 auto 10px; font-size:44px; background:#EAF3EC; }
+  .estado.malo .icono { background:#FDEDE4; }
+  h1 { font:700 clamp(28px, 6vw, 38px)/1.1 'Oswald', sans-serif; color:var(--verde); margin:6px 0 8px; text-transform:uppercase; letter-spacing:.01em; }
+  .estado p.texto { font-size:18px; margin:0 auto; max-width:520px; }
+  .ref { color:var(--gris); font-size:13px; margin-top:12px; word-break:break-all; }
+  .girando { display:inline-block; animation:girar 1.4s linear infinite; }
+  @keyframes girar { to { transform:rotate(360deg); } }
+
+  /* pasos */
+  h2 { font:600 22px/1.2 'Oswald', sans-serif; color:var(--verde); margin:0 0 16px; text-transform:uppercase; }
+  .pasos { display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; }
+  .paso { border:1px solid var(--linea); border-radius:12px; padding:16px 14px; background:#FCFAF5; }
+  .paso .num { width:34px; height:34px; border-radius:50%; background:var(--verde); color:#fff; display:grid; place-items:center; font-weight:700; margin-bottom:8px; }
+  .paso b { display:block; font-size:16px; margin-bottom:4px; color:var(--verde); }
+  .paso p { margin:0; font-size:15px; color:#333; }
+  .ayuda { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; margin-top:18px; padding-top:16px; border-top:1px solid var(--linea); }
+  .ayuda p { margin:0; font-size:15px; color:var(--gris); }
+  .boton { display:inline-block; text-decoration:none; font-weight:700; border-radius:10px; padding:12px 18px; text-align:center; }
+  .boton.wa { background:#16a34a; color:#fff; }
+  .boton.principal { background:var(--naranja); color:#fff; font-size:18px; padding:15px 22px; box-shadow:0 4px 12px rgba(224,103,43,.3); }
+  .boton.secundario { background:#fff; color:var(--verde); border:2px solid var(--verde); }
+
+  /* complemento: balance hídrico */
+  .complemento { overflow:hidden; padding:0; }
+  .complemento .encabezado { background:var(--verde); color:#fff; padding:12px 24px; font:600 15px 'Oswald', sans-serif; letter-spacing:.06em; text-transform:uppercase; }
+  .complemento img { display:block; width:100%; height:auto; border-bottom:1px solid var(--linea); }
+  .complemento .cuerpo { padding:22px 24px 26px; }
+  .complemento h3 { font:700 clamp(22px, 5vw, 28px)/1.15 'Oswald', sans-serif; color:var(--verde); margin:0 0 8px; text-transform:uppercase; }
+  .complemento .intro { margin:0 0 14px; }
+  .complemento ul { margin:0 0 18px; padding:0; list-style:none; }
+  .complemento li { padding:6px 0 6px 30px; position:relative; }
+  .complemento li::before { content:'✓'; position:absolute; left:0; top:5px; width:22px; height:22px; border-radius:50%; background:#EAF3EC; color:var(--verde2); font-weight:700; display:grid; place-items:center; font-size:13px; }
+  .compra { display:flex; flex-wrap:wrap; align-items:center; gap:14px 20px; }
+  .precio { font-size:15px; color:var(--gris); }
+  .precio s { margin-right:6px; }
+  .precio b { font:700 30px 'Oswald', sans-serif; color:var(--naranja); }
+  .garantia { font-size:13px; color:var(--gris); margin-top:10px; }
+  .ver-mas { margin:10px 0 0; font-size:15px; } .ver-mas a { color:var(--verde2); font-weight:600; }
+  .error-bh { color:#9a3412; font-size:15px; margin:10px 0 0; } .error-bh a { color:#9a3412; font-weight:700; }
+
+  footer { text-align:center; color:var(--gris); font-size:13px; padding:8px 16px 0; }
+  footer a { color:var(--gris); }
+  [hidden] { display:none !important; }
+  @media (max-width:640px) {
+    .pasos { grid-template-columns:1fr; }
+    .tarjeta { padding:22px 18px; }
+    .complemento .cuerpo { padding:20px 18px 22px; }
+    .boton.principal { width:100%; }
+  }
 </style>
 <!-- Píxel de Meta (Surco Curso – Web) -->
 <script>
@@ -25,42 +79,148 @@ fbq('track', 'PageView');
 <noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=3604674439689537&ev=PageView&noscript=1"></noscript>
 </head>
 <body>
-<div class="caja">
-  <div class="icono" id="icono">⏳</div>
-  <h1 id="titulo">Revisando tu pago…</h1>
-  <p id="texto">Un momento, estamos consultando el estado de tu pago con Wompi.</p>
-  <ol id="pasos" style="display:none">
-    <li>En unos minutos te llegan <b>2 correos</b>: el manual y los 3 bonos.</li>
-    <li>Revisa también la carpeta de <b>spam</b> o <b>promociones</b>.</li>
-    <li>La contraseña para abrir los archivos es <b>tu celular</b>, el que escribiste al pagar.</li>
-  </ol>
-  <p class="gris" id="ref"></p>
-</div>
-<script src="config.js?v=2610222049"></script>
+<div class="franja"></div>
+<main>
+
+  <!-- 1. Estado del pago -->
+  <section class="tarjeta estado" id="caja-estado">
+    <div class="icono" id="icono"><span class="girando">⏳</span></div>
+    <h1 id="titulo">Revisando tu pago…</h1>
+    <p class="texto" id="texto">Un momento, estamos consultando el estado de tu pago con Wompi.</p>
+    <p id="reintentar" hidden style="margin-top:18px"><a class="boton secundario" href="./#compra">Intentar el pago de nuevo</a></p>
+    <p class="ref" id="ref"></p>
+  </section>
+
+  <!-- 2. Qué sigue ahora (solo cuando el pago está aprobado) -->
+  <section class="tarjeta" id="pasos" hidden>
+    <h2>Qué sigue ahora</h2>
+    <div class="pasos">
+      <div class="paso">
+        <div class="num">1</div>
+        <b>📩 Revisa tu correo</b>
+        <p>En unos minutos te llegan <b style="display:inline">2 correos</b>: el manual y los 3 bonos. Si no los ves, mira en <b style="display:inline">spam</b> o <b style="display:inline">promociones</b>.</p>
+      </div>
+      <div class="paso">
+        <div class="num">2</div>
+        <b>🔒 Ábrelos con tu celular</b>
+        <p>La contraseña de los archivos es <b style="display:inline">tu número de celular</b>, el que escribiste al pagar (solo números, sin +57).</p>
+      </div>
+      <div class="paso">
+        <div class="num">3</div>
+        <b>🌴 Empieza por aquí</b>
+        <p>Lee el <b style="display:inline">Módulo 1</b> y sigue el caso práctico de 10 ha. La calculadora en Excel ábrela en el computador.</p>
+      </div>
+    </div>
+    <div class="ayuda">
+      <p>¿Pasaron 15 minutos y no llegó nada? Escríbeme y te lo reenvío.</p>
+      <a class="boton wa" id="whatsapp" href="#" target="_blank" rel="noopener">💬 Escribir por WhatsApp</a>
+    </div>
+  </section>
+
+  <!-- 3. Complemento: Balance hídrico (solo cuando el pago está aprobado) -->
+  <section class="tarjeta complemento" id="complemento" hidden>
+    <div class="encabezado">El complemento ideal de tu manual</div>
+    <img src="../balance_hidrico/img/dash-arriba.webp" width="1400" height="700" alt="Tablero del Excel de Balance Hídrico y Riego: lluvia, déficit, días para regar y lotes por condición" loading="lazy">
+    <div class="cuerpo">
+      <h3>Balance Hídrico y Riego en Excel</h3>
+      <p class="intro">Ya sabes <b>diseñar</b> el riego. Con este Excel sabes <b>cuándo regar</b>: anotas la lluvia de tus pluviómetros y te dice, lote por lote, si toca regar hoy.</p>
+      <ul>
+        <li>Semáforo por lote: <b>regar, pronto a regar o no regar</b>.</li>
+        <li>Balance diario de humedad del suelo con el método FAO-56.</li>
+        <li>Lluvia del año, déficit y exceso de agua, comparados con los años anteriores.</li>
+        <li>Sirve para palma y para otros cultivos.</li>
+      </ul>
+      <div class="compra">
+        <a class="boton principal" href="../balance_hidrico/?utm_source=gracias_manual&utm_medium=web#comprar" id="boton-bh">Quiero el Balance hídrico</a>
+        <div class="precio" id="precio-bh"></div>
+      </div>
+      <p class="error-bh" id="error-bh" hidden>No se pudo abrir el pago. <a href="../balance_hidrico/?utm_source=gracias_manual&utm_medium=web">Ábrelo aquí</a>.</p>
+      <p class="ver-mas"><a href="../balance_hidrico/?utm_source=gracias_manual&utm_medium=web">Ver qué incluye antes de comprar →</a></p>
+      <p class="garantia">Pago seguro con Wompi · Llega a tu correo en minutos · Garantía de 7 días</p>
+    </div>
+  </section>
+
+  <footer>
+    <a href="https://cursos.adanarias.com">cursos.adanarias.com</a> · Adán A. Arias
+  </footer>
+</main>
+
+<script src="config.js?v=2610230952"></script>
 <script>
   const V = window.VENTA;
   const id = new URLSearchParams(location.search).get('id');
   const api = V.wompiLlavePublica.indexOf('pub_test_') === 0 ? 'https://sandbox.wompi.co/v1' : 'https://production.wompi.co/v1';
   const $ = (x) => document.getElementById(x);
-  function fijar(ic, t, x, pasos) { $('icono').textContent = ic; $('titulo').textContent = t; $('texto').textContent = x; $('pasos').style.display = pasos ? 'block' : 'none'; }
-  // Pide al servidor de los cursos que confirme el pago con Wompi y envíe el manual
+  const pesos = (n) => '$' + Number(n).toLocaleString('es-CO');
+
+  // Muestra el estado. "listo" = pago aprobado (o sin datos): enseña los pasos y el complemento.
+  function fijar(ic, t, x, listo, malo) {
+    $('icono').innerHTML = ic === '⏳' ? '<span class="girando">⏳</span>' : ic;
+    $('titulo').textContent = t; $('texto').textContent = x;
+    $('caja-estado').classList.toggle('malo', !!malo);
+    $('pasos').hidden = !listo; $('complemento').hidden = !listo;
+    $('reintentar').hidden = !malo;
+  }
+
+  // Botón de WhatsApp con un mensaje listo
+  $('whatsapp').href = 'https://wa.me/' + V.whatsapp + '?text=' +
+    encodeURIComponent('Hola, compré el Manual de Riego por Goteo en Palma y no me han llegado los correos.' + (id ? ' Transacción: ' + id : ''));
+
+  // Precio real del Balance hídrico (el mismo con el que se cobra), desde el servidor
+  if (V.pagosUrl) fetch(V.pagosUrl + '/precios?producto=BH').then((x) => x.json()).then((r) => {
+    if (!r.ok) return;
+    const lanz = Date.now() < new Date(r.finLanzamiento).getTime();
+    $('precio-bh').innerHTML = (lanz ? '<s>' + pesos(r.precioNormal) + '</s>' : '') + '<b>' + pesos(r.actual) + '</b>' + (lanz ? ' · precio de lanzamiento' : '');
+  }).catch(() => {});
+
+  // Compra del Balance hídrico en un clic: firma desde el servidor y pago de Wompi con los datos de esta compra ya llenos
+  let cliente = null;
+  const galleta = (n) => decodeURIComponent((document.cookie.match('(?:^|; )' + n + '=([^;]*)') || [])[1] || '');
+  $('boton-bh').addEventListener('click', async (e) => {
+    if (!V.pagosUrl) return;            // sin servidor: el enlace lleva a la página del Balance
+    e.preventDefault();
+    const b = $('boton-bh'); b.textContent = 'Abriendo el pago seguro…'; b.style.pointerEvents = 'none';
+    try {
+      const r = await fetch(V.pagosUrl + '/firmar?producto=BH').then((x) => x.json());
+      if (!r.ok || String(r.referencia).indexOf('BH-') !== 0) throw new Error('firma');
+      const q = new URLSearchParams({ ref: r.referencia, fbc: galleta('_fbc'), fbp: galleta('_fbp'), navegador: navigator.userAgent });
+      fetch(V.pagosUrl + '/marcar?' + q, { keepalive: true, mode: 'no-cors' }).catch(() => {});
+      if (window.fbq) fbq('track', 'InitiateCheckout', { value: r.montoCentavos / 100, currency: 'COP', content_name: 'Balance Hídrico y Riego en Excel' });
+      const w = new URLSearchParams({ 'public-key': V.wompiLlavePublica, currency: 'COP', 'amount-in-cents': String(r.montoCentavos),
+        reference: r.referencia, 'signature:integrity': r.firma, 'redirect-url': 'https://cursos.adanarias.com/balance_hidrico/gracias.html' });
+      if (cliente) {                    // datos de la compra que acaba de hacer: no tiene que escribirlos otra vez
+        const cel = String(cliente.phone_number || '').replace(/\D/g, '').replace(/^(57)+(?=3\d{9}$)/, '');
+        if (cliente.email) w.set('customer-data:email', cliente.email);
+        if (cliente.full_name) w.set('customer-data:full-name', cliente.full_name);
+        if (cel.length === 10) { w.set('customer-data:phone-number', cel); w.set('customer-data:phone-number-prefix', '+57'); }
+      }
+      location.href = 'https://checkout.wompi.co/p/?' + w;
+    } catch (err) {
+      b.textContent = 'Quiero el Balance hídrico'; b.style.pointerEvents = ''; $('error-bh').hidden = false;
+    }
+  });
+
+  // Reporte de la compra al píxel de Meta (una sola vez por transacción en este navegador)
   function compraMeta(t) {
     let marcadas = []; try { marcadas = JSON.parse(localStorage.getItem('compras_meta') || '[]'); } catch (e) {}
     if (!window.fbq || marcadas.indexOf(t.id) >= 0) return;
     fbq('track', 'Purchase', { value: t.amount_in_cents / 100, currency: 'COP', content_name: 'Manual Visual de Riego por Goteo en Palma', content_type: 'product' }, { eventID: t.reference });
     try { marcadas.push(t.id); localStorage.setItem('compras_meta', JSON.stringify(marcadas)); } catch (e) {}
   }
-  // El cliente volvió del pago: el servidor propio verifica la transacción con Wompi y entrega (antes lo hacía el Apps Script)
+  // El cliente volvió del pago: el servidor propio verifica la transacción con Wompi y entrega
   function confirmar() { if (id) fetch('https://pagos.adanarias.com/confirmar?id=' + encodeURIComponent(id), { mode: 'no-cors' }).catch(() => {}); }
+
   async function revisar(intento) {
     if (!id) return fijar('📩', '¡Gracias!', 'Si completaste el pago, en unos minutos te llega el manual a tu correo.', true);
     try {
       const r = await fetch(api + '/transactions/' + encodeURIComponent(id)).then((x) => x.json());
-      const t = r.data; $('ref').textContent = 'Referencia: ' + t.reference;
-      if (t.status === 'APPROVED') { compraMeta(t); confirmar(); fijar('✅', '¡Pago aprobado!', 'Gracias por tu compra, ' + (t.customer_data && t.customer_data.full_name ? t.customer_data.full_name.split(' ')[0] : '') + '.', true); }
+      const t = r.data; $('ref').textContent = 'Referencia de tu compra: ' + t.reference;
+      const nombre = t.customer_data && t.customer_data.full_name ? t.customer_data.full_name.split(' ')[0] : '';
+      cliente = { email: t.customer_email, full_name: t.customer_data && t.customer_data.full_name, phone_number: t.customer_data && t.customer_data.phone_number };
+      if (t.status === 'APPROVED') { compraMeta(t); confirmar(); fijar('✅', '¡Pago aprobado!', 'Gracias por tu compra' + (nombre ? ', ' + nombre : '') + '. Tu manual ya va en camino a tu correo.', true); }
       else if (t.status === 'PENDING' && intento < 40) { if (intento === 0) fijar('⏳', 'Confirmando tu pago…', 'Tu banco está aprobando el pago. No cierres esta página.', false); setTimeout(() => revisar(intento + 1), 3000); }
-      else if (t.status === 'PENDING') fijar('⏳', 'Pago en proceso', 'Tu banco aún no confirma el pago. Cuando lo apruebe te llega el manual a tu correo.', false);
-      else fijar('⚠️', 'El pago no se completó', 'Estado: ' + t.status + '. No se hizo ningún cobro. Puedes intentarlo de nuevo.', false);
+      else if (t.status === 'PENDING') fijar('⏳', 'Pago en proceso', 'Tu banco aún no confirma el pago. Cuando lo apruebe, te llega el manual a tu correo.', false);
+      else fijar('⚠️', 'El pago no se completó', 'No se hizo ningún cobro. Puedes intentarlo de nuevo cuando quieras.', false, true);
     } catch (e) { confirmar(); fijar('📩', '¡Gracias!', 'Si tu pago fue aprobado, en unos minutos te llega el manual a tu correo.', true); }
   }
   revisar(0);
