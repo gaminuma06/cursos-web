@@ -96,12 +96,12 @@
 
   // Botón de pago: Apps Script firma el monto (el secreto de integridad nunca llega al navegador) y se abre el widget de Wompi
   // Pago: página de Wompi a pantalla completa (rápida y con scroll normal en celular y PC).
-  // La firma se pide a Apps Script apenas abre la landing, para que el clic sea instantáneo.
+  // La firma se pide al servidor propio (pagos.adanarias.com) apenas abre la landing, para que el clic sea instantáneo.
   let firma = null;
-  const pedirFirma = () => firma || (firma = fetch(V.appsScriptUrl + '?accion=firmar')
+  const pedirFirma = () => firma || (firma = fetch(V.pagosUrl + '/firmar?producto=' + (V.codigo || 'RP'))
     .then((x) => x.json()).then((r) => { if (!r.ok) throw new Error(r.error); return r; })
     .catch((e) => { firma = null; throw e; }));
-  if (V.appsScriptUrl) setTimeout(() => pedirFirma().catch(() => {}), 800);
+  if (V.pagosUrl) setTimeout(() => pedirFirma().catch(() => {}), 800);
 
   // Marcas de Meta del navegador: _fbc (clic en un anuncio) y _fbp (este navegador). Viajan con el pedido
   // para que la compra reportada desde el servidor quede ligada al anuncio, aunque el cliente no vuelva a "gracias".
@@ -116,8 +116,8 @@
     try {
       const m = marcas();
       if (!m.fbc && !m.fbp) return;
-      const q = new URLSearchParams({ accion: 'marcar', ref: ref, fbc: m.fbc, fbp: m.fbp, navegador: m.navegador });
-      fetch(V.appsScriptUrl + '?' + q, { keepalive: true, mode: 'no-cors' }).catch(() => {});
+      const q = new URLSearchParams({ ref: ref, fbc: m.fbc, fbp: m.fbp, navegador: m.navegador });
+      fetch(V.pagosUrl + '/marcar?' + q, { keepalive: true, mode: 'no-cors' }).catch(() => {});
     } catch (e) { /* nunca debe impedir el pago */ }
   }
 
@@ -132,7 +132,7 @@
 
   $('comprar').addEventListener('click', async () => {
     error('');
-    if (!V.wompiLlavePublica || !V.appsScriptUrl) return error('Los pagos se están configurando. Vuelve en unas horas o escríbenos.');
+    if (!V.wompiLlavePublica || !V.pagosUrl) return error('Los pagos se están configurando. Vuelve en unas horas o escríbenos.');
     if (window.fbq) fbq('track', 'InitiateCheckout', { value: precioActual(), currency: 'COP', content_name: 'Manual Visual de Riego por Goteo en Palma' });
     const b = $('comprar'); b.disabled = true; b.textContent = 'Abriendo el pago seguro…';
     try {

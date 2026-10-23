@@ -7,6 +7,7 @@ window.VENTA = {
   garantiaDias: 0,
   codigo: 'BH',                  // prefijo de la referencia en Wompi: así Apps Script sabe qué cobrar y qué entregar
   wompiLlavePublica: 'pub_prod_xbNAm4zEHLvll5b1dsYhcOzXerJ3Q4Xj',     // la misma cuenta de Wompi del manual
+  pagosUrl: 'https://pagos.adanarias.com',   // servidor propio: firma del pago, marcas de Meta y entregas
   appsScriptUrl: 'https://script.google.com/macros/s/AKfycbzle4V1Ezuqbux6pXXmFYg4tRufVM-09Ygzz-vThqQO2lNn_jFjKye5b9svrXEr0RlN/exec',   // el mismo Apps Script y la misma hoja de pedidos del manual
   redireccion: 'https://cursos.adanarias.com/balance_hidrico/gracias.html',
   correo: 'ingarias9006@gmail.com',
