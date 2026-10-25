@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<script>try { localStorage.setItem('ab_manual', 'b'); } catch (e) {} window.VARIANTE = 'b';</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manual Visual de Riego por Goteo en Palma de Aceite</title>
+<meta name="description" content="Diseña el riego por goteo de tu lote de palma de forma visual: 126 páginas ilustradas, un caso real de 10 ha paso a paso y 3 bonos (calculadora Excel, formatos de registro y guía de campo).">
+<meta property="og:title" content="Manual Visual de Riego por Goteo en Palma de Aceite">
+<meta property="og:description" content="126 páginas ilustradas + calculadora Excel + formatos + guía de campo. Acceso digital inmediato.">
+<meta property="og:image" content="../manual_riego_goteo_palma/img/heroe.webp">
+<script>
+  // Animaciones: se preparan antes de pintar. Si venta.js no llega en 3 s, se muestra todo igual.
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.documentElement.classList.add("anim");
+    setTimeout(function () { if (!window.ventaLista) document.documentElement.classList.remove("anim"); }, 3000);
+  }
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://script.google.com">
+<link rel="preconnect" href="https://checkout.wompi.co">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Open+Sans:wght@400;600;700&family=Source+Serif+4:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root { --verde:#1F4D2B; --naranja:#E0672B; --tinta:#1d1d1d; --gris:#666; }
+  * { box-sizing:border-box; }
+  html, body { background:#fff; }
+  body { margin:0; color:var(--tinta); font:17px/1.5 'Open Sans', system-ui, sans-serif; }
+  img { max-width:100%; height:auto; display:block; }
+  .col { max-width:720px; margin:0 auto; padding:0 16px; }
+
+  /* Contador: barra coral translúcida que flota sobre el contenido */
+  .barra { position:fixed; top:0; left:0; right:0; z-index:10; background:rgba(242, 92, 92, .78);
+           -webkit-backdrop-filter:blur(2px); backdrop-filter:blur(2px); color:#fff; }
+  .barra .col { display:flex; align-items:center; gap:14px; padding-top:12px; padding-bottom:12px; }
+  .reloj { font:700 clamp(24px, 6vw, 32px)/1 'Open Sans', sans-serif; letter-spacing:.03em; white-space:nowrap; }
+  .barra svg { flex:none; }
+  .barra p { margin:0; font-size:15px; line-height:1.25; min-width:0; }
+  main { padding-top:92px; }
+  @media (max-width:560px) { .barra .col { gap:10px; } .barra p { font-size:13px; } main { padding-top:104px; } }
+  html { scroll-behavior:smooth; } #compra { scroll-margin-top:110px; }
+
+  /* Tarjetas de imagen (héroe y bonos), como las de la referencia */
+  .tarjeta { border-radius:10px; overflow:hidden; box-shadow:0 1px 10px rgba(0,0,0,.12); background:#fff; margin:16px 0 28px; }
+  .tarjeta .titulo { padding:22px 16px 6px; text-align:center; }
+  .tarjeta h1, .tarjeta h2 { margin:0; font-family:'Oswald', sans-serif; text-transform:uppercase; line-height:1.02; letter-spacing:.005em; }
+  .tarjeta h1 { font-size:clamp(30px, 8vw, 54px); color:#1b2a22; }
+  .tarjeta h1 span { display:block; color:var(--naranja); }
+  .tarjeta .regla { height:3px; width:82%; margin:10px auto 8px; background:#1b2a22; }
+  .tarjeta .sub { margin:0; font-weight:600; font-size:clamp(14px, 3.4vw, 17px); }
+  .rasgos { display:grid; grid-template-columns:repeat(3,1fr); margin:4px 14px 0; border:1px solid #e3e3e3; border-radius:8px; background:#fff; }
+  .rasgos div { display:flex; gap:8px; align-items:center; padding:10px 8px; font:600 clamp(11px, 2.8vw, 14px)/1.15 'Oswald', sans-serif; text-transform:uppercase; color:#222; }
+  .rasgos div + div { border-left:1px solid #e3e3e3; }
+  .rasgos svg { flex:none; }
+  .banda { margin-top:14px; background:var(--verde); color:#fff; text-align:center; padding:14px 10px; font:700 clamp(20px, 5.6vw, 32px)/1 'Oswald', sans-serif;
+           text-transform:uppercase; display:block;
+           clip-path:polygon(1.5% 8%, 99% 0, 100% 90%, 0 100%); }
+  a.banda { color:#fff; text-decoration:none; cursor:pointer; transition:filter .2s ease; } a.banda:hover { filter:brightness(1.15); }
+  .cta-portada { text-align:center; margin:-6px 0 34px; }
+  .cta-precio { margin:0 0 12px; font-size:clamp(17px, 4.4vw, 20px); }
+  .cta-precio s { color:#999; margin-right:6px; } .cta-precio b { color:#16a34a; font-size:1.2em; } .cta-inc { color:#555; }
+  .cta-nota { margin:12px 0 0; font-size:14px; color:#666; }
+  .banda i { width:1.25em; height:1.25em; border-radius:50%; background:var(--naranja); display:inline-grid; place-items:center; font-style:normal; font-size:.8em;
+             vertical-align:middle; margin:-.2em .5em 0 0; }
+  .banda b { color:#F6B26B; }
+  .bonos h2 { font-size:clamp(28px, 7.6vw, 48px); color:#1b2a22; }
+  .bonos h2 span { color:var(--naranja); }
+  .regla3 { height:4px; width:74%; margin:10px auto 0; background:linear-gradient(90deg, var(--verde) 0 33%, var(--naranja) 33% 66%, var(--verde) 66%); }
+  .etiquetas { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:0 14px; text-align:center; font-size:13.5px; line-height:1.25; }
+  .etiquetas b { display:block; font:700 17px 'Oswald', sans-serif; color:var(--verde); }
+
+  /* Dolores, logros y para quién */
+  .dolor { margin:0 0 28px; }
+  .dolor h2 { font:700 clamp(24px, 6vw, 34px)/1.1 'Oswald', sans-serif; text-transform:uppercase; text-align:center; margin:0 0 16px; color:#1b2a22; }
+  .dolor h2.solucion { color:var(--verde); margin-top:30px; }
+  .dolores, .logros { list-style:none; margin:0; padding:0; display:grid; gap:12px; }
+  .dolores li { background:#FDF1EF; border-left:5px solid #E0533D; border-radius:8px; padding:12px 14px 12px 46px; position:relative; }
+  .dolores li::before { content:'✗'; position:absolute; left:14px; top:10px; color:#E0533D; font-weight:700; font-size:20px; }
+  .dolores b, .logros b { color:#1b2a22; }
+  .logros li { background:#EEF6EF; border-left:5px solid #16a34a; border-radius:8px; padding:12px 14px 12px 46px; position:relative; }
+  .logros li::before { content:'✓'; position:absolute; left:14px; top:10px; color:#16a34a; font-weight:700; font-size:20px; }
+  .para { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:22px; }
+  .para div { border:1.5px solid #e3e3e3; border-radius:10px; padding:12px; font-size:15px; text-align:center; }
+  .para b { display:block; font:700 18px 'Oswald', sans-serif; color:var(--naranja); text-transform:uppercase; }
+  .cta-wrap { text-align:center; margin:24px 0 0; }
+  .cta { display:inline-block; background:#16a34a; color:#fff; text-decoration:none; border-radius:8px; padding:15px 26px; font:700 clamp(18px, 4.6vw, 22px) 'Open Sans', sans-serif;
+         box-shadow:0 4px 0 #0f7a36; }
+  @media (max-width:560px) { .para { grid-template-columns:1fr; } }
+
+  /* Contenido */
+  .boton-borde { border:2px solid var(--tinta); border-radius:8px; text-align:center; padding:12px; font:700 clamp(20px, 5vw, 26px) 'Open Sans', sans-serif; margin:0 0 22px; }
+  .contiene { border:2px solid var(--tinta); border-radius:8px; padding:22px 28px; }
+  .contiene h3 { margin:14px 0 4px; font:700 clamp(17px, 4.2vw, 20px)/1.3 'Open Sans', sans-serif; text-transform:uppercase; }
+  .contiene h3:first-child { margin-top:0; }
+  .contiene ul { margin:0 0 0 30px; padding-left:18px; }
+  .contiene li { margin:3px 0; }
+
+  /* Compra */
+  .compra { border:1.5px solid #d6d6d6; border-radius:22px; padding:26px 26px 30px; margin:28px 0 0; }
+  .prod { display:grid; grid-template-columns:130px 1fr; gap:18px; align-items:center; }
+  .prod h3 { margin:0; font:600 clamp(20px, 5vw, 27px)/1.25 'Source Serif 4', Georgia, serif; }
+  .autor { color:var(--gris); }
+  .precio { font:700 26px 'Open Sans', sans-serif; margin-top:4px; }
+  .precio s { color:#999; font-size:17px; font-weight:400; margin-right:8px; }
+  .desc { display:inline-block; background:#16a34a; color:#fff; border-radius:4px; padding:1px 7px; font-size:14px; vertical-align:middle; }
+  .compra h4 { font:600 clamp(22px, 5vw, 27px) 'Source Serif 4', Georgia, serif; margin:30px 0 8px; }
+  label { display:block; margin:16px 0 8px; }
+  input[type=email], input[type=text], input[type=tel] { width:100%; padding:14px 16px; font:inherit; border:1.5px solid #c8c8c8; border-radius:6px; }
+  input:focus { outline:2px solid #16a34a; border-color:transparent; }
+  .ayuda { font-size:14px; color:var(--gris); margin-top:6px; }
+  .pasos-compra { list-style:none; padding:0; margin:18px 0 0; display:grid; gap:6px; color:#333; }
+  .pasos-compra b { color:#16a34a; }
+  .medios { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; justify-content:center; }
+  .medios span { border:1.5px solid #ddd; border-radius:20px; padding:4px 12px; font-size:14px; font-weight:600; }
+  .comprar .ico-w { font-size:.8em; }
+  .metodo { border:1.5px solid #c8c8c8; border-radius:10px; padding:16px 18px; display:flex; align-items:center; gap:14px; margin-top:12px; font-weight:600; }
+  .metodo.sel { border:2px solid #111; }
+  .metodo .radio { width:24px; height:24px; border-radius:50%; border:2px solid #999; flex:none; }
+  .metodo.sel .radio { border-color:#111; box-shadow:inset 0 0 0 5px #fff; background:#111; }
+  .metodo small { display:block; font-weight:400; color:var(--gris); }
+  .pedido { border:1.5px solid #c8c8c8; border-radius:8px; padding:14px 16px; display:flex; justify-content:space-between; gap:12px; font-weight:700; }
+  .pedido .inc { display:block; font-weight:400; font-size:14px; color:var(--gris); }
+  .comprar { width:100%; margin-top:22px; background:#16a34a; color:#fff; border:0; border-radius:6px; padding:16px; font:700 clamp(22px, 5vw, 28px) 'Open Sans', sans-serif; cursor:pointer; }
+  .comprar:disabled { opacity:.6; cursor:wait; }
+  .seguro { text-align:center; color:var(--gris); margin-top:14px; }
+  .seguro b { color:#2c2a74; font-size:19px; }
+  .error { color:#b42318; font-weight:600; margin-top:10px; display:none; }
+
+  /* Pie negro y confianza */
+  .legal { background:#000; color:#fff; padding:30px 26px 40px; border-radius:0 0 22px 22px; margin:0 0 0; font-size:16px; }
+  .legal a { color:#fff; }
+  .sello { border:1px solid #e5e5e5; border-radius:12px; margin:22px 0; padding:18px; display:grid; grid-template-columns:auto 1fr; gap:18px; align-items:center; }
+  .sello b { display:block; font:700 20px 'Oswald', sans-serif; }
+  .confianza { display:grid; gap:18px; margin:0 0 50px; }
+  .confianza div { border:2px solid #1d6fa5; border-radius:12px; padding:18px 22px; display:flex; gap:22px; align-items:center; color:#0f4c75; }
+  .confianza b { display:block; font-size:clamp(19px, 4.6vw, 23px); font-style:italic; }
+  .confianza span { font-style:italic; color:#1d6fa5; }
+  @media (max-width:560px) {
+    .rasgos { grid-template-columns:1fr; } .rasgos div + div { border-left:0; border-top:1px solid #e3e3e3; }
+    .prod { grid-template-columns:86px 1fr; gap:14px; } .compra { padding:20px 16px 24px; border-radius:16px; }
+    .legal { padding:24px 16px 32px; } .contiene { padding:18px 16px; } .contiene ul { margin-left:6px; }
+    .etiquetas { font-size:12px; } .etiquetas b { font-size:15px; }
+  }
+
+  /* Animaciones sutiles (se apagan si el usuario pidió menos movimiento) */
+  .anim main > section:not(.visible), .anim main > .boton-borde:not(.visible), .anim main > .cta-portada:not(.visible), .anim .dolores li:not(.visible), .anim .logros li:not(.visible),
+  .anim .para div:not(.visible), .anim .confianza div:not(.visible) { opacity:0; translate:0 22px; }
+  main > section, main > .boton-borde, main > .cta-portada, .dolores li, .logros li, .para div, .confianza div { transition:opacity .7s ease, translate .7s ease, transform .25s ease, box-shadow .25s ease; }
+  @keyframes flotar { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-6px); } }
+  @keyframes latido { 0%,100% { transform:scale(1); box-shadow:0 0 0 0 rgba(22,163,74,.45); } 50% { transform:scale(1.02); box-shadow:0 0 0 10px rgba(22,163,74,0); } }
+  @keyframes brillo { from { background-position:-200% 0; } to { background-position:200% 0; } }
+  @keyframes tic { 0%,90%,100% { transform:rotate(0); } 93% { transform:rotate(-10deg); } 96% { transform:rotate(10deg); } }
+  .tarjeta > img { animation:flotar 6s ease-in-out infinite; }
+  .comprar, .cta { animation:latido 2.4s ease-in-out infinite; }
+  .banda { background-image:linear-gradient(100deg, transparent 30%, rgba(255,255,255,.18) 50%, transparent 70%); background-size:200% 100%; animation:brillo 4.5s linear infinite; }
+  .barra svg { animation:tic 1s linear infinite; transform-origin:60% 55%; }
+  .dolores li:hover, .logros li:hover, .para div:hover, .confianza div:hover { transform:translateY(-3px); box-shadow:0 6px 16px rgba(0,0,0,.08); }
+  .comprar:hover, .cta:hover { filter:brightness(1.07); }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation:none !important; transition:none !important; } } }
+</style>
+<!-- Píxel de Meta (Surco Curso – Web) -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '3604674439689537');
+fbq('track', 'PageView');
+fbq('track', 'ViewContent', { content_name: 'Manual Visual de Riego por Goteo en Palma', content_type: 'product', value: 39900, currency: 'COP' });
+</script>
+<noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=3604674439689537&ev=PageView&noscript=1"></noscript>
+</head>
+<body>
+
+<div class="barra" id="barra">
+  <div class="col">
+    <div class="reloj" id="reloj">--:--:--</div>
+    <svg width="44" height="44" viewBox="0 0 44 44" fill="none" stroke="#fff" stroke-width="2"><circle cx="26" cy="25" r="14"/><path d="M26 16v9l6 4M21 6h10M26 6v5M33 9l3-3M3 20h9M5 26h7M7 32h7"/></svg>
+    <p id="barra-txt">El precio de lanzamiento termina en</p>
+  </div>
+</div>
+
+<main class="col">
+
+  <section class="tarjeta">
+    <div class="titulo">
+      <h1>Diseña el riego por goteo de tu palma <span>de forma visual</span></h1>
+      <div class="regla"></div>
+      <p class="sub">Una guía práctica e ilustrada, de la fuente de agua al último gotero.</p>
+    </div>
+    <img src="../manual_riego_goteo_palma/img/heroe.webp" width="1200" height="896" alt="Manual Visual de Riego por Goteo en Palma de Aceite, en libro y en tablet, con páginas de muestra">
+    <div class="rasgos">
+      <div><svg width="34" height="34" viewBox="0 0 34 34"><path d="M4 26h26" stroke="#8B6B43" stroke-width="3"/><path d="M10 26c0-6 3-9 7-9s7 3 7 9" fill="#5A8F2E"/><path d="M17 4c-3 4-5 6-5 9a5 5 0 0 0 10 0c0-3-2-5-5-9z" fill="#2E7FB8"/></svg>Datos de campo y demanda de agua</div>
+      <div><svg width="34" height="34" viewBox="0 0 34 34"><rect x="3" y="14" width="18" height="7" rx="2" fill="#333"/><circle cx="25" cy="17" r="6" fill="#2E7FB8"/><path d="M8 21v6M16 21v6" stroke="#333" stroke-width="2"/></svg>Goteros, tuberías y bombeo</div>
+      <div><svg width="34" height="34" viewBox="0 0 34 34"><rect x="4" y="4" width="20" height="24" rx="2" fill="none" stroke="#1F4D2B" stroke-width="2"/><circle cx="24" cy="24" r="7" fill="#16a34a"/><path d="M21 24l2 2 4-4" stroke="#fff" stroke-width="2" fill="none"/></svg>Planos y comprobación hidráulica</div>
+    </div>
+    <a class="banda" href="#compra"><i>⬇</i>Acceso digital inmediato</a>
+  </section>
+
+  <div class="cta-portada">
+    <p class="cta-precio">Hoy <span id="precio-cta"></span> <span class="cta-inc">· incluye los 3 bonos</span></p>
+    <a class="cta" href="#compra">Quiero mi manual ahora</a>
+    <p class="cta-nota">🔒 Pago seguro con Wompi · Te llega al correo en minutos</p>
+  </div>
+
+  <section class="dolor">
+    <h2>¿Te suena alguno de estos problemas?</h2>
+    <ul class="dolores">
+      <li><b>Te pidieron el diseño del riego y no sabes por dónde empezar.</b> Tu jefe, tu cliente o tu profesor necesita el proyecto con cálculos, plano y materiales, y el plazo corre.</li>
+      <li><b>No sabes cuántos litros ni cuántas horas regar.</b> Riegas a ojo, gastas agua y energía, y aun así la palma no recibe lo que pide.</li>
+      <li><b>Te venden la bomba y los tubos "por si acaso".</b> Sin saber calcular, terminas pagando equipos más grandes y caros de lo que tu lote necesita.</li>
+      <li><b>Las palmas del final del lote reciben menos agua.</b> Con presión dispareja unas palmas se ahogan y otras pasan sed, y nadie sabe por qué.</li>
+      <li><b>La sequía te cobra la cosecha dos años después.</b> El estrés del verano se convierte en menos racimos casi dos años más tarde, cuando ya no hay nada que hacer.</li>
+      <li><b>Los libros de riego son de hortalizas y están llenos de fórmulas.</b> Nada te explica, paso a paso y con dibujos, cómo se diseña para palma.</li>
+    </ul>
+    <h2 class="solucion">Con este manual vas a poder</h2>
+    <ul class="logros">
+      <li>Entregar a tu jefe, a tu cliente o a tu profesor un <b>diseño completo</b>: cálculos, plano, plan de turnos y cuadro de materiales.</li>
+      <li>Calcular cuántos <b>litros por palma al día</b> y cuántas <b>horas de riego</b> necesita tu lote.</li>
+      <li>Hacer <b>todos los cálculos del diseño</b>: demanda, pérdidas de presión, diámetros, bomba, motor y uniformidad, con ejemplos resueltos.</li>
+      <li>Elegir <b>goteros, mangueras, tuberías, filtros y bomba</b> con números, y saber <b>si te están vendiendo de más</b>.</li>
+      <li>Comprobar que <b>todas las palmas reciban la misma agua</b> antes de comprar un solo tubo.</li>
+      <li>Regar en el <b>mes más seco</b> con turnos que tu pozo sí alcanza, para que la sequía no te cobre la cosecha.</li>
+      <li>Aprender <b>paso a paso, con dibujos y un caso real de palma</b>, e instalar con listas de verificación.</li>
+    </ul>
+    <div class="para">
+      <div><b>Palmicultores</b>que quieren regar su lote sin depender de nadie.</div>
+      <div><b>Ingenieros y técnicos</b>que diseñan o revisan proyectos de riego.</div>
+      <div><b>Administradores</b>que deben aprobar cotizaciones y presupuestos.</div>
+      <div><b>Estudiantes</b>de agronomía e ingeniería con un proyecto o trabajo de riego.</div>
+    </div>
+    <p class="cta-wrap"><a class="cta" href="#compra">Quiero el manual con sus 3 bonos</a></p>
+  </section>
+
+  <div class="boton-borde">Esto es lo que contiene</div>
+  <section class="contiene">
+    <h3>Módulo 1. La palma de aceite y el agua</h3>
+    <ul><li>La sequía de hoy se cosecha en dos años: efecto del déficit hídrico.</li><li>Zonas palmeras de Colombia y su régimen de lluvias.</li><li>Sistema radical: dónde hay que mojar.</li><li>Demanda de agua según la etapa de la palma.</li><li>Goteo, microaspersión o gravedad.</li><li>El suelo, el tanque de agua de la palma.</li></ul>
+    <h3>Módulo 2. Datos de campo y bases del proyecto</h3>
+    <ul><li>Topografía y marco de plantación en tresbolillo.</li><li>Suelo: textura, infiltración y calicata.</li><li>Fuente de agua: caudal, niveles y calidad.</li><li>Datos de clima: dónde conseguirlos.</li><li>Permisos, energía y plano base.</li></ul>
+    <h3>Módulo 3. Demanda de agua y programación del riego</h3>
+    <ul><li>ETo, coeficiente de cultivo y balance hídrico mes a mes.</li><li>Lámina neta y bruta: de milímetros a litros por palma.</li><li>Frecuencia, tiempo de riego y número de turnos.</li></ul>
+    <h3>Módulo 4. Selección de goteros y caudales</h3>
+    <ul><li>La presión se mide en metros.</li><li>Tipos de goteros y cómo leer su ficha técnica real.</li><li>Bulbo húmedo y puntos de goteo por palma.</li></ul>
+    <h3>Módulo 5. Diseño de laterales</h3>
+    <ul><li>Trazado y longitud de los laterales.</li><li>Pérdidas por fricción y factor de Christiansen.</li><li>Perfil de presión en subida y bajada; regla del 20 %.</li><li>Longitud máxima del lateral, palma por palma.</li></ul>
+    <h3>Módulo 6. Sectores y red de distribución</h3>
+    <ul><li>¿Me alcanza el agua del pozo? Sectores y turnos.</li><li>Principal, secundaria, múltiple y lateral: dónde va cada una.</li><li>Elegir el diámetro con la tabla real de pérdidas.</li><li>Golpe de ariete, ventosas y plano hidráulico.</li><li>Plan de turnos.</li><li>Página especial: lleva tu diseño a campo con la app Lindero (gratis).</li></ul>
+    <h3>Módulo 7. Cabezal: filtrado y fertirriego</h3>
+    <ul><li>Hidrociclón, arena, malla y anillas.</li><li>Dimensionamiento y retrolavado.</li><li>Inyección de fertilizantes, medidores y manómetros.</li></ul>
+    <h3>Módulo 8. Selección del equipo de bombeo</h3>
+    <ul><li>Altura dinámica total y presupuesto de presión.</li><li>Cómo leer la curva de una bomba y elegirla.</li><li>NPSH y cavitación; potencia, motor y variador.</li></ul>
+    <h3>Módulo 9. Comprobación hidráulica y uniformidad</h3>
+    <ul><li>Balance de presiones bloque por bloque.</li><li>Caudal esperado en los goteros y uniformidad.</li><li>¿Y si no cumple? Qué cambiar. Hoja resumen para aprobar.</li></ul>
+    <h3>Módulo 10. Instalación y puesta en marcha</h3>
+    <ul><li>Secuencia de obra: bomba, cabezal, tuberías y válvulas.</li><li>Mangueras enterradas, microtubos y goteros.</li><li>Lavado, prueba de presión, aforo y lista final.</li></ul>
+    <h3>Módulo 11. Caso práctico en acción</h3>
+    <ul><li>El diseño completo de un lote de 10 ha en 13 pasos.</li><li>Plano final, plan de riego y cuadro de materiales.</li><li>Hoja de trabajo "Mi diseño" para tu propio lote.</li></ul>
+    <h3>Módulo 12. Tablas de referencia</h3>
+    <ul><li>Fricción en manguera y PVC; laterales según la pendiente.</li><li>ETo por zona palmera, filtros, motores y válvulas.</li><li>Lotes irregulares y glosario.</li></ul>
+  </section>
+
+  <section class="tarjeta bonos" style="margin-top:28px">
+    <div class="titulo">
+      <div class="regla3" style="margin:0 auto 12px; width:60%"></div>
+      <h2>Manual visual <span>+3</span> bonos exclusivos</h2>
+    </div>
+    <img src="../manual_riego_goteo_palma/img/bonos.webp" width="1200" height="896" alt="El manual con sus 3 bonos: calculadora, formatos de registro y guía de campo" loading="lazy">
+    <div class="etiquetas">
+      <div><b>BONO 1</b>Calculadora de diseño en Excel</div>
+      <div><b>BONO 2</b>Formatos de lluvia, evaporación y balance</div>
+      <div><b>BONO 3</b>Guía de campo: medir, probar y verificar</div>
+    </div>
+    <div class="banda">¡Incluidos <b>gratis</b> con tu compra!</div>
+  </section>
+
+  <section class="compra" id="compra">
+    <div class="prod">
+      <img src="../manual_riego_goteo_palma/img/portada.webp" alt="" width="130" height="168">
+      <div>
+        <h3>Manual Visual de Riego por Goteo en Palma de Aceite</h3>
+        <div class="autor">Autor: Ing. Adán A. Arias</div>
+        <div class="precio" id="precio"></div>
+        <div class="ayuda">Pago único en pesos colombianos. Incluye los 3 bonos.</div>
+      </div>
+    </div>
+
+    <div id="form">
+      <h4>Detalle del pedido</h4>
+      <div class="pedido"><span>Manual Visual de Riego por Goteo en Palma de Aceite<span class="inc">+ Bono 1 calculadora · Bono 2 formatos · Bono 3 guía de campo</span></span><span id="precio2"></span></div>
+      <button class="comprar" id="comprar" type="button"><span class="ico-w">🔒</span> Pagar con Wompi</button>
+      <div class="error" id="error"></div>
+      <ul class="pasos-compra">
+        <li><b>1.</b> Wompi te pide tu correo, nombre y celular, y eliges cómo pagar.</li>
+        <li><b>2.</b> Pagas con tarjeta, PSE, Nequi o botón Bancolombia.</li>
+        <li><b>3.</b> En minutos te llegan a tu correo el manual y los 3 bonos.</li>
+      </ul>
+      <div class="medios"><span>💳 Tarjeta</span><span>🏦 PSE</span><span>📱 Nequi</span><span>🟡 Bancolombia</span></div>
+    </div>
+  </section>
+  <section class="legal">
+    <p id="contacto" style="margin-top:0"></p>
+    <p>Al dar clic en "Comprar ahora" aceptas los <a href="../manual_riego_goteo_palma/terminos.html">términos y condiciones</a>. El manual es para uso personal: cada copia lleva el nombre del comprador.</p>
+    <p style="margin-bottom:0">© <span id="anio"></span> Adán A. Arias · cursos.adanarias.com</p>
+  </section>
+
+  <section class="sello">
+    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="1.8"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><rect x="9" y="11" width="6" height="5" rx="1"/><path d="M10 11V9.5a2 2 0 0 1 4 0V11"/></svg>
+    <div><b>PAGO 100 % SEGURO</b>Procesado por Wompi, la pasarela de Bancolombia. Tus datos de pago nunca pasan por esta página.</div>
+  </section>
+
+  <section class="confianza">
+    <div><svg width="58" height="58" viewBox="0 0 24 24" fill="none" stroke="#1d6fa5" stroke-width="1.5"><path d="M12 4l1.8 3.7 4 .6-2.9 2.8.7 4L12 13.2 8.4 15.1l.7-4-2.9-2.8 4-.6z"/><path d="M5 9c-1 3 0 7 3 9M19 9c1 3 0 7-3 9"/></svg><p style="margin:0"><b>Privacidad</b><span>Tu información está 100 % protegida</span></p></div>
+    <div><svg width="58" height="58" viewBox="0 0 24 24" fill="none" stroke="#1d6fa5" stroke-width="1.5"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg><p style="margin:0"><b>Compra segura</b><span>Ambiente seguro y autenticado</span></p></div>
+    <div><svg width="58" height="58" viewBox="0 0 24 24" fill="none" stroke="#1d6fa5" stroke-width="2"><path d="M3 12l6 6L21 6"/></svg><p style="margin:0"><b>Contenido verificado</b><span>Cálculos revisados con un caso real de 10 ha</span></p></div>
+  </section>
+</main>
+
+<script src="../manual_riego_goteo_palma/config.js?v=2610252215"></script>
+<script src="../manual_riego_goteo_palma/venta.js?v=2610252215"></script>
+<style>
+  .barra-compra { position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); background: #fff; box-shadow: 0 -4px 18px rgba(0,0,0,.15); transition: transform .25s; }
+  .barra-compra.oculta { transform: translateY(110%); }
+  .barra-compra .bc-precio { font-size: 15px; line-height: 1.2; color: #333; }
+  .barra-compra .bc-precio b { display: block; font-size: 19px; color: #1b5e20; }
+  .barra-compra button { flex: 1; max-width: 260px; border: 0; border-radius: 10px; padding: 14px 12px; font-size: 17px; font-weight: 700; color: #fff; background: #2e7d32; cursor: pointer; }
+  body { padding-bottom: 84px; }
+</style>
+<div class="barra-compra" id="barra-compra">
+  <div class="bc-precio">Manual + 3 bonos<b id="precio-barra-b">$39.900</b></div>
+  <button type="button" id="comprar-barra">🔒 Comprar ahora</button>
+</div>
+<script>
+  // Barra fija: abre el mismo pago que el botón principal. Se esconde cuando el botón principal está a la vista.
+  (function () {
+    var barra = document.getElementById('barra-compra'), comprar = document.getElementById('comprar');
+    document.getElementById('comprar-barra').addEventListener('click', function () { comprar.click(); });
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { barra.classList.toggle('oculta', es[0].isIntersecting); }).observe(comprar);
+    setInterval(function () { var p = document.getElementById('precio-linea') || document.getElementById('precio2'); var t = window.VENTA && window.VENTA.precio; if (t) document.getElementById('precio-barra-b').textContent = '$' + t.toLocaleString('es-CO'); }, 1500);
+  })();
+</script>
+</body>
+</html>

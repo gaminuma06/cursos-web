@@ -204,7 +204,7 @@ fbq('track', 'PageView');
   function compraMeta(t) {
     let marcadas = []; try { marcadas = JSON.parse(localStorage.getItem('compras_meta') || '[]'); } catch (e) {}
     if (!window.fbq || marcadas.indexOf(t.id) >= 0) return;
-    fbq('track', 'Purchase', { value: t.amount_in_cents / 100, currency: 'COP', content_name: 'Manual Visual de Riego por Goteo en Palma', content_type: 'product' }, { eventID: t.reference });
+    fbq('track', 'Purchase', { value: t.amount_in_cents / 100, currency: 'COP', content_name: 'Manual Visual de Riego por Goteo en Palma', content_type: 'product', variante: (function () { try { return localStorage.getItem('ab_manual') || 'a'; } catch (e) { return 'a'; } })() }, { eventID: t.reference });
     try { marcadas.push(t.id); localStorage.setItem('compras_meta', JSON.stringify(marcadas)); } catch (e) {}
   }
   // El cliente volvió del pago: el servidor propio verifica la transacción con Wompi y entrega
