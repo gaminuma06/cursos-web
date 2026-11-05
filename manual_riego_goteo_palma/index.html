@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Manual Visual de Riego por Goteo en Palma de Aceite</title>
-<meta name="description" content="Diseña el riego por goteo de tu lote de palma de forma visual: 126 páginas ilustradas, un caso real de 10 ha paso a paso y 3 bonos (calculadora Excel, formatos de registro y guía de campo).">
+<meta name="description" content="Diseña el riego por goteo de tu lote de palma de forma visual: 141 páginas ilustradas, un caso real de 10 ha paso a paso y 4 bonos (calculadora Excel, formatos de registro, guía de campo y kit QGIS + EPANET).">
 <meta property="og:title" content="Manual Visual de Riego por Goteo en Palma de Aceite">
 <meta property="og:description" content="126 páginas ilustradas + calculadora Excel + formatos + guía de campo. Acceso digital inmediato.">
 <meta property="og:image" content="img/heroe.webp">
@@ -156,6 +156,32 @@
   .dolores li:hover, .logros li:hover, .para div:hover, .confianza div:hover { transform:translateY(-3px); box-shadow:0 6px 16px rgba(0,0,0,.08); }
   .comprar:hover, .cta:hover { filter:brightness(1.07); }
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation:none !important; transition:none !important; } } }
+
+ .nada-sirve-de-tope { }
+ .contiene .etapa { margin:22px 0 6px; padding:8px 12px; background:var(--verde); color:#fff; border-radius:6px; font:700 clamp(16px,4vw,19px)/1.25 'Oswald',sans-serif; text-transform:uppercase; }
+ .contiene .etapa:first-child { margin-top:0; }
+ .contiene .etapa small { display:block; font:400 14px 'Open Sans',sans-serif; text-transform:none; opacity:.9; }
+ .etiquetas { grid-template-columns:repeat(2,1fr); gap:12px; }
+ .etiquetas small { display:block; color:#555; font-size:12.5px; margin-top:4px; }
+ .muestra, .autor-bloque, .faq { margin:34px 0 0; }
+ .muestra h2, .autor-bloque h2, .faq h2 { font:700 clamp(22px,5.6vw,30px)/1.1 'Oswald',sans-serif; text-transform:uppercase; text-align:center; color:#1b2a22; margin:0 0 16px; }
+ .paginas { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+ .paginas figure { margin:0; } .paginas img { border-radius:6px; box-shadow:0 2px 10px rgba(0,0,0,.15); }
+ .paginas figcaption { text-align:center; font-size:14px; color:var(--gris); margin-top:6px; }
+ .autor-bloque { display:grid; grid-template-columns:140px 1fr; gap:18px; align-items:center; border:1.5px solid #e3e3e3; border-radius:12px; padding:18px; }
+ .autor-bloque img { border-radius:50%; } .autor-bloque h2 { text-align:left; } .autor-bloque p { margin:0 0 10px; font-size:16px; }
+ .faq details { border:1.5px solid #e3e3e3; border-radius:8px; padding:12px 16px; margin-bottom:10px; }
+ .faq summary { font-weight:700; cursor:pointer; } .faq details p { margin:10px 0 0; }
+ @media (max-width:560px) { .autor-bloque { grid-template-columns:1fr; text-align:center; } .autor-bloque img { width:120px; margin:0 auto; } .autor-bloque h2 { text-align:center; } .barra .col { padding-top:7px; padding-bottom:7px; } main { padding-top:84px; } }
+ /* Animaciones v2: llamar la atencion un momento y quedarse quietas */
+ .tarjeta > img { animation:none; }
+ .banda { animation:none; }
+ .comprar, .cta { animation:latido 2.4s ease-in-out 3; transition:transform .15s ease-out; }
+ .comprar:active, .cta:active { transform:scale(.97); }
+ .barra svg { animation:tic 5s linear infinite; }
+ main > section, main > .boton-borde, main > .cta-portada, .dolores li, .logros li, .para div, .confianza div { transition:opacity .45s cubic-bezier(.23,1,.32,1), translate .45s cubic-bezier(.23,1,.32,1), transform .2s ease, box-shadow .2s ease; }
+ .dolores li:nth-child(2), .logros li:nth-child(2) { transition-delay:.05s; } .dolores li:nth-child(3), .logros li:nth-child(3) { transition-delay:.1s; } .dolores li:nth-child(4), .logros li:nth-child(4) { transition-delay:.15s; }
+ @media (hover:none) { .dolores li:hover, .logros li:hover, .para div:hover, .confianza div:hover { transform:none; box-shadow:none; } }
 </style>
 <!-- Píxel de Meta (Surco Curso – Web) -->
 <script>
@@ -184,21 +210,21 @@ fbq('track', 'ViewContent', { content_name: 'Manual Visual de Riego por Goteo en
     <div class="titulo">
       <h1>Diseña el riego por goteo de tu palma <span>de forma visual</span></h1>
       <div class="regla"></div>
-      <p class="sub">Una guía práctica e ilustrada, de la fuente de agua al último gotero.</p>
+      <p class="sub">En 2 etapas, de la fuente de agua al último gotero: cálculos, planos en QGIS y simulación en EPANET.</p>
     </div>
     <img src="img/heroe.webp" width="1200" height="896" alt="Manual Visual de Riego por Goteo en Palma de Aceite, en libro y en tablet, con páginas de muestra">
     <div class="rasgos">
-      <div><svg width="34" height="34" viewBox="0 0 34 34"><path d="M4 26h26" stroke="#8B6B43" stroke-width="3"/><path d="M10 26c0-6 3-9 7-9s7 3 7 9" fill="#5A8F2E"/><path d="M17 4c-3 4-5 6-5 9a5 5 0 0 0 10 0c0-3-2-5-5-9z" fill="#2E7FB8"/></svg>Datos de campo y demanda de agua</div>
-      <div><svg width="34" height="34" viewBox="0 0 34 34"><rect x="3" y="14" width="18" height="7" rx="2" fill="#333"/><circle cx="25" cy="17" r="6" fill="#2E7FB8"/><path d="M8 21v6M16 21v6" stroke="#333" stroke-width="2"/></svg>Goteros, tuberías y bombeo</div>
-      <div><svg width="34" height="34" viewBox="0 0 34 34"><rect x="4" y="4" width="20" height="24" rx="2" fill="none" stroke="#1F4D2B" stroke-width="2"/><circle cx="24" cy="24" r="7" fill="#16a34a"/><path d="M21 24l2 2 4-4" stroke="#fff" stroke-width="2" fill="none"/></svg>Planos y comprobación hidráulica</div>
+      <div><svg width="34" height="34" viewBox="0 0 34 34"><path d="M4 26h26" stroke="#8B6B43" stroke-width="3"/><path d="M10 26c0-6 3-9 7-9s7 3 7 9" fill="#5A8F2E"/><path d="M17 4c-3 4-5 6-5 9a5 5 0 0 0 10 0c0-3-2-5-5-9z" fill="#2E7FB8"/></svg>Etapa 1: diseño agronómico</div>
+      <div><svg width="34" height="34" viewBox="0 0 34 34"><rect x="3" y="14" width="18" height="7" rx="2" fill="#333"/><circle cx="25" cy="17" r="6" fill="#2E7FB8"/><path d="M8 21v6M16 21v6" stroke="#333" stroke-width="2"/></svg>Etapa 2: diseño hidráulico</div>
+      <div><svg width="34" height="34" viewBox="0 0 34 34"><rect x="4" y="4" width="20" height="24" rx="2" fill="none" stroke="#1F4D2B" stroke-width="2"/><circle cx="24" cy="24" r="7" fill="#16a34a"/><path d="M21 24l2 2 4-4" stroke="#fff" stroke-width="2" fill="none"/></svg>Planos en QGIS y simulación EPANET</div>
     </div>
     <a class="banda" href="#compra"><i>⬇</i>Acceso digital inmediato</a>
   </section>
 
   <div class="cta-portada">
-    <p class="cta-precio">Hoy <span id="precio-cta"></span> <span class="cta-inc">· incluye los 3 bonos</span></p>
+    <p class="cta-precio">Hoy <span id="precio-cta"></span> <span class="cta-inc">· 141 páginas + 4 bonos</span></p>
     <a class="cta" href="#compra">Quiero mi manual ahora</a>
-    <p class="cta-nota">🔒 Pago seguro con Wompi · Te llega al correo en minutos</p>
+    <p class="cta-nota">🔒 Pago seguro con Wompi · Te llega al correo en minutos · Garantía de 7 días</p>
   </div>
 
   <section class="dolor">
@@ -218,6 +244,7 @@ fbq('track', 'ViewContent', { content_name: 'Manual Visual de Riego por Goteo en
       <li>Hacer <b>todos los cálculos del diseño</b>: demanda, pérdidas de presión, diámetros, bomba, motor y uniformidad, con ejemplos resueltos.</li>
       <li>Elegir <b>goteros, mangueras, tuberías, filtros y bomba</b> con números, y saber <b>si te están vendiendo de más</b>.</li>
       <li>Comprobar que <b>todas las palmas reciban la misma agua</b> antes de comprar un solo tubo.</li>
+      <li>Dibujar el <b>plano en QGIS</b> y <b>simular la red en EPANET</b> (los dos son gratis), como se presenta un diseño profesional.</li>
       <li>Regar en el <b>mes más seco</b> con turnos que tu pozo sí alcanza, para que la sequía no te cobre la cosecha.</li>
       <li>Aprender <b>paso a paso, con dibujos y un caso real de palma</b>, e instalar con listas de verificación.</li>
     </ul>
@@ -227,11 +254,12 @@ fbq('track', 'ViewContent', { content_name: 'Manual Visual de Riego por Goteo en
       <div><b>Administradores</b>que deben aprobar cotizaciones y presupuestos.</div>
       <div><b>Estudiantes</b>de agronomía e ingeniería con un proyecto o trabajo de riego.</div>
     </div>
-    <p class="cta-wrap"><a class="cta" href="#compra">Quiero el manual con sus 3 bonos</a></p>
+    <p class="cta-wrap"><a class="cta" href="#compra">Quiero el manual con sus 4 bonos</a></p>
   </section>
 
   <div class="boton-borde">Esto es lo que contiene</div>
   <section class="contiene">
+    <p class="etapa">Etapa 1 · Diseño agronómico <small>¿Cuánta agua, cada cuánto y en cuánto tiempo?</small></p>
     <h3>Módulo 1. La palma de aceite y el agua</h3>
     <ul><li>La sequía de hoy se cosecha en dos años: efecto del déficit hídrico.</li><li>Zonas palmeras de Colombia y su régimen de lluvias.</li><li>Sistema radical: dónde hay que mojar.</li><li>Demanda de agua según la etapa de la palma.</li><li>Goteo, microaspersión o gravedad.</li><li>El suelo, el tanque de agua de la palma.</li></ul>
     <h3>Módulo 2. Datos de campo y bases del proyecto</h3>
@@ -239,7 +267,8 @@ fbq('track', 'ViewContent', { content_name: 'Manual Visual de Riego por Goteo en
     <h3>Módulo 3. Demanda de agua y programación del riego</h3>
     <ul><li>ETo, coeficiente de cultivo y balance hídrico mes a mes.</li><li>Lámina neta y bruta: de milímetros a litros por palma.</li><li>Frecuencia, tiempo de riego y número de turnos.</li></ul>
     <h3>Módulo 4. Selección de goteros y caudales</h3>
-    <ul><li>La presión se mide en metros.</li><li>Tipos de goteros y cómo leer su ficha técnica real.</li><li>Bulbo húmedo y puntos de goteo por palma.</li></ul>
+    <ul><li>La presión se mide en metros.</li><li>Tipos de goteros y cómo leer su ficha técnica real.</li><li>Bulbo húmedo y puntos de goteo por palma.</li><li>Cierre de la Etapa 1: Ficha de entrega agronómica.</li></ul>
+    <p class="etapa">Etapa 2 · Diseño hidráulico <small>¿Cómo llevo esa agua con la presión justa?</small></p>
     <h3>Módulo 5. Diseño de laterales</h3>
     <ul><li>Trazado y longitud de los laterales.</li><li>Pérdidas por fricción y factor de Christiansen.</li><li>Perfil de presión en subida y bajada; regla del 20 %.</li><li>Longitud máxima del lateral, palma por palma.</li></ul>
     <h3>Módulo 6. Sectores y red de distribución</h3>
@@ -248,28 +277,60 @@ fbq('track', 'ViewContent', { content_name: 'Manual Visual de Riego por Goteo en
     <ul><li>Hidrociclón, arena, malla y anillas.</li><li>Dimensionamiento y retrolavado.</li><li>Inyección de fertilizantes, medidores y manómetros.</li></ul>
     <h3>Módulo 8. Selección del equipo de bombeo</h3>
     <ul><li>Altura dinámica total y presupuesto de presión.</li><li>Cómo leer la curva de una bomba y elegirla.</li><li>NPSH y cavitación; potencia, motor y variador.</li></ul>
-    <h3>Módulo 9. Comprobación hidráulica y uniformidad</h3>
-    <ul><li>Balance de presiones bloque por bloque.</li><li>Caudal esperado en los goteros y uniformidad.</li><li>¿Y si no cumple? Qué cambiar. Hoja resumen para aprobar.</li></ul>
+    <h3>Módulo 9. Comprobación hidráulica, planos y EPANET</h3>
+    <ul><li>Balance de presiones bloque por bloque y uniformidad.</li><li>Cómo se presenta un diseño: el plano en QGIS.</li><li>Simulación de la red en EPANET y lectura de resultados.</li><li>Cierre de la Etapa 2: diseño aprobado y entregado.</li></ul>
+    <p class="etapa">Obra, caso completo y tablas</p>
     <h3>Módulo 10. Instalación y puesta en marcha</h3>
-    <ul><li>Secuencia de obra: bomba, cabezal, tuberías y válvulas.</li><li>Mangueras enterradas, microtubos y goteros.</li><li>Lavado, prueba de presión, aforo y lista final.</li></ul>
+    <ul><li>Secuencia de obra: bomba, cabezal, tuberías y válvulas.</li><li>Mangueras enterradas, microtubos y goteros.</li><li>Replanteo del plano en el terreno con estacas.</li><li>Lavado, prueba de presión, aforo y lista final.</li></ul>
     <h3>Módulo 11. Caso práctico en acción</h3>
-    <ul><li>El diseño completo de un lote de 10 ha en 13 pasos.</li><li>Plano final, plan de riego y cuadro de materiales.</li><li>Hoja de trabajo "Mi diseño" para tu propio lote.</li></ul>
+    <ul><li>El diseño completo de un lote de 10 ha en 13 pasos.</li><li>Plano final, plan de riego y cuadro de materiales.</li><li>Hoja de trabajo por etapa para diseñar tu propio lote.</li></ul>
     <h3>Módulo 12. Tablas de referencia</h3>
     <ul><li>Fricción en manguera y PVC; laterales según la pendiente.</li><li>ETo por zona palmera, filtros, motores y válvulas.</li><li>Lotes irregulares y glosario.</li></ul>
+  </section>
+
+  <section class="muestra">
+    <h2>Mira algunas páginas por dentro</h2>
+    <div class="paginas">
+      <figure><img src="img/paginas/v2-p006.webp" width="935" height="1210" alt="Página: las dos etapas de un diseño de riego" loading="lazy"><figcaption>Las 2 etapas del diseño</figcaption></figure>
+      <figure><img src="img/paginas/v2-p042.webp" width="935" height="1210" alt="Página: cierre de la Etapa 1, ficha de entrega agronómica" loading="lazy"><figcaption>Cierre de la Etapa 1</figcaption></figure>
+      <figure><img src="img/paginas/v2-p088.webp" width="935" height="1210" alt="Página: el plano en QGIS" loading="lazy"><figcaption>El plano en QGIS</figcaption></figure>
+      <figure><img src="img/paginas/v2-p092.webp" width="935" height="1210" alt="Página: resultados de la simulación en EPANET" loading="lazy"><figcaption>Simulación en EPANET</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="autor-bloque">
+    <img src="img/autor.webp" width="360" height="360" alt="Ing. Adán A. Arias" loading="lazy">
+    <div>
+      <h2>Quién escribe este manual</h2>
+      <p>Soy <b>Adán A. Arias, ingeniero agrícola</b>. Durante 9 años he diseñado, instalado y operado sistemas de riego en plantaciones de palma de aceite de la Zona Norte de Colombia, donde la época seca es larga y el riego marca la diferencia.</p>
+      <p>En campo he visto sistemas que funcionan por años y otros que fallan por un mal cálculo de presión, una bomba mal elegida o un filtrado insuficiente. Este manual reúne lo que se calcula en la oficina y lo que se aprende en campo.</p>
+    </div>
   </section>
 
   <section class="tarjeta bonos" style="margin-top:28px">
     <div class="titulo">
       <div class="regla3" style="margin:0 auto 12px; width:60%"></div>
-      <h2>Manual visual <span>+3</span> bonos exclusivos</h2>
+      <h2>Manual visual <span>+4</span> bonos exclusivos</h2>
     </div>
-    <img src="img/bonos.webp" width="1200" height="896" alt="El manual con sus 3 bonos: calculadora, formatos de registro y guía de campo" loading="lazy">
+    <img src="img/bonos.webp" width="1200" height="896" alt="El manual con sus bonos: calculadora, formatos de registro y guía de campo" loading="lazy">
     <div class="etiquetas">
-      <div><b>BONO 1</b>Calculadora de diseño en Excel</div>
-      <div><b>BONO 2</b>Formatos de lluvia, evaporación y balance</div>
-      <div><b>BONO 3</b>Guía de campo: medir, probar y verificar</div>
+      <div><b>BONO 1</b>Calculadora de diseño en Excel<small>Tu lote, el diseño agronómico y el hidráulico, con fórmulas listas.</small></div>
+      <div><b>BONO 2</b>Formatos de registro<small>Lluvia, evaporación, balance, plan de turnos y registro de riego. 5 formatos para imprimir.</small></div>
+      <div><b>BONO 3</b>Guía de campo (13 págs.)<small>Medir, probar y verificar: aforo, replanteo con estacas y prueba del bulbo.</small></div>
+      <div><b>BONO 4 · NUEVO</b>Kit de diseño QGIS + EPANET<small>Proyecto QGIS del caso, 4 modelos EPANET, 6 planos en PDF, puntos de replanteo y plantilla de memoria de diseño.</small></div>
     </div>
     <div class="banda">¡Incluidos <b>gratis</b> con tu compra!</div>
+  </section>
+
+  <section class="faq">
+    <h2>Preguntas frecuentes</h2>
+    <details><summary>¿Sirve para mi zona palmera?</summary><p>Sí. El manual trae las zonas palmeras de Colombia con su régimen de lluvias y su ETo, y te enseña a calcular con los datos de tu propio lote.</p></details>
+    <details><summary>¿Necesito saber de hidráulica?</summary><p>No. Va paso a paso, con dibujos y un caso real de 10 ha que se resuelve completo. Cada fórmula viene con un ejemplo resuelto.</p></details>
+    <details><summary>¿Tengo que pagar QGIS o EPANET?</summary><p>No. Los dos programas son gratuitos, y el Bono 4 trae el proyecto y los modelos listos para abrir.</p></details>
+    <details><summary>¿Cómo me llega y en qué formato?</summary><p>Por correo, en minutos: el manual en PDF (141 páginas) y luego los bonos (Excel, PDF y el kit en .zip). Se lee en celular, tablet o computador.</p></details>
+    <details><summary>¿Cómo puedo pagar?</summary><p>Con tarjeta, PSE, Nequi o botón Bancolombia, a través de Wompi, la pasarela de Bancolombia.</p></details>
+    <details><summary>¿Y si el manual no me sirve?</summary><p>Tienes garantía de 7 días: si dentro de los 7 días siguientes a tu compra sientes que no te sirve, escríbeme y te devuelvo el valor pagado (ver <a href="terminos.html">términos</a>).</p></details>
+    <details><summary>¿Tengo dudas antes de comprar?</summary><p>Escríbeme por WhatsApp con el botón de contacto al final de la página.</p></details>
   </section>
 
   <section class="compra" id="compra">
@@ -279,20 +340,21 @@ fbq('track', 'ViewContent', { content_name: 'Manual Visual de Riego por Goteo en
         <h3>Manual Visual de Riego por Goteo en Palma de Aceite</h3>
         <div class="autor">Autor: Ing. Adán A. Arias</div>
         <div class="precio" id="precio"></div>
-        <div class="ayuda">Pago único en pesos colombianos. Incluye los 3 bonos.</div>
+        <div class="ayuda">Pago único en pesos colombianos. Incluye los 4 bonos.</div>
       </div>
     </div>
 
     <div id="form">
       <h4>Detalle del pedido</h4>
-      <div class="pedido"><span>Manual Visual de Riego por Goteo en Palma de Aceite<span class="inc">+ Bono 1 calculadora · Bono 2 formatos · Bono 3 guía de campo</span></span><span id="precio2"></span></div>
+      <div class="pedido"><span>Manual Visual de Riego por Goteo en Palma de Aceite<span class="inc">+ Bono 1 calculadora · Bono 2 formatos · Bono 3 guía de campo · Bono 4 kit QGIS + EPANET</span></span><span id="precio2"></span></div>
       <button class="comprar" id="comprar" type="button"><span class="ico-w">🔒</span> Pagar con Wompi</button>
       <div class="error" id="error"></div>
       <ul class="pasos-compra">
         <li><b>1.</b> Wompi te pide tu correo, nombre y celular, y eliges cómo pagar.</li>
         <li><b>2.</b> Pagas con tarjeta, PSE, Nequi o botón Bancolombia.</li>
-        <li><b>3.</b> En minutos te llegan a tu correo el manual y los 3 bonos.</li>
+        <li><b>3.</b> En minutos te llegan 2 correos: primero el manual y luego los 4 bonos.</li>
       </ul>
+      <p class="seguro" style="margin-top:12px">✅ <b style="font-size:16px;color:#16a34a">Garantía de 7 días</b>: si no te sirve, te devolvemos tu dinero.</p>
       <div class="medios"><span>💳 Tarjeta</span><span>🏦 PSE</span><span>📱 Nequi</span><span>🟡 Bancolombia</span></div>
     </div>
   </section>
@@ -314,7 +376,29 @@ fbq('track', 'ViewContent', { content_name: 'Manual Visual de Riego por Goteo en
   </section>
 </main>
 
-<script src="config.js?v=2610252215"></script>
-<script src="venta.js?v=2610252215"></script>
+<script src="config.js?v=2611051900"></script>
+<script src="venta.js?v=2611051900"></script>
+<style>
+  .barra-compra { position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); background: #fff; box-shadow: 0 -4px 18px rgba(0,0,0,.15); transition: transform .25s; }
+  .barra-compra.oculta { transform: translateY(110%); }
+  .barra-compra .bc-precio { font-size: 15px; line-height: 1.2; color: #333; }
+  .barra-compra .bc-precio b { display: block; font-size: 19px; color: #1b5e20; }
+  .barra-compra button { flex: 1; max-width: 260px; border: 0; border-radius: 10px; padding: 14px 12px; font-size: 17px; font-weight: 700; color: #fff; background: #2e7d32; cursor: pointer; }
+  body { padding-bottom: 84px; }
+</style>
+<div class="barra-compra" id="barra-compra">
+  <div class="bc-precio">Manual + 4 bonos<b id="precio-barra-b">$39.900</b></div>
+  <button type="button" id="comprar-barra">🔒 Comprar ahora</button>
+</div>
+<script>
+  // Barra fija: abre el mismo pago que el botón principal. Se esconde cuando el botón principal está a la vista.
+  (function () {
+    var barra = document.getElementById('barra-compra'), comprar = document.getElementById('comprar');
+    document.getElementById('comprar-barra').addEventListener('click', function () { comprar.click(); });
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { barra.classList.toggle('oculta', es[0].isIntersecting); }).observe(comprar);
+    setInterval(function () { var p = document.getElementById('precio-linea') || document.getElementById('precio2'); var t = window.VENTA && window.VENTA.precio; if (t) document.getElementById('precio-barra-b').textContent = '$' + t.toLocaleString('es-CO'); }, 1500);
+  })();
+</script>
 </body>
 </html>

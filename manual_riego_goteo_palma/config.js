@@ -1,9 +1,9 @@
 // Configuración de la venta. Solo datos públicos: los secretos de Wompi van en Apps Script, nunca aquí.
 window.VENTA = {
-  producto: 'Manual Visual de Riego por Goteo en Palma de Aceite + 3 bonos',
+  producto: 'Manual Visual de Riego por Goteo en Palma de Aceite + 4 bonos',
   precio: 39900,                 // COP, precio de lanzamiento
   precioNormal: 79900,           // COP, se cobra cuando termina el lanzamiento
-  finLanzamiento: '2026-11-07T23:59:00-05:00',   // fecha real del fin del precio de lanzamiento
+  finLanzamiento: '2026-11-30T23:59:00-05:00',   // fecha real del fin del precio de lanzamiento
   garantiaDias: 7,               // garantía de devolución (se muestra en la landing y en los términos)
   wompiLlavePublica: 'pub_prod_xbNAm4zEHLvll5b1dsYhcOzXerJ3Q4Xj',         // pub_prod_... (la pegas tú desde el panel de Wompi)
   pagosUrl: 'https://pagos.adanarias.com',   // servidor propio: firma del pago, marcas de Meta y entregas
