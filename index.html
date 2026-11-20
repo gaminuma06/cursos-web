@@ -1,0 +1,593 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diseño de riego por goteo para tu lote · Adán Arias</title>
+<meta name="description" content="Diseño agronómico e hidráulico de tu sistema de riego por goteo, con simulación en EPANET, planos y lista de materiales. Cotiza según tus hectáreas.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --papel:#F6F3EA; --papel2:#EDE8DA; --tinta:#1D2A22; --tinta2:#4A5A50; --linea:#D4CDBB;
+  --verde:#2F6B3F; --verde-osc:#214D2D; --accion:#C4511F; --accion-osc:#A5401A; --azul:#2C6FBB;
+  --radio:10px; --sombra:0 1px 2px rgba(29,42,34,.06),0 8px 24px rgba(29,42,34,.08);
+  --mono:"IBM Plex Mono",ui-monospace,monospace; --sans:"IBM Plex Sans",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--papel);color:var(--tinta);font:17px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+img,svg{max-width:100%;height:auto;display:block}
+a{color:var(--verde)}
+.envase{max-width:1120px;margin:0 auto;padding:0 20px}
+h1,h2,h3{line-height:1.15;margin:0 0 .5em;letter-spacing:-.01em}
+h1{font-size:clamp(30px,5.2vw,50px);font-weight:700}
+h2{font-size:clamp(25px,3.6vw,36px);font-weight:700}
+h3{font-size:19px;font-weight:600}
+p{margin:0 0 1em}
+.etiqueta{font:600 12.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--verde);margin-bottom:14px;display:inline-block}
+section{padding:72px 0}
+.sub{color:var(--tinta2);font-size:18px;max-width:640px}
+
+/* barra superior */
+.tope{border-bottom:1px solid var(--linea);background:var(--papel)}
+.tope .envase{display:flex;align-items:center;justify-content:space-between;height:58px}
+.marca{font:600 14px/1.2 var(--mono);color:var(--tinta);text-decoration:none;letter-spacing:.02em}
+.marca span{color:var(--verde)}
+.tope a.wa{font:600 14px/1 var(--sans);text-decoration:none;color:var(--verde-osc);border:1.5px solid var(--verde);border-radius:999px;padding:9px 14px}
+
+/* botones */
+.boton{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--accion);color:#fff;font:600 17px/1 var(--sans);
+  text-decoration:none;border:0;border-radius:var(--radio);padding:17px 24px;cursor:pointer;transition:transform .12s ease,background .15s ease;-webkit-tap-highlight-color:transparent}
+.boton:active{transform:scale(.97)}
+@media (hover:hover){.boton:hover{background:var(--accion-osc)}}
+.boton.sec{background:transparent;color:var(--tinta);border:1.5px solid var(--tinta)}
+@media (hover:hover){.boton.sec:hover{background:var(--papel2)}}
+
+/* portada */
+.portada{padding:44px 0 56px}
+.portada .envase{display:grid;gap:36px;align-items:center}
+@media (min-width:920px){.portada .envase{grid-template-columns:1fr 1.05fr;gap:52px}}
+.portada .acciones{display:flex;flex-wrap:wrap;gap:12px;margin:26px 0 22px}
+.datos{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--linea);border-radius:var(--radio);background:#fff8;max-width:560px}
+.datos div{padding:12px 14px;border-left:1px solid var(--linea)}
+.datos div:first-child{border-left:0}
+.datos b{display:block;font:600 17px/1.2 var(--mono)}
+.datos small{font-size:13px;color:var(--tinta2);line-height:1.3;display:block;margin-top:4px}
+.lamina{background:var(--papel);border:1px solid var(--linea);border-radius:var(--radio);box-shadow:var(--sombra);overflow:hidden}
+.lamina figcaption{font:12.5px/1.4 var(--mono);color:var(--tinta2);padding:10px 14px;border-top:1px solid var(--linea);background:#fff6}
+
+/* problema */
+.problema{background:var(--tinta);color:var(--papel)}
+.problema .etiqueta{color:#9FD3A9}
+.problema .sub{color:#C9D2CB}
+.tres{display:grid;gap:18px;margin-top:34px}
+@media (min-width:760px){.tres{grid-template-columns:repeat(3,1fr)}}
+.problema .item{border-top:2px solid #E3B53B;padding-top:16px}
+.problema .item p{color:#C9D2CB;margin:0}
+
+/* caso */
+.pestanas{display:flex;gap:8px;flex-wrap:wrap;margin:26px 0 16px}
+.pestanas button{font:600 14px/1 var(--sans);background:transparent;color:var(--tinta);border:1.5px solid var(--linea);border-radius:999px;padding:11px 15px;cursor:pointer}
+.pestanas button[aria-selected="true"]{background:var(--tinta);color:var(--papel);border-color:var(--tinta)}
+.caso-grid{display:grid;gap:26px;align-items:start}
+@media (min-width:920px){.caso-grid{grid-template-columns:1.6fr 1fr}}
+.js .panel[hidden]{display:none}
+.panel p.nota{font-size:15.5px;color:var(--tinta2);margin:14px 2px 0}
+.ficha{border:1px solid var(--linea);border-radius:var(--radio);background:#fff8;padding:20px 22px}
+.ficha dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:10px 16px;font-size:15.5px}
+.ficha dt{font:600 13px/1.6 var(--mono);color:var(--tinta2);text-transform:uppercase;letter-spacing:.04em}
+.ficha dd{margin:0}
+.ficha .aviso{font-size:13.5px;color:var(--tinta2);margin:16px 0 0;border-top:1px dashed var(--linea);padding-top:12px}
+
+/* entregables */
+.entregables{background:var(--papel2)}
+.lista-ent{display:grid;gap:14px;margin-top:30px}
+@media (min-width:760px){.lista-ent{grid-template-columns:repeat(2,1fr)}}
+.ent{display:grid;grid-template-columns:44px 1fr;gap:14px;background:var(--papel);border:1px solid var(--linea);border-radius:var(--radio);padding:18px}
+.ent .num{font:600 13px/44px var(--mono);text-align:center;width:44px;height:44px;border-radius:50%;background:var(--tinta);color:var(--papel)}
+.ent h3{margin:2px 0 4px}
+.ent p{margin:0;color:var(--tinta2);font-size:15.5px}
+.ent .solo{font:600 11.5px/1 var(--mono);color:var(--accion-osc);background:#C4511F14;border-radius:4px;padding:4px 6px;margin-left:6px;vertical-align:2px;white-space:nowrap}
+
+/* paquetes */
+.paquetes{display:grid;gap:18px;margin-top:30px}
+@media (min-width:760px){.paquetes{grid-template-columns:1fr 1fr}}
+.paq{border:1.5px solid var(--linea);border-radius:14px;padding:26px;background:#fff8;display:flex;flex-direction:column}
+.paq.dest{border-color:var(--tinta);box-shadow:var(--sombra);position:relative}
+.paq .sello{position:absolute;top:-12px;left:22px;background:var(--tinta);color:var(--papel);font:600 11.5px/1 var(--mono);letter-spacing:.06em;padding:6px 9px;border-radius:4px;text-transform:uppercase}
+.paq .precio{font:600 32px/1.1 var(--mono);margin:6px 0 2px}
+.paq .precio small{font:500 15px var(--sans);color:var(--tinta2)}
+.paq .min{color:var(--tinta2);font-size:14.5px;margin-bottom:16px}
+.paq ul{list-style:none;padding:0;margin:0 0 22px;flex:1}
+.paq li{padding:7px 0 7px 28px;position:relative;border-top:1px dashed var(--linea);font-size:15.5px}
+.paq li:first-child{border-top:0}
+.paq li::before{content:"";position:absolute;left:4px;top:13px;width:11px;height:6px;border-left:2px solid var(--verde);border-bottom:2px solid var(--verde);transform:rotate(-45deg)}
+.paq li.mas{font-weight:600}
+.pago{margin-top:22px;display:flex;flex-wrap:wrap;gap:10px 26px;font-size:15.5px;color:var(--tinta2)}
+.pago b{color:var(--tinta)}
+
+.revision{margin-top:18px;font-size:15.5px;color:var(--tinta2);border-top:1px dashed var(--linea);padding-top:16px}
+.revision b{color:var(--tinta)}
+.requisito{font-size:14px;color:var(--tinta2);background:var(--papel2);border-radius:8px;padding:10px 12px;margin:0 0 16px}
+.requisito b{color:var(--tinta)}
+.firma{display:flex;gap:12px;align-items:center;margin-top:18px;max-width:560px}
+.firma img{width:48px;height:48px;border-radius:50%;object-fit:cover;flex:none}
+.firma p{margin:0;font-size:14.5px;line-height:1.4;color:var(--tinta2)}
+.firma b{color:var(--tinta)}
+.compara{display:grid;gap:14px;margin-top:28px}
+@media (min-width:760px){.compara{grid-template-columns:1fr 1fr}}
+.compara .col{border:1px solid var(--linea);border-radius:var(--radio);padding:20px 22px;background:#fff8}
+.compara .col.bien{border-color:var(--verde);box-shadow:inset 0 0 0 1px var(--verde)}
+.compara ul{margin:0;padding-left:20px;color:var(--tinta2);font-size:15.5px}
+.compara li{margin:6px 0}
+.quien{margin-top:30px}
+.quien .item{border-top:2px solid var(--verde);padding-top:14px}
+.quien .item p{color:var(--tinta2);margin:0;font-size:15.5px}
+.seguro{margin:14px 0 0;font-size:15.5px;font-weight:600}
+/* cotizador */
+.cotizar{background:var(--tinta);color:var(--papel)}
+.cotizar .etiqueta{color:#9FD3A9}
+.cotizar .sub{color:#C9D2CB}
+.coti{display:grid;gap:22px;margin-top:30px}
+@media (min-width:920px){.coti{grid-template-columns:1fr 1fr;gap:28px;align-items:start}}
+.caja{background:var(--papel);color:var(--tinta);border-radius:14px;padding:24px}
+.paso{font:600 12.5px/1 var(--mono);letter-spacing:.06em;color:var(--verde);text-transform:uppercase;margin-bottom:14px}
+label{display:block;font-weight:600;font-size:15.5px;margin:0 0 6px}
+.campo{margin-bottom:18px}
+input[type=text],input[type=tel],input[type=number],select{width:100%;font:500 17px/1.3 var(--sans);color:var(--tinta);background:#fff;border:1.5px solid var(--linea);border-radius:8px;padding:13px 14px;min-height:50px}
+input:focus,select:focus{outline:3px solid #2F6B3F44;border-color:var(--verde)}
+.ha{display:grid;grid-template-columns:120px 1fr;gap:14px;align-items:center}
+.ha input[type=number]{font:600 22px/1 var(--mono);text-align:center}
+input[type=range]{width:100%;accent-color:var(--verde);height:32px}
+.opciones{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opciones label{margin:0;border:1.5px solid var(--linea);border-radius:10px;padding:13px 12px;cursor:pointer;font-weight:500;background:#fff;line-height:1.3}
+.opciones label b{display:block;font-size:16.5px}
+.opciones label small{color:var(--tinta2);font-size:13.5px}
+.opciones input{position:absolute;opacity:0;pointer-events:none}
+.opciones label:has(input:checked){border-color:var(--tinta);box-shadow:inset 0 0 0 1.5px var(--tinta)}
+.opciones label:has(input:focus-visible){outline:3px solid #2F6B3F55}
+.resultado{margin-top:20px;border-top:1.5px dashed var(--linea);padding-top:18px}
+.resultado .tot{font:600 clamp(32px,7vw,42px)/1.05 var(--mono);letter-spacing:-.02em}
+.resultado .det{display:grid;grid-template-columns:1fr auto;gap:6px 12px;margin-top:14px;font-size:15.5px}
+.resultado .det span:nth-child(even){font-family:var(--mono);font-weight:600;text-align:right}
+.resultado .nota{font-size:13.5px;color:var(--tinta2);margin:12px 0 0}
+.minimo{display:none;font-size:13.5px;background:#E3B53B33;border-radius:6px;padding:8px 10px;margin-top:12px}
+.minimo.si{display:block}
+.enviar{width:100%;margin-top:6px}
+.confia{font-size:13.5px;color:var(--tinta2);margin:12px 0 0;text-align:center}
+.error{color:#B3261E;font-size:14px;margin:-10px 0 14px;display:none}
+.error.si{display:block}
+
+/* cómo funciona */
+.pasos{counter-reset:p;display:grid;gap:0;margin-top:30px;border-left:2px solid var(--linea);padding-left:0;list-style:none}
+@media (min-width:920px){.pasos{grid-template-columns:repeat(4,1fr);border-left:0;border-top:2px solid var(--linea)}}
+.pasos li{position:relative;padding:4px 0 26px 30px}
+@media (min-width:920px){.pasos li{padding:26px 22px 0 0}}
+.pasos li::before{counter-increment:p;content:counter(p);position:absolute;left:-15px;top:0;width:28px;height:28px;border-radius:50%;background:var(--papel);border:2px solid var(--tinta);font:600 13px/24px var(--mono);text-align:center}
+@media (min-width:920px){.pasos li::before{left:0;top:-15px}}
+.pasos h3{font-size:17.5px;margin-bottom:4px}
+.pasos p{color:var(--tinta2);font-size:15.5px;margin:0}
+
+/* autor */
+.autor{background:var(--papel2)}
+.autor .envase{display:grid;gap:26px;align-items:center}
+@media (min-width:760px){.autor .envase{grid-template-columns:200px 1fr;gap:40px}}
+.autor img{width:180px;height:180px!important;border-radius:50%;object-fit:cover;border:4px solid var(--papel)}
+.autor blockquote{margin:0;font-size:19px;line-height:1.55}
+.autor cite{display:block;margin-top:12px;font:600 14px/1.4 var(--mono);font-style:normal;color:var(--tinta2)}
+
+/* preguntas */
+.faq{max-width:780px}
+details{border-bottom:1px solid var(--linea)}
+summary{list-style:none;cursor:pointer;font-weight:600;font-size:17.5px;padding:18px 36px 18px 0;position:relative}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";position:absolute;right:4px;top:19px;font:400 26px/1 var(--mono);color:var(--verde);transition:transform .2s ease}
+details[open] summary::after{transform:rotate(45deg)}
+details p{color:var(--tinta2);margin:-4px 0 18px}
+
+/* cierre */
+.cierre{text-align:center}
+.cierre .sub{margin:0 auto 26px}
+footer{border-top:1px solid var(--linea);padding:26px 0 96px;font-size:14px;color:var(--tinta2)}
+@media (min-width:760px){footer{padding-bottom:30px}}
+
+@media (max-width:600px){
+  .portada{padding-top:30px}
+  .portada .sub{font-size:16.5px}
+  .portada .acciones .boton{flex:1 1 100%}
+  .datos small{font-size:12.5px}
+  section{padding:56px 0}
+}
+/* barra fija móvil */
+.barra{position:fixed;left:0;right:0;bottom:0;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:var(--papel);border-top:1px solid var(--linea);display:flex;gap:12px;align-items:center;
+  transform:translateY(110%);transition:transform .25s cubic-bezier(.2,.8,.2,1);z-index:20}
+.barra.ver{transform:none}
+.barra p{margin:0;font-size:13.5px;line-height:1.25;flex:1}
+.barra p b{font-family:var(--mono);font-size:15px}
+.barra .boton{padding:14px 18px;font-size:16px}
+@media (min-width:760px){.barra{display:none}}
+
+.aparece{opacity:0;transform:translateY(10px);transition:opacity .45s ease,transform .45s cubic-bezier(.2,.8,.2,1)}
+.aparece.visto{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.aparece{transform:none;transition:opacity .3s ease}.barra,.boton,summary::after{transition:none}html{scroll-behavior:auto}}
+</style>
+<!-- Píxel de Meta: PageView al cargar, Lead al enviar la solicitud, Contact en los demás botones de WhatsApp -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '3604674439689537');
+fbq('track', 'PageView');
+</script>
+</head>
+<body>
+<header class="tope">
+  <div class="envase">
+    <a class="marca" href="#">Adán Arias <span>·</span> Diseño de riego</a>
+    <a class="wa" id="wa-tope" href="#" rel="noopener">Escríbeme</a>
+  </div>
+</header>
+
+<main>
+<!-- PORTADA -->
+<section class="portada">
+  <div class="envase">
+    <div>
+      <span class="etiqueta">Para plantaciones, núcleos palmeros y palmicultores</span>
+      <h1>Tu sistema de riego por goteo diseñado por un ingeniero, listo para cotizar e instalar.</h1>
+      <p class="sub">Calculo cuánta agua necesita tu cultivo, diseño la red y la bomba, y simulo todo en EPANET para comprobar que la presión alcanza hasta el último gotero, antes de que compres un solo tubo.</p>
+      <div class="acciones">
+        <a class="boton" href="#cotizar">Ver el precio de mi lote</a>
+        <a class="boton sec" href="#caso">Ver un diseño real</a>
+      </div>
+      <div class="datos">
+        <div><b>110.000</b><small>pesos por ha, desde</small></div>
+        <div><b>10–15</b><small>días hábiles de entrega</small></div>
+        <div><b>30 %</b><small>para empezar, el resto por avance</small></div>
+      </div>
+      <div class="firma"><img src="img/autor.webp" width="48" height="48" alt=""><p>Diseña <b>Adán A. Arias</b>, ingeniero agrícola con 9 años en riego de palma en la Zona Norte.</p></div>
+    </div>
+    <figure class="lamina" style="margin:0">
+      <img src="img/plano-presion.svg" width="640" height="470" alt="Plano de una red de riego de 20 hectáreas coloreada según la presión simulada en EPANET">
+      <figcaption>Red simulada en EPANET: cada color es la presión que llega a esa parte del lote.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- PROBLEMA -->
+<section class="problema">
+  <div class="envase">
+    <span class="etiqueta">Por qué diseñar primero</span>
+    <h2>Un riego mal diseñado se paga dos veces</h2>
+    <p class="sub">La tubería, la bomba y la mano de obra son la mayor parte del costo. Si el diseño falla, se descubre cuando ya está enterrado.</p>
+    <div class="tres">
+      <div class="item aparece"><h3>La bomba no alcanza</h3><p>O sobra potencia y pagas energía de más todos los meses.</p></div>
+      <div class="item aparece"><h3>Al final del lote llega menos agua</h3><p>Las palmas del fondo producen menos y nadie sabe por qué.</p></div>
+      <div class="item aparece"><h3>Tubería más grande de lo necesario</h3><p>Se compra "por si acaso" y el sistema sale mucho más caro.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- INDEPENDIENTE -->
+<section class="indep">
+  <div class="envase">
+    <span class="etiqueta">Diseño independiente</span>
+    <h2>Un diseño que no está atado a vender tubería</h2>
+    <p class="sub">Muchas veces el diseño lo hace el mismo que vende los materiales. Yo solo cobro el diseño, así que la red se dimensiona para tu lote y no para una cotización.</p>
+    <div class="compara">
+      <div class="col"><h3>Diseño hecho por quien vende</h3><ul><li>Viene amarrado a una sola cotización</li><li>Difícil comparar precios con otros proveedores</li><li>No sabes si la tubería y la bomba son las justas</li></ul></div>
+      <div class="col bien"><h3>Diseño independiente</h3><ul><li>Lista de materiales para cotizar con quien quieras</li><li>Simulación en EPANET que muestra que la presión alcanza</li><li>Términos de referencia para exigir que se instale como se diseñó</li></ul></div>
+    </div>
+    <div class="tres quien">
+      <div class="item aparece"><h3>Plantaciones y empresas</h3><p>Un diseño con planos y términos de referencia para contratar la obra con varios proponentes.</p></div>
+      <div class="item aparece"><h3>Núcleos palmeros</h3><p>Diseños con el mismo método para los lotes de tus proveedores, listos para cotizar e instalar.</p></div>
+      <div class="item aparece"><h3>Palmicultores</h3><p>Saber cuánto vas a invertir y qué comprar antes de pedir el crédito o hablar con el proveedor.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CASO -->
+<section id="caso">
+  <div class="envase">
+    <span class="etiqueta">Un diseño real</span>
+    <h2>Pozo con bomba de 25 HP, 20 ha, 4 sectores</h2>
+    <p class="sub">Así se ve lo que entrego. Los planos están redibujados para proteger los datos del cliente: sin nombres, sin ubicación y sin logos.</p>
+    <div class="caso-grid">
+      <div>
+        <div class="pestanas" role="tablist" aria-label="Planos del caso">
+          <button role="tab" aria-selected="true" aria-controls="p1" id="t1">Red por presión</button>
+          <button role="tab" aria-selected="false" aria-controls="p2" id="t2">Sectores</button>
+          <button role="tab" aria-selected="false" aria-controls="p3" id="t3">Cabezal</button>
+        </div>
+        <div class="panel" id="p1" role="tabpanel" aria-labelledby="t1">
+          <div class="lamina"><img src="img/plano-presion.svg" width="640" height="470" loading="lazy" alt="Red de riego coloreada por presión"></div>
+          <p class="nota">La simulación muestra la presión en cada tubería. Si una zona queda baja, se corrige en el diseño y no en el campo.</p>
+        </div>
+        <div class="panel" id="p2" role="tabpanel" aria-labelledby="t2" hidden>
+          <div class="lamina"><img src="img/plano-sectores.svg" width="640" height="470" loading="lazy" alt="Lote dividido en 4 sectores de riego"></div>
+          <p class="nota">El lote se divide en 4 sectores que riegan por turnos. Así una sola bomba de 25 HP alcanza para las 20 ha.</p>
+        </div>
+        <div class="panel" id="p3" role="tabpanel" aria-labelledby="t3" hidden>
+          <div class="lamina"><img src="img/plano-cabezal.svg" width="760" height="470" loading="lazy" alt="Detalle del cabezal de riego"></div>
+          <p class="nota">El cabezal en el orden de instalación, para que el contratista arme exactamente lo diseñado.</p>
+        </div>
+      </div>
+      <aside class="ficha aparece">
+        <dl>
+          <dt>Fuente</dt><dd>Pozo profundo</dd>
+          <dt>Bomba</dt><dd>Sumergible de 25 HP</dd>
+          <dt>Área</dt><dd>20 ha de palma</dd>
+          <dt>Sectores</dt><dd>4, regados por turnos</dd>
+          <dt>Se entregó</dt><dd>Diseño agronómico e hidráulico, simulación en EPANET, planos de red y de detalle, lista de materiales y términos de referencia para contratar la instalación.</dd>
+        </dl>
+        <p class="aviso">Los colores y medidas de estas láminas son ilustrativos del caso; los planos originales son del cliente.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ENTREGABLES -->
+<section class="entregables">
+  <div class="envase">
+    <span class="etiqueta">Qué recibes</span>
+    <h2>Todo lo que necesita un contratista para instalar</h2>
+    <div class="lista-ent">
+      <div class="ent aparece"><span class="num">01</span><div><h3>Diseño agronómico</h3><p>Cuánta agua necesita tu cultivo según tu suelo y tu clima, cuántos goteros por planta y cuánto tiempo regar.</p></div></div>
+      <div class="ent aparece"><span class="num">02</span><div><h3>Diseño hidráulico</h3><p>Diámetros de tubería, sectores, turnos de riego y la bomba que de verdad necesitas.</p></div></div>
+      <div class="ent aparece"><span class="num">03</span><div><h3>Simulación en EPANET</h3><p>La red completa simulada para comprobar la presión en cada sector antes de comprar materiales.</p></div></div>
+      <div class="ent aparece"><span class="num">04</span><div><h3>Plano de la red</h3><p>El plano general del sistema sobre tu lote, en PDF para imprimir.</p></div></div>
+      <div class="ent aparece"><span class="num">05</span><div><h3>Lista de materiales</h3><p>Con cantidades y medidas, lista para pedir cotización a cualquier proveedor.</p></div></div>
+      <div class="ent aparece"><span class="num">06</span><div><h3>Planos de detalle y términos de referencia <span class="solo">Completo</span></h3><p>Cabezal y conexiones en detalle, y el documento para contratar la instalación y exigir que se haga como se diseñó.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PAQUETES -->
+<section id="paquetes">
+  <div class="envase">
+    <span class="etiqueta">Precios</span>
+    <h2>Dos paquetes, precio por hectárea</h2>
+    <div class="paquetes">
+      <div class="paq aparece">
+        <h3>Básico</h3>
+        <div class="precio">$110.000 <small>por ha</small></div>
+        <div class="min">Mínimo $1.500.000 · más IVA si aplica</div>
+        <ul>
+          <li>Diseño agronómico</li>
+          <li>Diseño hidráulico</li>
+          <li>Simulación en EPANET</li>
+          <li>Plano de la red</li>
+          <li>Lista de materiales</li>
+        </ul>
+        <a class="boton sec" href="#cotizar" data-paquete="basico">Cotizar el Básico</a>
+      </div>
+      <div class="paq dest aparece">
+        <span class="sello">Para contratar la obra</span>
+        <h3>Completo</h3>
+        <div class="precio">$140.000 <small>por ha</small></div>
+        <div class="min">Mínimo $2.000.000 · más IVA si aplica</div>
+        <ul>
+          <li>Todo lo del Básico</li>
+          <li class="mas">Planos de detalle (cabezal y conexiones)</li>
+          <li class="mas">Términos de referencia para contratar la instalación</li>
+        </ul>
+        <a class="boton" href="#cotizar" data-paquete="completo">Cotizar el Completo</a>
+      </div>
+    </div>
+    <div class="pago">
+      <span><b>30 %</b> para empezar</span>
+      <span><b>40 %</b> en la reunión de revisión</span>
+      <span><b>30 %</b> al recibir el diseño</span>
+      <span><b>10 a 15</b> días hábiles de entrega</span>
+    </div>
+    <p class="seguro">Nunca pagas todo por adelantado: antes del segundo pago nos reunimos y revisas el avance del diseño.</p>
+    <p class="revision"><b>¿Ya tienes un diseño y quieres saber si está bien?</b> Lo reviso y te digo qué corregir por <b>$400.000</b> más IVA si aplica. <a href="#" id="wa-revision" rel="noopener">Pedir la revisión</a></p>
+  </div>
+</section>
+
+<!-- COTIZADOR -->
+<section class="cotizar" id="cotizar">
+  <div class="envase">
+    <span class="etiqueta">Cotizador</span>
+    <h2>¿Cuánto cuesta el diseño de tu lote?</h2>
+    <p class="sub">Escribe tus hectáreas y elige el paquete. Ves el precio al instante, sin dejar tus datos.</p>
+    <div class="coti">
+      <div class="caja">
+        <div class="paso">Paso 1 · Tu lote</div>
+        <div class="campo">
+          <label for="ha">Hectáreas a regar</label>
+          <div class="ha">
+            <input type="number" id="ha" inputmode="decimal" min="1" max="1000" step="0.5" value="20" aria-describedby="ha-ayuda">
+            <input type="range" id="ha-rango" min="1" max="100" step="1" value="20" aria-label="Hectáreas">
+          </div>
+          <p class="error" id="ha-error">Escribe un número de hectáreas mayor que cero.</p>
+        </div>
+        <div class="campo">
+          <span id="paq-lbl" style="display:block;font-weight:600;font-size:15.5px;margin-bottom:6px">Paquete</span>
+          <div class="opciones" role="radiogroup" aria-labelledby="paq-lbl">
+            <label><input type="radio" name="paq" value="basico" checked><b>Básico</b><small>$110.000 por ha</small></label>
+            <label><input type="radio" name="paq" value="completo"><b>Completo</b><small>$140.000 por ha + términos de referencia</small></label>
+          </div>
+        </div>
+        <div class="resultado" aria-live="polite">
+          <div style="font-size:14px;color:var(--tinta2)">Precio preliminar del diseño</div>
+          <div class="tot" id="total">$2.200.000</div>
+          <div class="det">
+            <span>Para empezar (30&nbsp;%)</span><span id="pago1">$660.000</span>
+            <span>En la revisión (40&nbsp;%)</span><span id="pago2">$880.000</span>
+            <span>Al entregar (30&nbsp;%)</span><span id="pago3">$660.000</span>
+          </div>
+          <p class="minimo" id="aviso-min">Se aplica el valor mínimo del paquete.</p>
+          <p class="nota" id="ha-ayuda">Precio en pesos colombianos, más IVA si aplica. Se confirma cuando revise tus datos. La visita a la finca, si la quieres, se cobra aparte.</p>
+        </div>
+      </div>
+
+      <form class="caja" id="solicitud" novalidate>
+        <div class="paso">Paso 2 · Pide tu cotización</div>
+        <div class="campo"><label for="nombre">Tu nombre</label><input type="text" id="nombre" autocomplete="name" required></div>
+        <div class="campo"><label for="tel">WhatsApp</label><input type="tel" id="tel" inputmode="tel" autocomplete="tel" placeholder="300 123 4567" required></div>
+        <div class="campo"><label for="mun">Municipio y departamento</label><input type="text" id="mun" autocomplete="address-level2" placeholder="Ej.: Aracataca, Magdalena" required></div>
+        <div class="campo"><label for="fuente">Fuente de agua</label>
+          <select id="fuente" required>
+            <option value="">Elige una</option>
+            <option>Pozo</option>
+            <option>Río o quebrada</option>
+            <option>Reservorio</option>
+            <option>Canal o distrito de riego</option>
+            <option>Aún no la tengo</option>
+          </select>
+        </div>
+        <p class="requisito"><b>Para hacer el diseño necesito</b> los datos del pozo o de la fuente (caudal, profundidad y bomba, si ya existe) y la topografía del lote. Si no los tienes, el levantamiento se cobra aparte.</p>
+        <p class="error" id="form-error">Completa los 4 datos para enviarte la cotización.</p>
+        <button class="boton enviar" type="submit">Enviar mi solicitud por WhatsApp</button>
+        <p class="confia">Se abre WhatsApp con tu solicitud lista. Te respondo yo, Adán, para confirmar el precio.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- CÓMO FUNCIONA -->
+<section>
+  <div class="envase">
+    <span class="etiqueta">Cómo funciona</span>
+    <h2>De la cotización al diseño en tus manos</h2>
+    <ol class="pasos">
+      <li class="aparece"><h3>Cotizas</h3><p>Pones tus hectáreas aquí y me envías la solicitud por WhatsApp.</p></li>
+      <li class="aparece"><h3>Me envías tus datos</h3><p>Datos del pozo o la fuente de agua, topografía del lote y la siembra. Si no tienes topografía, el levantamiento se cobra aparte.</p></li>
+      <li class="aparece"><h3>Pagas el 30 % y empiezo</h3><p>Te confirmo el precio y la fecha de entrega antes de que pagues. En la reunión de revisión pagas el 40 %.</p></li>
+      <li class="aparece"><h3>Recibes el diseño</h3><p>En 10 a 15 días hábiles. Pagas el 30 % final al recibirlo.</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- AUTOR -->
+<section class="autor">
+  <div class="envase">
+    <img src="img/autor.webp" width="180" height="180" alt="Adán A. Arias, ingeniero agrícola" loading="lazy">
+    <div>
+      <span class="etiqueta">Quién diseña</span>
+      <blockquote>"Llevo 9 años trabajando en riego de palma en la Zona Norte. Diseño cada sistema como si fuera para mi propio lote: con números, con simulación y con planos que un contratista pueda seguir."</blockquote>
+      <cite>Adán A. Arias · Ingeniero agrícola · autor del Manual de riego por goteo en palma (141 páginas)</cite>
+    </div>
+  </div>
+</section>
+
+<!-- PREGUNTAS -->
+<section>
+  <div class="envase faq">
+    <span class="etiqueta">Preguntas frecuentes</span>
+    <h2>Lo que más me preguntan</h2>
+    <details><summary>¿Y si no tengo topografía?</summary><p>La topografía y los datos del pozo los pone el cliente. Si no los tienes, el levantamiento se cobra aparte y te digo el valor antes de empezar.</p></details>
+    <details><summary>¿Sirve para otros cultivos además de palma?</summary><p>Sí. El método es el mismo; cambian la necesidad de agua del cultivo y la distancia de siembra. Cuéntame el cultivo cuando me escribas.</p></details>
+    <details><summary>¿Visitan la finca?</summary><p>La mayoría de diseños no la necesitan: se trabaja con tus datos, fotos e imágenes del lote. Si quieres una visita, se cobra aparte según la distancia.</p></details>
+    <details><summary>¿El precio del cotizador es el final?</summary><p>Es un precio preliminar. Lo confirmo cuando revise tus datos y te lo doy por escrito antes de que pagues el primer 30 %. Si facturo como responsable de IVA, el IVA se suma al precio.</p></details>
+    <details><summary>¿Con la lista de materiales puedo cotizar con cualquier proveedor?</summary><p>Sí. La lista trae cantidades, diámetros y tipos, para que compares precios entre proveedores con la misma base.</p></details>
+    <details><summary>¿Quién instala?</summary><p>El contratista o proveedor que tú elijas. Con el paquete Completo recibes los términos de referencia para contratarlo y exigir que se instale como se diseñó.</p></details>
+  </div>
+</section>
+
+<!-- CIERRE -->
+<section class="cierre" style="padding-top:20px">
+  <div class="envase">
+    <h2>Antes de comprar el primer tubo, ten el diseño</h2>
+    <p class="sub">Mira cuánto cuesta el diseño de tu lote en menos de un minuto.</p>
+    <a class="boton" href="#cotizar">Ver el precio de mi lote</a>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="envase">© <span id="anio">2026</span> Adán A. Arias · Diseño de sistemas de riego · <a href="#" id="wa-pie" rel="noopener">WhatsApp</a></div>
+</footer>
+
+<div class="barra" id="barra" aria-hidden="true">
+  <p>Diseño de tu riego<br><b>desde $110.000/ha</b></p>
+  <a class="boton" href="#cotizar" tabindex="-1">Cotizar</a>
+</div>
+
+<script>
+(function () {
+  var WA = '573012251358';
+  var PAQ = { basico: { nombre: 'Básico', ha: 110000, min: 1500000 }, completo: { nombre: 'Completo', ha: 140000, min: 2000000 } };
+  var $ = function (id) { return document.getElementById(id); };
+  var pesos = function (n) { return '$' + Math.round(n).toLocaleString('es-CO'); };
+  document.documentElement.classList.add('js');
+  $('anio').textContent = new Date().getFullYear();
+
+  var saludo = 'https://wa.me/' + WA + '?text=' + encodeURIComponent('Hola Adán, quiero información sobre el diseño de riego para mi lote.');
+  $('wa-tope').href = saludo; $('wa-pie').href = saludo;
+  ['wa-tope', 'wa-pie', 'wa-revision'].forEach(function (id) { $(id).addEventListener('click', function () { if (window.fbq) fbq('track', 'Contact', { content_name: id }); }); });
+  $('wa-revision').href = 'https://wa.me/' + WA + '?text=' + encodeURIComponent('Hola Adán, quiero que revises el diseño de riego que ya tengo.');
+
+  // Cotizador
+  var ha = $('ha'), rango = $('ha-rango');
+  function paquete() { return document.querySelector('input[name=paq]:checked').value; }
+  function hectareas() { var v = parseFloat(String(ha.value).replace(',', '.')); return isFinite(v) && v > 0 ? v : 0; }
+  function calcular() {
+    var h = hectareas(), p = PAQ[paquete()];
+    $('ha-error').classList.toggle('si', !h);
+    var bruto = h * p.ha, total = h ? Math.max(bruto, p.min) : 0;
+    $('total').textContent = pesos(total);
+    $('pago1').textContent = pesos(total * 0.3);
+    $('pago2').textContent = pesos(total * 0.4);
+    $('pago3').textContent = pesos(total * 0.3);
+    $('aviso-min').classList.toggle('si', h > 0 && bruto < p.min);
+    return { h: h, p: p, total: total };
+  }
+  ha.addEventListener('input', function () { var h = hectareas(); if (h) rango.value = Math.min(100, Math.max(1, Math.round(h))); calcular(); });
+  rango.addEventListener('input', function () { ha.value = rango.value; calcular(); });
+  document.querySelectorAll('input[name=paq]').forEach(function (r) { r.addEventListener('change', calcular); });
+  document.querySelectorAll('[data-paquete]').forEach(function (a) {
+    a.addEventListener('click', function () { document.querySelector('input[name=paq][value=' + a.dataset.paquete + ']').checked = true; calcular(); });
+  });
+  calcular();
+
+  // Solicitud por WhatsApp
+  $('solicitud').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var c = calcular();
+    var campos = ['nombre', 'tel', 'mun', 'fuente'];
+    var falta = campos.filter(function (id) { return !$(id).value.trim(); });
+    if (!c.h) falta.push('ha');
+    $('form-error').classList.toggle('si', falta.length > 0);
+    if (falta.length) { $(falta[0]).focus(); return; }
+    var hTxt = String(c.h).replace('.', ',');
+    var msg = 'Hola Adán, quiero cotizar el diseño de riego de mi lote.\n\n' +
+      '• Nombre: ' + $('nombre').value.trim() + '\n' +
+      '• WhatsApp: ' + $('tel').value.trim() + '\n' +
+      '• Municipio: ' + $('mun').value.trim() + '\n' +
+      '• Fuente de agua: ' + $('fuente').value + '\n' +
+      '• Hectáreas: ' + hTxt + '\n' +
+      '• Paquete: ' + c.p.nombre + '\n' +
+      '• Precio preliminar: ' + pesos(c.total) + ' (más IVA si aplica)';
+    if (window.fbq) fbq('track', 'Lead', { value: c.total, currency: 'COP', content_name: 'Diseño de riego ' + c.p.nombre, hectareas: c.h });
+    window.open('https://wa.me/' + WA + '?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+  });
+
+  // Pestañas del caso
+  var tabs = document.querySelectorAll('[role=tab]');
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () {
+      tabs.forEach(function (o) { var on = o === t; o.setAttribute('aria-selected', on); $(o.getAttribute('aria-controls')).hidden = !on; });
+    });
+  });
+
+  // Barra fija en celular: se ve después de la portada y se oculta en el cotizador
+  var barra = $('barra'), portadaVista = true, cotiVista = false;
+  function barraEstado() { barra.classList.toggle('ver', !portadaVista && !cotiVista); }
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (es) { portadaVista = es[0].isIntersecting; barraEstado(); }).observe(document.querySelector('.portada .acciones'));
+    new IntersectionObserver(function (es) { cotiVista = es[0].isIntersecting; barraEstado(); }, { threshold: 0.05 }).observe($('cotizar'));
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { var hermanos = Array.prototype.indexOf.call(e.target.parentNode.children, e.target); e.target.style.transitionDelay = Math.min(hermanos, 5) * 60 + 'ms'; e.target.classList.add('visto'); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.aparece').forEach(function (el) { io.observe(el); });
+  } else {
+    document.querySelectorAll('.aparece').forEach(function (el) { el.classList.add('visto'); });
+  }
+})();
+</script>
+</body>
+</html>
