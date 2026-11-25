@@ -143,6 +143,7 @@
     error('');
     if (!V.wompiLlavePublica || !V.pagosUrl) return error('Los pagos se están configurando. Vuelve en unas horas o escríbenos.');
     if (window.clarity) clarity('event', 'clic_comprar');
+    if (window.gtag) gtag('event', 'begin_checkout', { value: precioActual(), currency: 'COP', items: [{ item_id: 'RP', item_name: 'Manual de riego por goteo en palma' }] });
     if (window.fbq) fbq('track', 'InitiateCheckout', { value: precioActual(), currency: 'COP', content_name: 'Manual Visual de Riego por Goteo en Palma', variante: window.VARIANTE || 'a' });
     const b = $('comprar'); b.disabled = true; b.textContent = 'Abriendo el pago seguro…';
     try {

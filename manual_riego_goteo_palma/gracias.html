@@ -79,6 +79,9 @@ fbq('track', 'PageView');
 <noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=3604674439689537&ev=PageView&noscript=1"></noscript>
 <!-- Microsoft Clarity: grabaciones anónimas y mapas de calor (proyecto ziyn8pczn3) -->
 <script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","ziyn8pczn3");</script>
+<!-- Google Analytics 4 (propiedad Cursos, G-R38LPBN4CC) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R38LPBN4CC"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-R38LPBN4CC');</script>
 </head>
 <body>
 <div class="franja"></div>
@@ -206,6 +209,8 @@ fbq('track', 'PageView');
   function compraMeta(t) {
     let marcadas = []; try { marcadas = JSON.parse(localStorage.getItem('compras_meta') || '[]'); } catch (e) {}
     if (!window.fbq || marcadas.indexOf(t.id) >= 0) return;
+    if (window.gtag) gtag('event', 'purchase', { transaction_id: t.reference, value: t.amount_in_cents / 100, currency: 'COP', items: [{ item_id: 'RP', item_name: 'Manual de riego por goteo en palma' }] });
+    if (window.clarity) clarity('event', 'compra');
     fbq('track', 'Purchase', { value: t.amount_in_cents / 100, currency: 'COP', content_name: 'Manual Visual de Riego por Goteo en Palma', content_type: 'product', variante: (function () { try { return localStorage.getItem('ab_manual') || 'a'; } catch (e) { return 'a'; } })() }, { eventID: t.reference });
     try { marcadas.push(t.id); localStorage.setItem('compras_meta', JSON.stringify(marcadas)); } catch (e) {}
   }
