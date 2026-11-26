@@ -97,7 +97,7 @@
       if (b.tagName !== 'SECTION') b.style.transitionDelay = (i % 6) * 70 + 'ms';
       ver(b); io.unobserve(b);
       setTimeout(() => { b.style.transitionDelay = ''; }, 1200);   // el retraso solo aplica a la entrada, no al pasar el mouse
-    }), { threshold: 0.12 });
+    }), { threshold: 0, rootMargin: '0px 0px -60px 0px' });   // aparece apenas asoma: nunca deja la pantalla en blanco
     bloques.forEach((b) => io.observe(b));
   }
 

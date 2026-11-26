@@ -43,7 +43,7 @@
   .tarjeta { border-radius:10px; overflow:hidden; box-shadow:0 1px 10px rgba(0,0,0,.12); background:#fff; margin:16px 0 28px; }
   .tarjeta .titulo { padding:22px 16px 6px; text-align:center; }
   .tarjeta h1, .tarjeta h2 { margin:0; font-family:'Oswald', sans-serif; text-transform:uppercase; line-height:1.02; letter-spacing:.005em; }
-  .tarjeta h1 { font-size:clamp(30px, 8vw, 54px); color:#1b2a22; }
+  .tarjeta h1 { font-size:clamp(26px, 7vw, 50px); color:#1b2a22; }
   .tarjeta h1 span { display:block; color:var(--naranja); }
   .tarjeta .regla { height:3px; width:82%; margin:10px auto 8px; background:#1b2a22; }
   .tarjeta .sub { margin:0; font-weight:600; font-size:clamp(14px, 3.4vw, 17px); }
@@ -55,7 +55,7 @@
            text-transform:uppercase; display:block;
            clip-path:polygon(1.5% 8%, 99% 0, 100% 90%, 0 100%); }
   a.banda { color:#fff; text-decoration:none; cursor:pointer; transition:filter .2s ease; } a.banda:hover { filter:brightness(1.15); }
-  .cta-portada { text-align:center; margin:-6px 0 34px; }
+  .cta-portada { text-align:center; margin:22px 0 34px; }
   .cta-precio { margin:0 0 12px; font-size:clamp(17px, 4.4vw, 20px); }
   .cta-precio s { color:#999; margin-right:6px; } .cta-precio b { color:#16a34a; font-size:1.2em; } .cta-inc { color:#555; }
   .cta-nota { margin:12px 0 0; font-size:14px; color:#666; }
@@ -215,7 +215,7 @@ fbq('track', 'ViewContent', { content_name: 'Manual Visual de Riego por Goteo en
     <div class="titulo">
       <h1>Evita los errores que encarecen el riego de tu palma <span>antes de comprar un tubo</span></h1>
       <div class="regla"></div>
-      <p class="sub">Bomba que no alcanza, tubería de más, goteros sin presión al final del lote. Aprende a diseñarlo bien, paso a paso, con planos en QGIS y simulación en EPANET.</p>
+      <p class="sub">¿La bomba no alcanza? ¿Compraste tubería de más? ¿Las palmas del final reciben menos agua? Son errores de diseño, y este manual te enseña a evitarlos paso a paso.</p>
     </div>
     <img src="img/heroe.webp" width="1200" height="896" alt="Manual Visual de Riego por Goteo en Palma de Aceite, en libro y en tablet, con páginas de muestra">
     <div class="rasgos">
@@ -223,16 +223,11 @@ fbq('track', 'ViewContent', { content_name: 'Manual Visual de Riego por Goteo en
       <div><svg width="34" height="34" viewBox="0 0 34 34"><rect x="3" y="14" width="18" height="7" rx="2" fill="#333"/><circle cx="25" cy="17" r="6" fill="#2E7FB8"/><path d="M8 21v6M16 21v6" stroke="#333" stroke-width="2"/></svg>Etapa 2: diseño hidráulico</div>
       <div><svg width="34" height="34" viewBox="0 0 34 34"><rect x="4" y="4" width="20" height="24" rx="2" fill="none" stroke="#1F4D2B" stroke-width="2"/><circle cx="24" cy="24" r="7" fill="#16a34a"/><path d="M21 24l2 2 4-4" stroke="#fff" stroke-width="2" fill="none"/></svg>Planos en QGIS y simulación EPANET</div>
     </div>
-    <a class="banda" href="#compra"><i>⬇</i>Acceso digital inmediato</a>
+    <a class="banda" href="#problemas"><i>⬇</i>¿Cuál de estos errores tiene tu lote?</a>
   </section>
 
-  <div class="cta-portada">
-    <p class="cta-precio">Hoy <span id="precio-cta"></span> <span class="cta-inc">· 141 páginas + 4 bonos</span></p>
-    <a class="cta" href="#compra">Quiero mi manual ahora</a>
-    <p class="cta-nota">🔒 Pago seguro con Wompi · Te llega al correo en minutos · Garantía de 7 días</p>
-  </div>
 
-  <section class="dolor">
+  <section class="dolor" id="problemas">
     <h2>¿Te suena alguno de estos problemas?</h2>
     <ul class="dolores">
       <li><b>Te pidieron el diseño del riego y no sabes por dónde empezar.</b> Tu jefe, tu cliente o tu profesor necesita el proyecto con cálculos, plano y materiales, y el plazo corre.</li>
@@ -259,8 +254,12 @@ fbq('track', 'ViewContent', { content_name: 'Manual Visual de Riego por Goteo en
       <div><b>Administradores</b>que deben aprobar cotizaciones y presupuestos.</div>
       <div><b>Estudiantes</b>de agronomía e ingeniería con un proyecto o trabajo de riego.</div>
     </div>
-    <p class="cta-wrap"><a class="cta" href="#compra">Quiero el manual con sus 4 bonos</a></p>
   </section>
+  <div class="cta-portada">
+    <p class="cta-precio">Hoy <span id="precio-cta"></span> <span class="cta-inc">· 141 páginas + 4 bonos</span></p>
+    <a class="cta" href="#compra">Quiero mi manual ahora</a>
+    <p class="cta-nota">🔒 Pago seguro con Wompi · Te llega al correo en minutos · Garantía de 7 días</p>
+  </div>
 
   <div class="boton-borde">Esto es lo que contiene</div>
   <section class="contiene">
